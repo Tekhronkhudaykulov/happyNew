@@ -1,0 +1,103 @@
+"use client";
+
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+
+import { getOtzivesData } from "../data/Otzivesdata";
+import { Otzive } from "../components/otzives";
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+
+interface Slider {
+  next: () => void;
+  on: (
+    event: "created" | "dragStarted" | "animationEnded" | "updated",
+    callback: () => void
+  ) => void;
+  container: HTMLElement;
+}
+
+const Otzives = () => {
+  const t = useTranslations("");
+  const OtziveData = getOtzivesData(t);
+  const [isDesktop, setIsDesktop] = useState<boolean>(
+    window.innerWidth >= 1024
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  function Autoplay(slider: Slider) {
+    let timeout: ReturnType<typeof setTimeout>;
+    let mouseOver = false;
+
+    function clearNextTimeout() {
+      clearTimeout(timeout);
+    }
+    function nextTimeout() {
+      clearTimeout(timeout);
+      if (mouseOver) return;
+      timeout = setTimeout(() => {
+        slider.next();
+      }, 1500);
+    }
+
+    slider.on("created", () => {
+      slider.container.addEventListener("mouseover", () => {
+        mouseOver = true;
+        clearNextTimeout();
+      });
+      slider.container.addEventListener("mouseout", () => {
+        mouseOver = false;
+        nextTimeout();
+      });
+      nextTimeout();
+    });
+    slider.on("dragStarted", clearNextTimeout);
+    slider.on("animationEnded", nextTimeout);
+    slider.on("updated", nextTimeout);
+  }
+
+  const [sliderRef] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      renderMode: "performance",
+      drag: true,
+      slides: {
+        perView: isDesktop ? 3 : 1,
+        spacing: isDesktop ? 20 : 10,
+        origin: "center", // Центрирование слайдов
+      },
+      defaultAnimation: {
+        duration: 800,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+      },
+    },
+    [Autoplay]
+  );
+
+  return (
+    <div className="py-[50px] my-[50px] rounded-tl-[30px] md:rounded-[20px] bg-[#272727] overflow-hidden">
+      <div className="container">
+        <h1 className="text-[#FFFFFF] lg:text-[40px]/[35px] md:text-[32px]/[32px] text-[28px]/[28px] font-medium">
+          {t("otzives.title")}
+        </h1>
+      </div>
+      <div
+        ref={sliderRef}
+        className="keen-slider mt-[50px] px-2 overflow-hidden w-full"
+      >
+        {OtziveData.map((item, idx) => (
+          <div key={idx} className="keen-slider__slide w-full">
+            <Otzive {...item} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Otzives;

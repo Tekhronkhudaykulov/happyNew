@@ -1,7 +1,30 @@
-import type { NextConfig } from "next";
+// next.config.js
+import createNextIntlPlugin from "next-intl/plugin";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
+
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    unoptimized: true,
+    domains: ["admin.marca.uz"],
+    remotePatterns: [
+      { protocol: "http", hostname: "localhost" },
+      { protocol: "https", hostname: "admin.marca.uz" },
+    ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/ru",
+        permanent: false,
+      },
+    ];
+  },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
