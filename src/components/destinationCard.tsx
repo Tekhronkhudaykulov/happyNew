@@ -1,11 +1,12 @@
 "use client";
 import Button from "./button";
-import { ArrowRight } from "lucide-react";
 import { APP_ROUTES } from "@/router/path";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import formatPrice from "@/utils/formatPrice";
+import { ASSETS } from "@/assets";
 
 export type DestinationType = "local" | "regional" | "global";
 
@@ -33,8 +34,6 @@ interface DestinationCardProps {
 }
 
 const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
-  console.log(data, "data");
-
   const [showAll, setShowAll] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
   const t = useTranslations("");
@@ -53,8 +52,8 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
   }, []);
 
   const limit = isDesktop ? 8 : 6;
-  const shouldLimit = data.length > limit && !showAll;
-  const visibleData = shouldLimit ? data.slice(0, limit) : data;
+  const shouldLimit = data?.length > limit && !showAll;
+  const visibleData = shouldLimit ? data?.slice(0, limit) : data;
 
   const router = useRouter();
 
@@ -63,70 +62,33 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
       <div
         className={`grid gap-[12px] ${
           isLocal
-            ? data.length <= 2
+            ? data?.length <= 2
               ? "grid-cols-1 sm:grid-cols-2 justify-center"
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
             : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2"
         }`}
       >
-        {visibleData.map((item, index) => {
-          if (isLocal && "country" in item && "price" in item) {
-            return (
-              <div
-                onClick={() =>
-                  router.push(
-                    `${APP_ROUTES.COUNTRY.replace(":id", item.id.toString())}`
-                  )
-                }
-                key={index}
-                className="flex items-center gap-12 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
-              >
-                <div className="img_wrapper shrink-0">
-                  <Image src={item.flag} className="destination-flag" alt="" />
-                </div>
-                <div>
-                  <h1 className="destination-country text-black font-bold text-[16px] md:text-[18px]">
-                    {item.country}
-                  </h1>
-                  <Button bg="orange" title={item.price} />
-                </div>
-              </div>
-            );
-          } else if ("name" in item && "label" in item) {
-            return (
-              <div
-                onClick={() =>
-                  router.push(
-                    `${APP_ROUTES.COUNTRY.replace(":id", item.id.toString())}`
-                  )
-                }
-                key={index}
-                className="flex cursor-pointer items-center sm:justify-between bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] gap-4"
-              >
-                <div className="flex items-center gap-12 md:gap-4">
-                  <div className="img_wrapper shrink-0">
-                    <Image
-                      src={item.flag}
-                      className="destination-flag"
-                      alt=""
-                    />
-                  </div>
-                  <div className="flex flex-col items-start">
-                    <h1 className="destination-country text-[16px] md:text-[18px]">
-                      {item.name}
-                    </h1>
-                    <div className="inline-block">
-                      <Button bg="orange" title={item.label} />
-                    </div>
-                  </div>
-                </div>
-                <ArrowRight className="text-[#1C1C1C] md:block hidden" />
-              </div>
-            );
-          }
-
-          return null;
-        })}
+        {visibleData?.map((item, index) => (
+          <div
+            onClick={() =>
+              router.push(
+                `${APP_ROUTES.COUNTRY.replace(":id", item.id.toString())}`
+              )
+            }
+            key={index}
+            className="flex items-center gap-12 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
+          >
+            <div className="img_wrapper shrink-0">
+              <Image src={ASSETS.turkey} className="destination-flag" alt="" />
+            </div>
+            <div>
+              <h1 className="destination-country text-black font-bold text-[16px] md:text-[18px]">
+                {item?.name}
+              </h1>
+              <Button bg="orange" title={formatPrice(item?.price_sell)} />
+            </div>
+          </div>
+        ))}
       </div>
 
       {shouldLimit && (

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import "./loading.css";
 import { ASSETS } from "../../assets";
@@ -14,7 +16,7 @@ const Loading5755 = () => {
   }, []);
 
   return (
-    <div className="loading-container">
+    <div className="loading-container ">
       <div className="loading-5755">
         <div className="logo">
           <Image src={ASSETS.logowhite} alt="HappyTel Logo" />

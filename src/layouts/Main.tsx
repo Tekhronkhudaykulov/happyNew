@@ -13,16 +13,50 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import phone from "@/assets/phone.png";
 import smPhone from "@/assets/sm-phone.png";
+import { buildQuery } from "@/utils/buildQuery";
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
+import { useQuery } from "@tanstack/react-query";
+import formatPrice from "@/utils/formatPrice";
+
+async function fetchPlans(params: Record<string, any>) {
+  // ruscha harflarni to‘g‘ri qilish uchun
+  const encodedParams = Object.fromEntries(
+    Object.entries(params).map(([key, value]) => [
+      key,
+      typeof value === "string" ? encodeURIComponent(value) : value,
+    ])
+  );
+
+  const query = buildQuery(encodedParams);
+  const res = await fetch(`${API_URL}/${endpoints.plans}?${query}`);
+  if (!res.ok) throw new Error("Failed to fetch plans");
+  return res.json();
+}
 
 const Main = () => {
-  const t = useTranslations("main"); // ✅ namespace "main"
-
+  const t = useTranslations("main");
   const router = useRouter();
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+  console.log(searchTerm, "searchTerm");
+
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
     []
   );
+  console.log(defaultCountries, "defaultCountries");
+
+  const { data: plansData, isLoading } = useQuery({
+    queryKey: ["plans", searchTerm], // 🔑 searchTerm bo‘lsa query qayta ishlaydi
+    queryFn: () =>
+      fetchPlans({
+        ...(searchTerm ? { search: searchTerm } : {}), // ✅ searchTerm bo‘lsa qo‘shiladi
+      }),
+  });
+
+  console.log(plansData, "plansData");
 
   const filteredDestinations = localDestinations.filter(
     (item) =>
@@ -31,31 +65,35 @@ const Main = () => {
   );
 
   useEffect(() => {
-    if (!searchTerm) {
-      const localItems = localDestinations.filter(
-        (item) => item.type === "local"
-      );
-      const shuffled = localItems.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, 2);
-      setDefaultCountries(selected);
-    } else {
-      setDefaultCountries([]);
-    }
-  }, [searchTerm]);
+    // if (!searchTerm) {
+    //   const localItems = localDestinations.filter(
+    //     (item) => item.type === "local"
+    //   );
+    //   const shuffled = localItems.sort(() => 0.5 - Math.random());
+    //   const selected = shuffled.slice(0, 2);
+    //   setDefaultCountries(selected);
+    // } else {
+    //   setDefaultCountries([]);
+    // }
+    setDefaultCountries(plansData?.data?.data?.slice(0, 2));
+  }, [plansData]);
 
   const handleSelect = (country: string) => {
-    setSelectedCountry(country);
+    if (!selectedCountries.includes(country)) {
+      setSelectedCountries([...selectedCountries, country]);
+    }
     setSearchTerm("");
   };
 
-  const handleRemove = () => {
-    setSelectedCountry(null);
+  const handleRemove = (country: string) => {
+    setSelectedCountries(selectedCountries.filter((c) => c !== country));
   };
 
   const handleSearchClick = () => {
-    if (selectedCountry) {
+    if (selectedCountries.length > 0) {
+      const lastSelected = selectedCountries[selectedCountries.length - 1];
       const selectedDestination = localDestinations.find(
-        (item) => item.country === selectedCountry
+        (item) => item.country === lastSelected
       );
       if (selectedDestination?.id) {
         router.push(
@@ -96,21 +134,22 @@ const Main = () => {
               <p className="main-item hidden sm:block">{t("nav3")}</p>
             </ul>
 
+            {/* 🔹 Input va tanlanganlar */}
             <div className="search-container">
-              <div className="flex items-center pl-2 gap-2">
-                {selectedCountry && (
+              <div className="flex items-center pl-2 gap-2 flex-wrap">
+                {selectedCountries.map((country) => (
                   <span
-                    key={selectedCountry}
+                    key={country}
                     className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
                   >
-                    {selectedCountry}
+                    {country}
                     <X
                       size={14}
                       className="cursor-pointer"
-                      onClick={handleRemove}
+                      onClick={() => handleRemove(country)}
                     />
                   </span>
-                )}
+                ))}
 
                 <input
                   type="text"
@@ -132,14 +171,15 @@ const Main = () => {
               </div>
             </div>
 
+            {/* 🔹 Dropdown */}
             {searchTerm && (
-              <div className="absolute z-20 mt-2 w-full max-w-[500px] bg-[#FFFFFF] rounded-lg">
-                {filteredDestinations.length > 0 ? (
-                  filteredDestinations.map((item, index) => (
+              <div className="absolute z-20 mt-2 w-full text-black max-w-[500px] bg-[#FFFFFF] rounded-lg">
+                {plansData?.data?.data?.length > 0 ? (
+                  plansData?.data?.data?.map((item: any, index: any) => (
                     <div
                       key={item.country}
                       className={`flex items-center justify-between px-4 py-4 cursor-pointer ${
-                        selectedCountry === item.country
+                        selectedCountries.includes(item.name)
                           ? "bg-orange-50 text-orange-600"
                           : "hover:bg-gray-100"
                       } ${
@@ -147,33 +187,33 @@ const Main = () => {
                           ? "border-b"
                           : ""
                       }`}
-                      onClick={() => handleSelect(item.country)}
+                      onClick={() => handleSelect(item.name)}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                            selectedCountry === item.country
+                            selectedCountries.includes(item.name)
                               ? "border-orange-600"
                               : "border-gray-400"
                           }`}
                         >
-                          {selectedCountry === item.country && (
+                          {selectedCountries.includes(item.name) && (
                             <div className="w-2 h-2 rounded-full bg-orange-600" />
                           )}
                         </div>
                         <Image
-                          src={item.flag}
+                          src={ASSETS.turkey}
                           alt={item.country}
                           className="w-5 h-5"
                           width={20}
                           height={20}
                         />
                         <span className="text-sm truncate max-w-[120px]">
-                          {item.country}
+                          {item.name}
                         </span>
                       </div>
                       <span className="text-xs text-gray-500">
-                        {item.price}
+                        {formatPrice(item?.price_sell)}
                       </span>
                       <ArrowRight className="text-[#1C1C1C]" />
                     </div>
@@ -186,18 +226,19 @@ const Main = () => {
               </div>
             )}
 
-            {!searchTerm && defaultCountries.length > 0 && (
+            {/* 🔹 Default countries */}
+            {!searchTerm && defaultCountries?.length > 0 && (
               <div className="flex gap-4 mt-8">
                 {defaultCountries.map((item) => (
                   <div
                     key={item.country}
                     className="cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
-                    onClick={() => handleSelect(item.country)}
+                    onClick={() => handleSelect(item.name)}
                   >
                     <div className="flex items-center gap-4">
                       <div className="img_wrapper shrink-0">
                         <Image
-                          src={item.flag}
+                          src={ASSETS.turkey}
                           className="destination-flag"
                           alt={item.country}
                           width={40}
@@ -206,10 +247,13 @@ const Main = () => {
                       </div>
                       <div>
                         <h1 className="text-[20px] font-normal text-[#FFFFFF]">
-                          {item.country}
+                          {item.name}
                         </h1>
                         <div>
-                          <Button title={item.price} bg="orange" />
+                          <Button
+                            title={formatPrice(item?.price_sell)}
+                            bg="orange"
+                          />
                         </div>
                       </div>
                     </div>

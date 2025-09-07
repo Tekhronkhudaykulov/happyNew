@@ -1,15 +1,15 @@
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
-import { ReactNode } from "react";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import "@/app/[locale]/globals.css";
 import "@/index.css";
+import { Suspense } from "react";
+import { Loading5755 } from "@/components/loading/loading";
+
 export default async function LocaleLayout({
   children,
   params: { locale },
-}: {
-  children: ReactNode;
-  params: { locale: string };
-}) {
+}: any) {
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;
@@ -21,7 +21,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <ReactQueryProvider>
+            <Suspense fallback={<Loading5755 />}>{children}</Suspense>
+          </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>
     </html>

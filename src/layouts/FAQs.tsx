@@ -1,14 +1,23 @@
 "use client";
 
-import { getFAQSdata } from "../data/FAQdata";
 import FAQ from "../components/faq";
-
+import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
+
+async function fetchFaqs() {
+  const res = await fetch(`${API_URL}/${endpoints.faqs}`);
+  return res.json();
+}
 
 const FAQs = () => {
   const t = useTranslations("");
 
-  const FAQSdata = getFAQSdata(t);
+  const { data } = useQuery({
+    queryKey: ["faqs"],
+    queryFn: fetchFaqs,
+  });
 
   return (
     <div className="my-[50px]">
@@ -25,7 +34,7 @@ const FAQs = () => {
           </div>
 
           <div className="flex flex-col gap-[8px] lg:mt-0 mt-[25px] md:mt-[15px] md:justify-normal justify-center items-center md:items-start">
-            {FAQSdata?.data?.map((item, idx) => (
+            {data?.data?.map((item, idx) => (
               <FAQ key={idx} title={item.question} question={item.answer} />
             ))}
           </div>

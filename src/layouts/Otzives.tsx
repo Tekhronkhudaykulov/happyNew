@@ -5,7 +5,7 @@ import "keen-slider/keen-slider.min.css";
 
 import { getOtzivesData } from "../data/Otzivesdata";
 import { Otzive } from "../components/otzives";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 interface Slider {
@@ -20,8 +20,10 @@ interface Slider {
 const Otzives = () => {
   const t = useTranslations("");
   const OtziveData = getOtzivesData(t);
+
+  // ✅ ekran o‘lchamini tekshirish
   const [isDesktop, setIsDesktop] = useState<boolean>(
-    window.innerWidth >= 1024
+    typeof window !== "undefined" ? window.innerWidth >= 1024 : false
   );
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const Otzives = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // ✅ autoplay funksiyasi
   function Autoplay(slider: Slider) {
     let timeout: ReturnType<typeof setTimeout>;
     let mouseOver = false;
@@ -42,7 +45,7 @@ const Otzives = () => {
       if (mouseOver) return;
       timeout = setTimeout(() => {
         slider.next();
-      }, 1500);
+      }, 3000); // 3 sekundda bitta slayd
     }
 
     slider.on("created", () => {
@@ -61,6 +64,7 @@ const Otzives = () => {
     slider.on("updated", nextTimeout);
   }
 
+  // ✅ slider init
   const [sliderRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -69,7 +73,7 @@ const Otzives = () => {
       slides: {
         perView: isDesktop ? 3 : 1,
         spacing: isDesktop ? 20 : 10,
-        origin: "center", // Центрирование слайдов
+        origin: "center",
       },
       defaultAnimation: {
         duration: 800,
@@ -86,10 +90,7 @@ const Otzives = () => {
           {t("otzives.title")}
         </h1>
       </div>
-      <div
-        ref={sliderRef}
-        className="keen-slider mt-[50px] px-2 overflow-hidden w-full"
-      >
+      <div ref={sliderRef} className="keen-slider mt-[50px] px-2 w-full">
         {OtziveData.map((item, idx) => (
           <div key={idx} className="keen-slider__slide w-full">
             <Otzive {...item} />
