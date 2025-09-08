@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
   HOME: "/",
-  COUNTRY: "/country/:id",
+  COUNTRY: "/country",
   LOGIN: "/auth/login",
   VERIFY: "/auth/verify",
   CONFIRM_ORDER: "/confirm",

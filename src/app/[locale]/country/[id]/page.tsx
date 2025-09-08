@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { localDestinations, tabConfig } from "@/data/TabData";
+import { tabConfig } from "@/data/TabData";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft, Info, ArrowRight, X } from "lucide-react";
@@ -17,14 +17,41 @@ import "@/app/[locale]/globals.css";
 import { useTranslations } from "next-intl";
 
 import PhoneInput from "@/components/phoneInput";
+import { ASSETS } from "@/assets";
+import { buildQuery } from "@/utils/buildQuery";
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchPlans(params: any) {
+  const query = buildQuery(params);
+  const res = await fetch(`${API_URL}/${endpoints.plans}?${query}`);
+  if (!res.ok) throw new Error("Failed to fetch plans");
+  return res.json();
+}
 
 const Country = () => {
   const t = useTranslations("");
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+
+  const id = params.id?.toString().split("-") || [];
+
+  // const ids = params.ids?.toString().split("-") || [];
+
   const router = useRouter();
 
-  const countryId = id ? parseInt(id, 10) : null;
-  const country = localDestinations.find((item) => item.id === countryId);
+  const { data: plansData, isLoading } = useQuery({
+    queryKey: ["plans", id],
+    queryFn: () =>
+      fetchPlans({
+        region_ids: id,
+      }),
+  });
+
+  console.log(plansData, "plansData");
+
+  // const countryId = id ? parseInt(id, 10) : null;
+  // const country = localDestinations.find((item) => item.id === countryId);
   const data = getCOUNTRIESdata();
 
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
@@ -41,16 +68,16 @@ const Country = () => {
     }
   }, []);
 
-  if (!countryId || !country) {
-    return (
-      <div className="min-h-screen items-center justify-center flex">
-        <p className="text-gray-500 text-lg">{t("main.no_results")}</p>
-        <div className="fixed bottom-0 w-full">
-          <FooterNav />
-        </div>
-      </div>
-    );
-  }
+  // if (!countryId || !country) {
+  //   return (
+  //     <div className="min-h-screen items-center justify-center flex">
+  //       <p className="text-gray-500 text-lg">{t("main.no_results")}</p>
+  //       <div className="fixed bottom-0 w-full">
+  //         <FooterNav />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const getRandomRegionalCountries = () => {
     const regionalData = tabConfig.global.data as RegionalOrGlobalDestination[];
@@ -64,51 +91,51 @@ const Country = () => {
     setSelectedPackage(index);
   };
 
-  const handleBuyClick = () => {
-    if (isAuthenticated) {
-      if (selectedPackage !== null) {
-        const selectedItem = data[selectedPackage];
-        // ✅ Next.js da state yo‘q, query string orqali yuboramiz
-        const query = new URLSearchParams({
-          price: selectedItem.price,
-          gb: selectedItem.gb.toString(),
-          days: selectedItem.days.toString(),
-          flag: country.flag,
-          country: country.country,
-        }).toString();
+  // const handleBuyClick = () => {
+  //   if (isAuthenticated) {
+  //     if (selectedPackage !== null) {
+  //       const selectedItem = data[selectedPackage];
+  //       // ✅ Next.js da state yo‘q, query string orqali yuboramiz
+  //       const query = new URLSearchParams({
+  //         price: selectedItem.price,
+  //         gb: selectedItem.gb.toString(),
+  //         days: selectedItem.days.toString(),
+  //         flag: country.flag,
+  //         country: country.country,
+  //       }).toString();
 
-        router.push(`/confirm?${query}`);
-      }
-    } else {
-      setIsModalOpen(true);
-    }
-  };
+  //       router.push(`/confirm?${query}`);
+  //     }
+  //   } else {
+  //     setIsModalOpen(true);
+  //   }
+  // };
 
-  const handleLogin = () => {
-    if (!isVerifyStep) {
-      setIsVerifyStep(true);
-    } else {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", "1");
-      }
-      setIsAuthenticated(true);
-      setIsModalOpen(false);
-      setIsVerifyStep(false);
-      setPhone("+998");
-      setCode("");
-      if (selectedPackage !== null) {
-        const selectedItem = data[selectedPackage];
-        const query = new URLSearchParams({
-          price: selectedItem.price,
-          gb: selectedItem.gb.toString(),
-          days: selectedItem.days.toString(),
-          flag: country.flag,
-          country: country.country,
-        }).toString();
-        router.push(`/confirm?${query}`);
-      }
-    }
-  };
+  // const handleLogin = () => {
+  //   if (!isVerifyStep) {
+  //     setIsVerifyStep(true);
+  //   } else {
+  //     if (typeof window !== "undefined") {
+  //       localStorage.setItem("authToken", "1");
+  //     }
+  //     setIsAuthenticated(true);
+  //     setIsModalOpen(false);
+  //     setIsVerifyStep(false);
+  //     setPhone("+998");
+  //     setCode("");
+  //     if (selectedPackage !== null) {
+  //       const selectedItem = data[selectedPackage];
+  //       const query = new URLSearchParams({
+  //         price: selectedItem.price,
+  //         gb: selectedItem.gb.toString(),
+  //         days: selectedItem.days.toString(),
+  //         flag: country.flag,
+  //         country: country.country,
+  //       }).toString();
+  //       router.push(`/confirm?${query}`);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -125,7 +152,7 @@ const Country = () => {
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
             </button>
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold">
-              {country.country}
+              {/* {country.country} */}
             </h1>
           </div>
 
@@ -139,10 +166,10 @@ const Country = () => {
 
         {/* SIM CARDS */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
-          {data.map((item, idx) => (
+          {plansData?.data?.data?.map((item: any, idx: any) => (
             <ESimCard
               key={idx}
-              flag={country.flag}
+              flag={ASSETS.turkey}
               gb={item.gb}
               days={item.days}
               price={item.price}
@@ -217,7 +244,9 @@ const Country = () => {
         </div>
 
         {/* BUY BUTTON */}
-        <div onClick={handleBuyClick}>
+        <div
+        // onClick={handleBuyClick}
+        >
           <Button
             classname="mt-10 sm:mt-12 md:mt-16 lg:mt-[150px] w-full"
             title={isAuthenticated ? t("auth.buy") : t("country.auth")}
@@ -268,7 +297,7 @@ const Country = () => {
             )}
 
             <button
-              onClick={handleLogin}
+              // onClick={handleLogin}
               className="w-full mt-6 bg-[#F06F1E] text-white rounded-lg py-2 sm:py-3 hover:bg-[#8F4D26] cursor-pointer transition-colors text-base sm:text-lg"
             >
               {t("auth.button")}

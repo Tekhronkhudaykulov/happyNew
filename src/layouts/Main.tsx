@@ -40,23 +40,19 @@ const Main = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(searchTerm, "searchTerm");
-
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+
   const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
     []
   );
-  console.log(defaultCountries, "defaultCountries");
 
   const { data: plansData, isLoading } = useQuery({
-    queryKey: ["plans", searchTerm], // 🔑 searchTerm bo‘lsa query qayta ishlaydi
+    queryKey: ["plans", searchTerm],
     queryFn: () =>
       fetchPlans({
-        ...(searchTerm ? { search: searchTerm } : {}), // ✅ searchTerm bo‘lsa qo‘shiladi
+        ...(searchTerm ? { search: searchTerm } : {}),
       }),
   });
-
-  console.log(plansData, "plansData");
 
   const filteredDestinations = localDestinations.filter(
     (item) =>
@@ -90,20 +86,24 @@ const Main = () => {
   };
 
   const handleSearchClick = () => {
+    // if (selectedCountries.length > 0) {
+    //   const lastSelected = selectedCountries[selectedCountries.length - 1];
+    //   const selectedDestination = localDestinations.find(
+    //     (item) => item.country === lastSelected
+    //   );
+
+    // }
+    // if (selectedDestination?.id) {
+    //   router.push(`${APP_ROUTES.COUNTRY}`);
+    // }
     if (selectedCountries.length > 0) {
-      const lastSelected = selectedCountries[selectedCountries.length - 1];
-      const selectedDestination = localDestinations.find(
-        (item) => item.country === lastSelected
-      );
-      if (selectedDestination?.id) {
-        router.push(
-          `${APP_ROUTES.COUNTRY.replace(
-            ":id",
-            selectedDestination.id.toString()
-          )}`
-        );
-      }
+      const ids = selectedCountries.map((c: any) => c.id).join("-");
+
+      // [{id:1}, {id:2}] => "1,2"
+
+      router.push(`${APP_ROUTES.COUNTRY}/${ids}`);
     }
+    // router.push(`${APP_ROUTES.COUNTRY}/${1}`);
   };
 
   const [showPlaceholder, setShowPlaceholder] = useState(
@@ -142,7 +142,7 @@ const Main = () => {
                     key={country}
                     className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
                   >
-                    {country}
+                    {country?.name}
                     <X
                       size={14}
                       className="cursor-pointer"
@@ -187,7 +187,7 @@ const Main = () => {
                           ? "border-b"
                           : ""
                       }`}
-                      onClick={() => handleSelect(item.name)}
+                      onClick={() => handleSelect(item)}
                     >
                       <div className="flex items-center gap-2">
                         <div
@@ -229,11 +229,11 @@ const Main = () => {
             {/* 🔹 Default countries */}
             {!searchTerm && defaultCountries?.length > 0 && (
               <div className="flex gap-4 mt-8">
-                {defaultCountries.map((item) => (
+                {defaultCountries.map((item: any) => (
                   <div
                     key={item.country}
                     className="cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
-                    onClick={() => handleSelect(item.name)}
+                    onClick={() => handleSelect(item)}
                   >
                     <div className="flex items-center gap-4">
                       <div className="img_wrapper shrink-0">
