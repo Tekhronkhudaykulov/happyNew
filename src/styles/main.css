@@ -275,3 +275,26 @@
     margin-top: 12px;
   }
 }
+
+
+
+.keen-slider {
+  width: 100%;
+  max-width: 100%; /* search-container bo‘lsa shuni inherit qiladi */
+}
+
+/* Har bir slide — 2taga bo‘linadi */
+.keen-slider__slide {
+  display: flex;
+  align-items: center;
+  min-width: calc(50% - 8px); /* spacing=16 => yarmidan 8px */
+  max-width: calc(50% - 8px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .keen-slider__slide {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}

@@ -22,7 +22,7 @@ export default function ESimCard({
   onSelect,
 }: Card) {
   const t = useTranslations(""); // ✅ namespace "main"
-
+  console.log(flag, "flag");
   return (
     <div
       className={`rounded-xl p-3 sm:p-4 md:p-[14px] cursor-pointer  ${
@@ -40,7 +40,7 @@ export default function ESimCard({
         </div>
 
         <div>
-          <Button title={`${price} UZS`} bg="orange" />
+          <Button title={`${price}`} bg="orange" />
         </div>
       </div>
       <div className="flex items-center justify-between">

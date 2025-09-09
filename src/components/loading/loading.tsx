@@ -5,15 +5,19 @@ import "./loading.css";
 import { ASSETS } from "../../assets";
 import Image from "next/image";
 
-const Loading5755 = () => {
+const Loading5755 = ({ value }: { value?: number }) => {
   const [percentage, setPercentage] = useState(1);
 
   useEffect(() => {
+    if (typeof value === "number") {
+      setPercentage(Math.max(0, Math.min(100, Math.floor(value))));
+      return;
+    }
     const interval = setInterval(() => {
       setPercentage((prev) => (prev >= 100 ? 100 : prev + 1));
     }, 5);
     return () => clearInterval(interval);
-  }, []);
+  }, [value]);
 
   return (
     <div className="loading-container ">

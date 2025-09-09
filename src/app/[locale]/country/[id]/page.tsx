@@ -19,9 +19,11 @@ import { useTranslations } from "next-intl";
 import PhoneInput from "@/components/phoneInput";
 import { ASSETS } from "@/assets";
 import { buildQuery } from "@/utils/buildQuery";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
+import formatPrice from "@/utils/formatPrice";
+import { APP_ROUTES } from "@/router/path";
 
 async function fetchPlans(params: any) {
   const query = buildQuery(params);
@@ -36,6 +38,8 @@ const Country = () => {
 
   const id = params.id?.toString().split("-") || [];
 
+  console.log(id, "id");
+
   // const ids = params.ids?.toString().split("-") || [];
 
   const router = useRouter();
@@ -48,13 +52,31 @@ const Country = () => {
       }),
   });
 
-  console.log(plansData, "plansData");
+  const hasRegion = plansData?.data?.data?.some(
+    (item: any) => item.is_region === true
+  );
+
+  // 2. Qo‘shimcha so‘rov
+  const { data: regionPlans, isLoading: isRegionLoading } = useQuery({
+    queryKey: ["plans-region", id],
+    queryFn: () =>
+      fetchPlans({
+        region_ids: id,
+        is_region: 1,
+      }),
+    enabled: !!hasRegion, // ✅ faqat ichida is_region true bo‘lsa ishlaydi
+  });
+
+  console.log(regionPlans, "regionPlnas");
 
   // const countryId = id ? parseInt(id, 10) : null;
   // const country = localDestinations.find((item) => item.id === countryId);
   const data = getCOUNTRIESdata();
 
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
+
+  console.log(selectedPackage, " select");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phone, setPhone] = useState("+998");
   const [code, setCode] = useState("");
@@ -88,54 +110,47 @@ const Country = () => {
   const randomRegionalCountries = getRandomRegionalCountries();
 
   const handlePackageSelect = (index: number) => {
+    console.log(index);
+
     setSelectedPackage(index);
   };
 
-  // const handleBuyClick = () => {
-  //   if (isAuthenticated) {
-  //     if (selectedPackage !== null) {
-  //       const selectedItem = data[selectedPackage];
-  //       // ✅ Next.js da state yo‘q, query string orqali yuboramiz
-  //       const query = new URLSearchParams({
-  //         price: selectedItem.price,
-  //         gb: selectedItem.gb.toString(),
-  //         days: selectedItem.days.toString(),
-  //         flag: country.flag,
-  //         country: country.country,
-  //       }).toString();
+  const handleBuyClick = () => {
+    // if (isAuthenticated) {
+    //   if (selectedPackage !== null) {
+    //     router.push(`/confirm?${selectedPackage}`);
+    //   }
+    // } else {
+    //   setIsModalOpen(true);
+    // }
+    router.push(`${APP_ROUTES.CONFIRM_ORDER}/${selectedPackage}`);
+  };
 
-  //       router.push(`/confirm?${query}`);
-  //     }
-  //   } else {
-  //     setIsModalOpen(true);
-  //   }
-  // };
-
-  // const handleLogin = () => {
-  //   if (!isVerifyStep) {
-  //     setIsVerifyStep(true);
-  //   } else {
-  //     if (typeof window !== "undefined") {
-  //       localStorage.setItem("authToken", "1");
-  //     }
-  //     setIsAuthenticated(true);
-  //     setIsModalOpen(false);
-  //     setIsVerifyStep(false);
-  //     setPhone("+998");
-  //     setCode("");
-  //     if (selectedPackage !== null) {
-  //       const selectedItem = data[selectedPackage];
-  //       const query = new URLSearchParams({
-  //         price: selectedItem.price,
-  //         gb: selectedItem.gb.toString(),
-  //         days: selectedItem.days.toString(),
-  //         flag: country.flag,
-  //         country: country.country,
-  //       }).toString();
-  //       router.push(`/confirm?${query}`);
-  //     }
-  //   }
-  // };
+  const handleLogin = () => {
+    if (!isVerifyStep) {
+      setIsVerifyStep(true);
+    } else {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("authToken", "1");
+      }
+      setIsAuthenticated(true);
+      setIsModalOpen(false);
+      setIsVerifyStep(false);
+      setPhone("+998");
+      setCode("");
+      if (selectedPackage !== null) {
+        const selectedItem = data[selectedPackage];
+        const query = new URLSearchParams({
+          price: selectedItem.price,
+          gb: selectedItem.gb.toString(),
+          days: selectedItem.days.toString(),
+          flag: country.flag,
+          country: country.country,
+        }).toString();
+        router.push(`/confirm?${query}`);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -170,15 +185,23 @@ const Country = () => {
             <ESimCard
               key={idx}
               flag={ASSETS.turkey}
-              gb={item.gb}
-              days={item.days}
-              price={item.price}
-              isSelected={selectedPackage === idx}
-              onSelect={() => handlePackageSelect(idx)}
+              gb={item.quantity_internet}
+              days={item.expiry_day}
+              price={formatPrice(item.price_sell)}
+              onSelect={() => {
+                localStorage.setItem("obyekt", JSON.stringify(item));
+                setSelectedPackage(item?.id);
+              }}
+              isSelected={selectedPackage === item?.id}
             />
           ))}
         </div>
-
+        <div onClick={handleBuyClick}>
+          <Button
+            classname="mt-10 sm:mt-12   w-full"
+            title={isAuthenticated ? t("auth.buy") : t("country.auth")}
+          />
+        </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
           <ServiceCard
@@ -210,48 +233,42 @@ const Country = () => {
             />
           </div>
 
-          <div className="bg-[#F06F1E1F] pt-4 sm:pt-6 pr-4 sm:pr-6 pb-6 sm:pb-8 pl-4 sm:pl-5 flex flex-col gap-4 sm:gap-6 rounded-xl">
-            <h1 className="max-w-full sm:max-w-[300px] font-medium text-[#1C1C1C] text-base sm:text-xl">
-              {t("country.others")}
-            </h1>
+          {regionPlans?.data?.data.length > 0 && (
+            <div className="bg-[#F06F1E1F] pt-4 sm:pt-6 pr-4 sm:pr-6 pb-6 sm:pb-8 pl-4 sm:pl-5 flex flex-col gap-4 sm:gap-6 rounded-xl">
+              <h1 className="max-w-full sm:max-w-[300px] font-medium text-[#1C1C1C] text-base sm:text-xl">
+                {t("country.others")}
+              </h1>
 
-            <div className="flex flex-col gap-3 sm:gap-6">
-              {randomRegionalCountries.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
-                >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Image
-                      alt="flag"
-                      src={item.flag}
-                      width={32}
-                      height={32}
-                      className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
-                    />
-                    <div>
-                      <h4 className="text-sm sm:text-base text-black">
-                        Европа
-                      </h4>
-                      <p className="text-xs sm:text-sm text-black">Евразия</p>
+              <div className="flex flex-col gap-3 sm:gap-6">
+                {regionPlans?.data?.data.map((item: any, idx: any) => (
+                  <div
+                    key={idx}
+                    className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <Image
+                        alt="flag"
+                        src={item.flag}
+                        width={32}
+                        height={32}
+                        className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
+                      />
+                      <div>
+                        <h4 className="text-sm sm:text-base text-black">
+                          {item?.name}
+                        </h4>
+                        {/* <p className="text-xs sm:text-sm text-black">Евразия</p> */}
+                      </div>
                     </div>
+                    <ArrowRight className="text-[#1C1C1C] w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <ArrowRight className="text-[#1C1C1C] w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* BUY BUTTON */}
-        <div
-        // onClick={handleBuyClick}
-        >
-          <Button
-            classname="mt-10 sm:mt-12 md:mt-16 lg:mt-[150px] w-full"
-            title={isAuthenticated ? t("auth.buy") : t("country.auth")}
-          />
-        </div>
       </div>
 
       {/* MODAL */}
@@ -297,8 +314,9 @@ const Country = () => {
             )}
 
             <button
-              // onClick={handleLogin}
+              title={t("login.submit")}
               className="w-full mt-6 bg-[#F06F1E] text-white rounded-lg py-2 sm:py-3 hover:bg-[#8F4D26] cursor-pointer transition-colors text-base sm:text-lg"
+              onClick={handleLogin}
             >
               {t("auth.button")}
             </button>

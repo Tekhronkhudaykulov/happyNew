@@ -14,23 +14,48 @@ import { useTranslations } from "next-intl";
 import phone from "@/assets/phone.png";
 import smPhone from "@/assets/sm-phone.png";
 import { buildQuery } from "@/utils/buildQuery";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 import formatPrice from "@/utils/formatPrice";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 
-async function fetchPlans(params: Record<string, any>) {
-  // ruscha harflarni to‘g‘ri qilish uchun
-  const encodedParams = Object.fromEntries(
-    Object.entries(params).map(([key, value]) => [
-      key,
-      typeof value === "string" ? encodeURIComponent(value) : value,
-    ])
-  );
+function Autoplay(slider: any) {
+  let timeout: ReturnType<typeof setTimeout>;
+  let mouseOver = false;
 
-  const query = buildQuery(encodedParams);
-  const res = await fetch(`${API_URL}/${endpoints.plans}?${query}`);
-  if (!res.ok) throw new Error("Failed to fetch plans");
+  function clearNextTimeout() {
+    clearTimeout(timeout);
+  }
+  function nextTimeout() {
+    clearTimeout(timeout);
+    if (mouseOver) return;
+    timeout = setTimeout(() => {
+      slider.next();
+    }, 2000); // 2 soniyada bitta slayd o‘tsin
+  }
+
+  slider.on("created", () => {
+    slider.container.addEventListener("mouseover", () => {
+      mouseOver = true;
+      clearNextTimeout();
+    });
+    slider.container.addEventListener("mouseout", () => {
+      mouseOver = false;
+      nextTimeout();
+    });
+    nextTimeout();
+  });
+  slider.on("dragStarted", clearNextTimeout);
+  slider.on("animationEnded", nextTimeout);
+  slider.on("updated", nextTimeout);
+}
+
+async function fetchRegions(params: Record<string, any>) {
+  const query = buildQuery(params); // bu o‘zi avtomat encode qiladi
+  const res = await fetch(`${API_URL}/${endpoints.regions}?${query}`);
+  if (!res.ok) throw new Error("Failed to fetch regions");
   return res.json();
 }
 
@@ -38,7 +63,7 @@ const Main = () => {
   const t = useTranslations("main");
   const router = useRouter();
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<any>("");
 
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
 
@@ -46,11 +71,13 @@ const Main = () => {
     []
   );
 
-  const { data: plansData, isLoading } = useQuery({
-    queryKey: ["plans", searchTerm],
+  console.log(defaultCountries, "defaultCountries");
+
+  const { data: regionsData, isLoading } = useQuery({
+    queryKey: ["regions", searchTerm],
     queryFn: () =>
-      fetchPlans({
-        ...(searchTerm ? { search: searchTerm } : {}),
+      fetchRegions({
+        ...(searchTerm ? { name: searchTerm } : {}),
       }),
   });
 
@@ -71,8 +98,8 @@ const Main = () => {
     // } else {
     //   setDefaultCountries([]);
     // }
-    setDefaultCountries(plansData?.data?.data?.slice(0, 2));
-  }, [plansData]);
+    setDefaultCountries(regionsData?.data);
+  }, [regionsData]);
 
   const handleSelect = (country: string) => {
     if (!selectedCountries.includes(country)) {
@@ -118,12 +145,33 @@ const Main = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const [sliderRef] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      breakpoints: {
+        "(max-width: 768px)": {
+          slides: { perView: 1, spacing: 10 }, // mobil → 1ta
+        },
+      },
+      slides: { perView: 2, spacing: 16 }, // default → 2ta
+    },
+    [Autoplay]
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className="main relative bg-[#FFFFFF8F]">
       <Image className="main-map" src={ASSETS.bgmap} alt="" />
       <div className="main-container">
         <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
-          <Image className="main-download" src={ASSETS.download} alt="" />
+          <Image
+            className="main-download mt-[50px]"
+            src={ASSETS.download}
+            alt=""
+          />
           <Image className="main-esim" src={ASSETS.esim} alt="" />
           <div className="main-wrapper">
             <h1 className="main-title">{t("title")}</h1>
@@ -135,7 +183,7 @@ const Main = () => {
             </ul>
 
             {/* 🔹 Input va tanlanganlar */}
-            <div className="search-container">
+            <div className="search-container ">
               <div className="flex items-center pl-2 gap-2 flex-wrap">
                 {selectedCountries.map((country) => (
                   <span
@@ -158,7 +206,7 @@ const Main = () => {
                   }
                   className="md:min-w-[300px] text-[#FFFFFF54] min-w-[50px] border-none outline-none p-2 bg-transparent"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -174,8 +222,8 @@ const Main = () => {
             {/* 🔹 Dropdown */}
             {searchTerm && (
               <div className="absolute z-20 mt-2 w-full text-black max-w-[500px] bg-[#FFFFFF] rounded-lg">
-                {plansData?.data?.data?.length > 0 ? (
-                  plansData?.data?.data?.map((item: any, index: any) => (
+                {regionsData?.data?.length > 0 ? (
+                  regionsData?.data?.map((item: any, index: any) => (
                     <div
                       key={item.country}
                       className={`flex items-center justify-between px-4 py-4 cursor-pointer ${
@@ -202,7 +250,7 @@ const Main = () => {
                           )}
                         </div>
                         <Image
-                          src={ASSETS.turkey}
+                          src={`${API_IMAGE}/${item.img}`}
                           alt={item.country}
                           className="w-5 h-5"
                           width={20}
@@ -228,21 +276,24 @@ const Main = () => {
 
             {/* 🔹 Default countries */}
             {!searchTerm && defaultCountries?.length > 0 && (
-              <div className="flex gap-4 mt-8">
-                {defaultCountries.map((item: any) => (
+              <div ref={sliderRef} className="keen-slider mt-8">
+                {defaultCountries?.slice(0, 2).map((item: any) => (
                   <div
                     key={item.country}
-                    className="cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
-                    onClick={() => handleSelect(item)}
+                    className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                    onClick={() =>
+                      router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)
+                    }
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex w-full items-center gap-4">
                       <div className="img_wrapper shrink-0">
                         <Image
-                          src={ASSETS.turkey}
+                          src={`${API_IMAGE}/${item.img}`}
                           className="destination-flag"
                           alt={item.country}
                           width={40}
                           height={40}
+                          unoptimized
                         />
                       </div>
                       <div>

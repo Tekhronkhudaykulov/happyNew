@@ -7,7 +7,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
-    domains: ["admin.marca.uz"],
+    domains: ["crm.uztu.uz"],
     remotePatterns: [
       { protocol: "http", hostname: "localhost" },
       { protocol: "https", hostname: "admin.marca.uz" },

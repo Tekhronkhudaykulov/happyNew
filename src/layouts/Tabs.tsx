@@ -13,7 +13,7 @@ import { buildQuery } from "@/utils/buildQuery";
 const tabParams: Record<DestinationType, any> = {
   local: { is_local: 1 },
   regional: { is_region: 1 },
-  global: { popular: 1 },
+  global: { is_global: 1 },
 };
 
 async function fetchPlans(params: any) {

@@ -7,11 +7,11 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 type PackageCardProps = {
-  flag?: string | null;
+  flag?: string;
   country?: string;
   gb?: number;
   days: number;
-  price?: number;
+  price?: string | number;
   createdAt?: string;
   iccid?: string;
   balance?: number;
@@ -40,7 +40,7 @@ const PackageCard: FC<PackageCardProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3">
           <Image
-            src={flag}
+            src={flag ?? ""}
             alt={`${country} flag`}
             className="w-6 h-6 sm:w-8 sm:h-8 object-cover destination-flag"
           />
@@ -93,7 +93,7 @@ const PackageCard: FC<PackageCardProps> = ({
             {t("auth.price")}
           </h2>
           <h3 className="text-base sm:text-lg font-medium text-[#1C1C1C]">
-            {price} UZS
+            {price}
           </h3>
         </div>
       )}
