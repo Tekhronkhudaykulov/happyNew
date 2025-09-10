@@ -70,11 +70,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
       >
         {visibleData?.map((item, index) => (
           <div
-            onClick={() =>
-              router.push(
-                `${APP_ROUTES.COUNTRY.replace(":id", item.id.toString())}`
-              )
-            }
+            onClick={() => router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)}
             key={index}
             className="flex items-center gap-12 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
           >

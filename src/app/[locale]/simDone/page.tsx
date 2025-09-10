@@ -85,10 +85,10 @@ const SimReady = () => {
                     {t("ready.iphone")}
                   </h4>
                   <div className="mt-4 border border-white rounded-xl py-3 px-4 flex items-center justify-between">
-                    <p className="text-white text-sm sm:text-base font-medium">
+                    <p className="text-white mr-[5px] text-sm sm:text-base font-medium">
                       {t("ready.go")}
                     </p>
-                    <ArrowRight size={12} className="text-white" />
+                    <ArrowRight size={20} className="text-white" />
                   </div>
                 </div>
 

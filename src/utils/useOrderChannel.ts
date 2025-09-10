@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 export function useOrderChannel(
   orderId: number | null,
@@ -10,39 +11,36 @@ export function useOrderChannel(
   useEffect(() => {
     if (!orderId) return;
 
-    const ws = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_WS_HOST}:6001/app/local?protocol=7&client=js&version=7.0.0&flash=false`
-    );
+    // 🔗 socket ulanish
+    const socket = io("wss://crm.uztu.uz", {
+      path: "/socket.io",
+      transports: ["websocket"],
+    });
 
-    ws.onopen = () => {
+    socket.on("connect", () => {
       console.log("✅ WebSocket ochildi");
-      ws.send(
-        JSON.stringify({
-          event: "pusher:subscribe",
-          data: { channel: `order.${orderId}` },
-        })
-      );
-    };
 
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      console.log("📩 Yangi event:", msg);
+      // order kanaliga ulanish
+      socket.emit("subscribe", { channel: `order.${orderId}` });
+    });
 
-      if (msg.event === "status.updated") {
-        onStatus(msg.data);
-      }
+    // 🔔 eventlarni tinglash
+    socket.on("status.updated", (data) => {
+      console.log("📩 Status yangilandi:", data);
+      onStatus(data);
+    });
 
-      if (msg.event === "payment.updated") {
-        onPayment(msg.data);
-      }
-    };
+    socket.on("payment.updated", (data) => {
+      console.log("📩 Payment yangilandi:", data);
+      onPayment(data);
+    });
 
-    ws.onerror = (err) => {
+    socket.on("connect_error", (err) => {
       console.error("❌ WebSocket xato:", err);
-    };
+    });
 
     return () => {
-      ws.close();
+      socket.disconnect();
     };
   }, [orderId, onStatus, onPayment]);
 }

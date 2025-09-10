@@ -1,14 +1,14 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { tabConfig } from "@/data/TabData";
+// import { tabConfig } from "@/data/TabData";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft, Info, ArrowRight, X } from "lucide-react";
 import { getCOUNTRIESdata } from "@/data/CountriesData";
 import ESimCard from "@/components/countryCard";
 import ServiceCard from "@/components/serviceCard";
-import type { RegionalOrGlobalDestination } from "@/components/destinationCard";
+// import type { RegionalOrGlobalDestination } from "@/components/destinationCard";
 import Button from "@/components/button";
 import { useEffect, useState } from "react";
 import InfoItem from "@/components/infoitem";
@@ -19,7 +19,7 @@ import { useTranslations } from "next-intl";
 import PhoneInput from "@/components/phoneInput";
 import { ASSETS } from "@/assets";
 import { buildQuery } from "@/utils/buildQuery";
-import { API_IMAGE, API_URL } from "@/config";
+import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 import formatPrice from "@/utils/formatPrice";
@@ -44,7 +44,7 @@ const Country = () => {
 
   const router = useRouter();
 
-  const { data: plansData, isLoading } = useQuery({
+  const { data: plansData } = useQuery({
     queryKey: ["plans", id],
     queryFn: () =>
       fetchPlans({
@@ -57,7 +57,7 @@ const Country = () => {
   );
 
   // 2. Qo‘shimcha so‘rov
-  const { data: regionPlans, isLoading: isRegionLoading } = useQuery({
+  const { data: regionPlans } = useQuery({
     queryKey: ["plans-region", id],
     queryFn: () =>
       fetchPlans({
@@ -101,13 +101,13 @@ const Country = () => {
   //   );
   // }
 
-  const getRandomRegionalCountries = () => {
-    const regionalData = tabConfig.global.data as RegionalOrGlobalDestination[];
-    const shuffled = [...regionalData].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
-  };
+  // const getRandomRegionalCountries = () => {
+  //   const regionalData = tabConfig.global.data as RegionalOrGlobalDestination[];
+  //   const shuffled = [...regionalData].sort(() => 0.5 - Math.random());
+  //   return shuffled.slice(0, 3);
+  // };
 
-  const randomRegionalCountries = getRandomRegionalCountries();
+  // const randomRegionalCountries = getRandomRegionalCountries();
 
   const handlePackageSelect = (index: number) => {
     console.log(index);
@@ -163,6 +163,7 @@ const Country = () => {
             <button
               onClick={() => router.back()}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+              title={t("auth.back")}
             >
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
             </button>
@@ -197,10 +198,7 @@ const Country = () => {
           ))}
         </div>
         <div onClick={handleBuyClick}>
-          <Button
-            classname="mt-10 sm:mt-12   w-full"
-            title={isAuthenticated ? t("auth.buy") : t("country.auth")}
-          />
+          <Button classname="mt-10 sm:mt-12   w-full" title={t("auth.buy")} />
         </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
@@ -282,6 +280,7 @@ const Country = () => {
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+                title={t("auth.close")}
               >
                 <X size={16} className="text-[#1C1C1C57] sm:size-5" />
               </button>
@@ -291,12 +290,7 @@ const Country = () => {
               <p className="text-base sm:text-lg font-normal mb-2 text-black">
                 {t("auth.phone")}
               </p>
-              <PhoneInput
-                mask="+9\9\8 99 999 99 99"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full bg-[#CFCFCF1F] px-4 py-2 text-[#1C1C1C] rounded-lg focus:outline-none text-base sm:text-lg"
-              />
+              <PhoneInput />
             </div>
 
             {isVerifyStep && (
@@ -304,12 +298,7 @@ const Country = () => {
                 <p className="text-base sm:text-lg font-normal mb-2 text-black">
                   {t("auth.code")}
                 </p>
-                <PhoneInput
-                  mask="9 9 9 9 9"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="w-full bg-[#CFCFCF1F] px-4 py-2 text-[#1C1C1C] rounded-lg focus:outline-none text-base sm:text-lg"
-                />
+                <PhoneInput />
               </div>
             )}
 

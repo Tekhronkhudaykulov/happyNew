@@ -12,8 +12,16 @@ import formatPrice from "@/utils/formatPrice";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
-import { useOrderChannel } from "@/utils/useOrderChannel"; // ✅ faqat hook ishlatamiz
-import { Loading5755 } from "@/components/loading/loading";
+import {
+  Loading5755,
+  LoadingWaiting,
+  PaymentError,
+  PaymentSuccess,
+} from "@/components/loading/loading";
+import SuccessAnimation from "@/components/status/Success";
+import { socket } from "@/socket/socketClient";
+import { useOrderSocket } from "@/socket/useSocketEvents";
+import OrderInfoModal from "@/components/orderInfoModal";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -29,38 +37,30 @@ const ConfirmPage = () => {
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [object, setObject] = useState<any>(null);
 
-  const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
-  const [orderStatus, setOrderStatus] = useState<number | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState<
-    "pending" | "succeeded" | "failed" | "cancelled" | null
-  >(null);
-
-  const isProcessing =
-    !!createdOrderId && (orderStatus !== 3 || paymentStatus !== "succeeded");
-
-  const [progress, setProgress] = useState<number>(0);
   const [phone, setPhone] = useState<string>();
   const [fio, setFio] = useState<string>();
 
-  // 📌 LocalStorage obyektni olish
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const [orderData, setOrderData] = useState<any>(null);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem("obyekt");
     setObject(saved ? JSON.parse(saved) : null);
   }, []);
 
-  // 📌 File upload
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) setFileName(file.name);
   };
 
-  // 📌 Payment usullarini olish
   const { data: paymentData } = useQuery({
     queryKey: ["payment"],
     queryFn: fetchPayments,
   });
 
-  // 📌 Order yaratish mutation
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: any) => {
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
@@ -72,62 +72,15 @@ const ConfirmPage = () => {
       return res.json();
     },
     onSuccess: (res) => {
-      console.log("✅ Payment success:", res);
       const orderId = res?.order_id ?? res?.data?.order_id;
-
       if (orderId) {
-        setCreatedOrderId(Number(orderId));
-        setPaymentStatus("pending");
-        setProgress(10);
+        socket?.emit("join_order", String(orderId));
       }
     },
     onError: (err) => {
       console.error("❌ Payment error:", err);
     },
   });
-
-  // 📌 WebSocket ulanish
-  useOrderChannel(
-    createdOrderId,
-    (statusData) => {
-      setOrderStatus(statusData.status);
-      if (statusData.status === 1) setProgress(30);
-      if (statusData.status === 2) setProgress(60);
-      if (statusData.status === 3) setProgress(80);
-    },
-    (paymentData) => {
-      setPaymentStatus(paymentData.payment_status);
-      if (paymentData.payment_status === "succeeded") setProgress(100);
-      if (paymentData.payment_status === "failed") setProgress(0);
-    }
-  );
-
-  // 📌 Agar order tugasa → boshqa sahifaga o‘tish
-  useEffect(() => {
-    if (orderStatus === 3 && paymentStatus === "succeeded") {
-      router.push("/simDone");
-    }
-  }, [orderStatus, paymentStatus, router]);
-
-  // 📌 Progressni smooth oshirish
-  useEffect(() => {
-    if (!isProcessing) return;
-    const interval = setInterval(() => {
-      setProgress((p) => (p < 95 ? p + 1 : p));
-    }, 150);
-    return () => clearInterval(interval);
-  }, [isProcessing]);
-
-  // 📌 Body scroll bloklash
-  useEffect(() => {
-    if (isProcessing) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
-  }, [isProcessing]);
 
   // 📌 Paymentni boshlash
   const handlePayment = () => {
@@ -144,11 +97,56 @@ const ConfirmPage = () => {
     });
   };
 
+  useOrderSocket({
+    onOrderData: (data) => {
+      if (data) {
+        setShowOrderModal(true);
+      }
+    },
+    onOrderUpdated: (data) => {
+      if (data?.status_name === "Активный") {
+        setShowSuccessModal(true);
+
+        setTimeout(() => {
+          router.push("/simDone");
+        }, 5000);
+      }
+      if (data?.status_name === "Отменен") {
+        setShowSuccessModal(false);
+        setShowCancelModal(true);
+
+        setTimeout(() => {
+          setShowCancelModal(false);
+        }, 3000);
+      }
+    },
+    onConnect: (id) => console.log("Ulandi:", id),
+    onDisconnect: (reason) => console.log("Uzildi:", reason),
+  });
+
   return (
     <>
-      {isProcessing && (
+      {isPending && (
         <div className="loading-overlay">
-          <Loading5755 value={progress} />
+          <Loading5755 />
+        </div>
+      )}
+
+      {showOrderModal && (
+        <div className="loading-overlay">
+          <LoadingWaiting />
+        </div>
+      )}
+
+      {showSuccessModal && (
+        <div className="loading-overlay">
+          <PaymentSuccess />
+        </div>
+      )}
+
+      {showCancelModal && (
+        <div className="loading-overlay">
+          <PaymentError />
         </div>
       )}
 
@@ -164,49 +162,48 @@ const ConfirmPage = () => {
             >
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
             </button>
-            <h1 className="font-semibold text-black text-xl sm:text-2xl lg:text-[35px] leading-tight tracking-[-0.06em]">
+            <h1 className="font-semibold text-black text-xl sm:text-2xl lg:text-[35px]">
               {t("auth.confirm")}
             </h1>
           </div>
 
           <div className="flex flex-col md:flex-row items-stretch gap-[13px]">
             {/* Form */}
-            <div className="bg-[#1C1C1C0D] w-full rounded-[12px] pt-[27px] pr-[13px] sm:pr-[28px] pb-[45px] pl-[13px] sm:pl-[23px] flex flex-col items-stretch gap-8">
+            <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-6 flex flex-col gap-8">
               {/* Inputs */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-[13px] sm:gap-[25px]">
+              <div className="flex flex-col sm:flex-row gap-[20px]">
                 <div className="w-full">
-                  <p className="text-[14px] sm:text-[16px] mb-2 text-[#595959]">
+                  <p className="text-sm mb-2 text-[#595959]">
                     {t("auth.name")}
                   </p>
                   <input
                     type="text"
                     placeholder="Ivan"
-                    className="w-full bg-white pl-4 pr-8 py-2 text-black rounded-lg focus:outline-none text-base sm:text-lg"
+                    className="w-full bg-white p-2 text-black rounded-lg"
                     onChange={(e) => setFio(e.target.value)}
                   />
                 </div>
 
                 <div className="w-full">
-                  <p className="text-[14px] sm:text-[16px] mb-2 text-[#595959]">
+                  <p className="text-sm mb-2 text-[#595959]">
                     {t("auth.phone")}
                   </p>
                   <input
                     type="text"
                     placeholder="+998 99 999 99 99"
-                    className="w-full bg-white pl-4 pr-8 py-2 text-black rounded-lg focus:outline-none text-base sm:text-lg"
+                    className="w-full bg-white p-2 text-black rounded-lg"
                     onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
 
                 <div className="w-full">
-                  <p className="text-[14px] sm:text-[16px] mb-2 text-[#595959]">
+                  <p className="text-sm mb-2 text-[#595959]">
                     {t("auth.passport")}
                   </p>
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder={t("auth.placeholder_passport")}
-                      className="w-full bg-white pl-4 pr-8 py-2 text-[#F06F1E] rounded-lg focus:outline-none text-base sm:text-lg"
+                      className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
                       value={fileName || "Загрузить"}
                       readOnly
                     />
@@ -221,10 +218,8 @@ const ConfirmPage = () => {
 
               {/* Payment methods */}
               <div>
-                <p className="text-[14px] sm:text-[16px] mb-2 text-[#595959]">
-                  {t("auth.pay")}
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-[20px]">
+                <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3">
                   {paymentData?.data?.map((method: any) =>
                     ["click", "payme", "visa", "octo_uzs"].includes(
                       method?.key
@@ -264,7 +259,7 @@ const ConfirmPage = () => {
             <button
               disabled={isPending}
               onClick={handlePayment}
-              className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2 hover:bg-[#8F4D26] transition-colors text-base sm:text-lg disabled:bg-gray-400"
+              className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2"
             >
               {isPending ? "Loading..." : t("auth.pay")}
             </button>
