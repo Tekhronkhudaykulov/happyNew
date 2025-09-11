@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = "ws://crm.uztu.uz";
+const SOCKET_URL = "wss://crm.uztu.uz";
 
 export const socket: Socket = io(SOCKET_URL, {
   transports: ["websocket", "polling"],
