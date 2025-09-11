@@ -28,7 +28,7 @@ const Tabs: React.FC = () => {
 
   const t = useTranslations("");
 
-  const { data: plansData, isLoading } = useQuery({
+  const { data: plansData } = useQuery({
     queryKey: ["plans", activeTab],
     queryFn: () => fetchPlans(tabParams[activeTab]),
   });

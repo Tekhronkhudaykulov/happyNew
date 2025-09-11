@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft, Info, ArrowRight, X } from "lucide-react";
-import { getCOUNTRIESdata } from "@/data/CountriesData";
 import ESimCard from "@/components/countryCard";
 import ServiceCard from "@/components/serviceCard";
 // import type { RegionalOrGlobalDestination } from "@/components/destinationCard";
@@ -71,7 +70,7 @@ const Country = () => {
 
   // const countryId = id ? parseInt(id, 10) : null;
   // const country = localDestinations.find((item) => item.id === countryId);
-  const data = getCOUNTRIESdata();
+  // const data = getCOUNTRIESdata();
 
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
 
@@ -79,9 +78,15 @@ const Country = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phone, setPhone] = useState("+998");
+
   const [code, setCode] = useState("");
+
+
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  console.log(phone, code, setPhone, setCode, setIsVerifyStep, isAuthenticated);
+  
 
   // ✅ localStorage ni client da tekshiramiz
   useEffect(() => {
@@ -109,11 +114,11 @@ const Country = () => {
 
   // const randomRegionalCountries = getRandomRegionalCountries();
 
-  const handlePackageSelect = (index: number) => {
-    console.log(index);
+  // const handlePackageSelect = (index: number) => {
+  //   console.log(index);
 
-    setSelectedPackage(index);
-  };
+  //   setSelectedPackage(index);
+  // };
 
   const handleBuyClick = () => {
     // if (isAuthenticated) {
@@ -126,31 +131,31 @@ const Country = () => {
     router.push(`${APP_ROUTES.CONFIRM_ORDER}/${selectedPackage}`);
   };
 
-  const handleLogin = () => {
-    if (!isVerifyStep) {
-      setIsVerifyStep(true);
-    } else {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", "1");
-      }
-      setIsAuthenticated(true);
-      setIsModalOpen(false);
-      setIsVerifyStep(false);
-      setPhone("+998");
-      setCode("");
-      if (selectedPackage !== null) {
-        const selectedItem = data[selectedPackage];
-        const query = new URLSearchParams({
-          price: selectedItem.price,
-          gb: selectedItem.gb.toString(),
-          days: selectedItem.days.toString(),
-          flag: country.flag,
-          country: country.country,
-        }).toString();
-        router.push(`/confirm?${query}`);
-      }
-    }
-  };
+  // const handleLogin = () => {
+  //   if (!isVerifyStep) {
+  //     setIsVerifyStep(true);
+  //   } else {
+  //     if (typeof window !== "undefined") {
+  //       localStorage.setItem("authToken", "1");
+  //     }
+  //     setIsAuthenticated(true);
+  //     setIsModalOpen(false);
+  //     setIsVerifyStep(false);
+  //     setPhone("+998");
+  //     setCode("");
+  //     if (selectedPackage !== null) {
+  //       const selectedItem = data[selectedPackage];
+  //       const query = new URLSearchParams({
+  //         price: selectedItem.price,
+  //         gb: selectedItem.gb.toString(),
+  //         days: selectedItem.days.toString(),
+  //         flag: country.flag,
+  //         country: country.country,
+  //       }).toString();
+  //       router.push(`/confirm?${query}`);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -309,7 +314,7 @@ const Country = () => {
             <button
               title={t("login.submit")}
               className="w-full mt-6 bg-[#F06F1E] text-white rounded-lg py-2 sm:py-3 hover:bg-[#8F4D26] cursor-pointer transition-colors text-base sm:text-lg"
-              onClick={handleLogin}
+              // onClick={handleLogin}
             >
               {t("auth.button")}
             </button>

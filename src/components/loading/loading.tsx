@@ -89,7 +89,7 @@ const LoadingWaiting = () => {
 
         {/* Text with animated dots */}
         <div className="text-xl font-medium text-white flex items-center">
-          Оплата в ожидание
+        Ожидается оплата
           <span className="ml-2 flex w-6 justify-start">
             <span className="dot">.</span>
             <span className="dot">.</span>
