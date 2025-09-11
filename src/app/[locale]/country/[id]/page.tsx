@@ -81,12 +81,10 @@ const Country = () => {
 
   const [code, setCode] = useState("");
 
-
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   console.log(phone, code, setPhone, setCode, setIsVerifyStep, isAuthenticated);
-  
 
   // ✅ localStorage ni client da tekshiramiz
   useEffect(() => {
@@ -157,6 +155,9 @@ const Country = () => {
   //   }
   // };
 
+  const selectedObject = localStorage.getItem("selectedObject");
+  const object = JSON.parse(selectedObject);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -173,7 +174,7 @@ const Country = () => {
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
             </button>
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold">
-              {/* {country.country} */}
+              {object?.name}
             </h1>
           </div>
 
@@ -186,7 +187,11 @@ const Country = () => {
         </div>
 
         {/* SIM CARDS */}
-        <div className={`${plansData?.data?.data?.length == 0 && "!grid !grid-cols-1"} grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}>
+        <div
+          className={`${
+            plansData?.data?.data?.length == 0 && "!grid !grid-cols-1"
+          } grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}
+        >
           {plansData?.data?.data?.length > 0 ? (
             plansData?.data?.data?.map((item: any, idx: any) => (
               <ESimCard
@@ -202,9 +207,9 @@ const Country = () => {
                 isSelected={selectedPackage === item?.id}
               />
             ))
-          ): (
+          ) : (
             <p className="text-black text-center">Hech nima topilmadi !</p>
-          ) }
+          )}
         </div>
         <div onClick={handleBuyClick}>
           <Button classname="mt-10 sm:mt-12   w-full" title={t("auth.buy")} />

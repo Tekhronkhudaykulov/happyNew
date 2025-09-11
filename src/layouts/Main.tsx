@@ -69,6 +69,8 @@ const Main = () => {
     []
   );
 
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
   console.log(defaultCountries, "defaultCountries");
 
   const { data: regionsData } = useQuery({
@@ -110,6 +112,8 @@ const Main = () => {
     setSelectedCountries(selectedCountries.filter((c) => c !== country));
   };
 
+  console.log(selectedCountries, "selected");
+
   const handleSearchClick = () => {
     // if (selectedCountries.length > 0) {
     //   const lastSelected = selectedCountries[selectedCountries.length - 1];
@@ -125,7 +129,6 @@ const Main = () => {
       const ids = selectedCountries.map((c: any) => c.id).join("-");
 
       // [{id:1}, {id:2}] => "1,2"
-
       router.push(`${APP_ROUTES.COUNTRY}/${ids}`);
     }
     // router.push(`${APP_ROUTES.COUNTRY}/${1}`);
@@ -146,7 +149,7 @@ const Main = () => {
   const [sliderRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
-      slides: { perView: 2, spacing: 16 }, 
+      slides: { perView: 2, spacing: 16 },
     },
     [Autoplay]
   );
@@ -200,6 +203,7 @@ const Main = () => {
                   className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
                   value={searchTerm}
                   onChange={handleChange}
+                  onFocus={() => setIsInputFocused(true)}
                 />
               </div>
 
@@ -213,127 +217,67 @@ const Main = () => {
             </div>
 
             {/* 🔹 Dropdown */}
-            {searchTerm &&
-              (defaultCountries?.length > 1 ? (
-                <div className="pb-[100px]">
-                  <div className="absolute z-20 mt-2 max-w-[90%] w-full text-black md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4">
-                    {regionsData?.data?.length > 0 ? (
-                      regionsData?.data?.map((item: any, index: any) => (
+            {(searchTerm || isInputFocused) && ( // 👈 input bosilganda ham ochiladi
+              <div className="pb-[100px]">
+                <div
+                  className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
+             md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+             max-h-[400px] overflow-y-auto"
+                >
+                  {regionsData?.data?.length > 0 ? (
+                    regionsData?.data
+                      .filter((item: any) =>
+                        item.name
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase())
+                      )
+                      .map((item: any, index: number) => (
                         <div
-                          key={item.country}
-                          className={`flex items-center justify-between px-4 py-4 cursor-pointer  ${
-                            selectedCountries.includes(item.name)
-                              ? "bg-orange-50 text-orange-600"
-                              : ""
-                          } ${
-                            index !== filteredDestinations.length - 1
-                              ? "border-b"
-                              : ""
-                          }`}
+                          key={item.id}
+                          className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
                           onClick={() => handleSelect(item)}
                         >
                           <div className="flex items-center gap-2">
-                            <div
-                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                                selectedCountries.includes(item.name)
-                                  ? "border-orange-600"
-                                  : "border-gray-400"
-                              }`}
-                            >
-                              {selectedCountries.includes(item.name) && (
-                                <div className="w-2 h-2 rounded-full bg-orange-600" />
-                              )}
-                            </div>
                             <Image
                               src={`${API_IMAGE}/${item.img}`}
-                              alt={item.country}
-                              className="w-5 h-5"
+                              alt={item.name}
                               width={20}
                               height={20}
+                              className="w-5 h-5"
                             />
                             <span className="text-sm truncate max-w-[120px]">
                               {item.name}
                             </span>
                           </div>
-                          <span className="text-xs text-gray-500">
-                            {formatPrice(item?.price_sell)}
-                          </span>
                           <ArrowRight className="text-[#1C1C1C]" />
                         </div>
                       ))
-                    ) : (
-                      <p className="text-gray-500 text-sm px-3 py-2 max-w-[50%]">
-                        {t("no_results")}
-                      </p>
-                    )}
-                  </div>
+                  ) : (
+                    <p className="text-gray-500 text-sm px-3 py-2">
+                      {t("no_results")}
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <div className="pb-[50px]">
-                  <div className="absolute z-20 mt-2 max-w-[90%] w-full text-black md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4">
-                    {regionsData?.data?.length > 0 ? (
-                      regionsData?.data?.map((item: any, index: any) => (
-                        <div
-                          key={item.country}
-                          className={`flex items-center justify-between px-4 py-4 cursor-pointer ${
-                            selectedCountries.includes(item.name)
-                              ? "bg-orange-50 text-orange-600"
-                              : "hover:bg-gray-100"
-                          } ${
-                            index !== filteredDestinations.length - 1
-                              ? "border-b"
-                              : ""
-                          }`}
-                          onClick={() => handleSelect(item)}
-                        >
-                          <div className="flex items-center gap-2">
-                            <div
-                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                                selectedCountries.includes(item.name)
-                                  ? "border-orange-600"
-                                  : "border-gray-400"
-                              }`}
-                            >
-                              {selectedCountries.includes(item.name) && (
-                                <div className="w-2 h-2 rounded-full bg-orange-600" />
-                              )}
-                            </div>
-                            <Image
-                              src={`${API_IMAGE}/${item.img}`}
-                              alt={item.country}
-                              className="w-5 h-5"
-                              width={20}
-                              height={20}
-                            />
-                            <span className="text-sm truncate max-w-[120px]">
-                              {item.name}
-                            </span>
-                          </div>
-                          <span className="text-xs text-gray-500">
-                            {formatPrice(item?.price_sell)}
-                          </span>
-                          <ArrowRight className="text-[#1C1C1C]" />
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 text-sm px-3 py-2 max-w-[50%]">
-                        {t("no_results")}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
+              </div>
+            )}
 
             {/* 🔹 Default countries */}
             {!searchTerm && defaultCountries?.length > 0 && (
-              <div ref={sliderRef} className="keen-slider mt-8 !w-[650px] grid grid-cols-2 overflow-hidden">
+              <div
+                ref={sliderRef}
+                className="keen-slider mt-8 !w-[650px] grid grid-cols-2 overflow-hidden"
+              >
                 {defaultCountries?.map((item: any) => (
                   <div
                     key={item.country}
                     className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px] "
-                    onClick={() =>
-                      router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)
-                    }
+                    onClick={() => {
+                      localStorage.setItem(
+                        "selectedObject",
+                        JSON.stringify(item)
+                      );
+                      router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
+                    }}
                   >
                     <div className="flex w-full items-center gap-4">
                       <div className="img_wrapper shrink-0">
