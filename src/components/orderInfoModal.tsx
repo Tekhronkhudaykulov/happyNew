@@ -254,10 +254,10 @@ const OrderInfoModal: React.FC<OrderInfoModalProps> = ({
             {/* Enhanced progress line */}
             <div className="absolute left-10 top-16 bottom-16 w-1 bg-gradient-to-b from-indigo-300 via-purple-300 via-pink-300 to-rose-300 rounded-full shadow-sm"></div>
 
-            {steps.map((step, index) => {
+            {steps.map((step) => {
               const isCompleted = step.status === "completed";
               const isCurrent = step.status === "current";
-              const isPending = step.status === "pending";
+           
 
               return (
                 <div

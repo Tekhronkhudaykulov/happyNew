@@ -1,3 +1,5 @@
+import { XCircle } from "lucide-react";
+
 const ErrorMessage = () => (
   <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
     <div className="flex items-center">

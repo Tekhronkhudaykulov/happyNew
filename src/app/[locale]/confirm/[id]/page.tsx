@@ -18,10 +18,8 @@ import {
   PaymentError,
   PaymentSuccess,
 } from "@/components/loading/loading";
-import SuccessAnimation from "@/components/status/Success";
 import { socket } from "@/socket/socketClient";
 import { useOrderSocket } from "@/socket/useSocketEvents";
-import OrderInfoModal from "@/components/orderInfoModal";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -40,8 +38,6 @@ const ConfirmPage = () => {
   const [phone, setPhone] = useState<string>();
   const [fio, setFio] = useState<string>();
 
-  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
-  const [orderData, setOrderData] = useState<any>(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);

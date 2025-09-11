@@ -8,11 +8,9 @@ import "../styles/main.css";
 import { useEffect, useState } from "react";
 import { APP_ROUTES } from "../router/path";
 import type { LocalDestination } from "../components/destinationCard";
-import Button from "../components/button";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import phone from "@/assets/phone.png";
-import smPhone from "@/assets/sm-phone.png";
 import { buildQuery } from "@/utils/buildQuery";
 import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
@@ -73,7 +71,7 @@ const Main = () => {
 
   console.log(defaultCountries, "defaultCountries");
 
-  const { data: regionsData, isLoading } = useQuery({
+  const { data: regionsData } = useQuery({
     queryKey: ["regions", searchTerm],
     queryFn: () =>
       fetchRegions({
