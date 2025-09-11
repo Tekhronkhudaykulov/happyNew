@@ -32,10 +32,10 @@ const SimReady = () => {
           </h1>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row gap-[11px]">
           {/* Chap blok */}
-          <div className="w-full lg:w-2/3 space-y-6">
-            <div className="bg-[#272727] p-6 sm:p-8 rounded-xl">
+          <div className="w-full lg:w-2/3">
+            <div className="bg-[#272727] px-6 sm:px-8 sm:pt-[20px] pt-[10px] sm:pb-[32px] pb-[20px] mb-[8px] rounded-xl">
               <h3 className="text-white font-medium text-lg sm:text-xl lg:text-2xl">
                 {t("ready.instruction")}
               </h3>
@@ -58,7 +58,7 @@ const SimReady = () => {
                   hasBorder={false}
                 />
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-6 gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-[50px] gap-4">
                   <h4 className="text-white text-base sm:text-lg font-normal">
                     {t("ready.isvalid")} 17.11.2025 19:19
                   </h4>
@@ -112,8 +112,8 @@ const SimReady = () => {
           </div>
 
           {/* O‘ng blok */}
-          <div className="w-full lg:w-1/3 space-y-6">
-            <div className="bg-[#1C1C1C0D] p-6 sm:p-8 rounded-xl">
+          <div className="w-full lg:w-1/3 flex flex-col gap-[8px]">
+            <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[18px] pt-[8px] pb-[20px] rounded-xl">
               <h3 className="text-[#1C1C1C] font-medium text-lg sm:text-xl lg:text-2xl">
                 {t("ready.order")}#162
               </h3>
@@ -176,7 +176,7 @@ const SimReady = () => {
               classname="w-full"
             />
 
-            <div className="bg-[#1C1C1C0D] p-6 sm:p-8 rounded-xl">
+            <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[16px] pt-[8px] pb-[20px] rounded-xl">
               <h3 className="text-[#1C1C1C] font-medium text-lg sm:text-xl lg:text-2xl">
                 {t("ready.dispethcer")}
               </h3>
@@ -194,7 +194,7 @@ const SimReady = () => {
                   </a>
                 </div>
 
-                <div className="flex items-center justify-between py-3 border-b border-[#E4E4E4]">
+                <div className="flex items-center justify-between">
                   <p className="text-[#595959] text-sm sm:text-base font-normal truncate">
                     {t("ready.bot")}
                   </p>

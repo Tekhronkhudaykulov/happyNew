@@ -47,12 +47,12 @@ const Tabs: React.FC = () => {
             {t("destination.title")}
           </h1>
 
-          <div className="flex gap-1 md:gap-3 p-1 bg-[#1C1C1C0D] rounded-full w-full md:w-auto">
+          <div className="flex gap-[0] md:gap-3 bg-[#1C1C1C0D] rounded-full w-full md:w-auto">
             {Object.entries(tabConfig).map(([key, tab]) => (
               <button
                 key={key}
                 onClick={() => handleTabClick(key as DestinationType)}
-                className={`flex-1 md:flex-initial px-2 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base transition-colors duration-150 ${
+                className={`flex-1 md:flex-initial px-2 py-1 md:px-4 md:py-2 rounded-full text-[14px] md:text-base transition-colors duration-150 ${
                   activeTab === key
                     ? "bg-[#ff7a00] text-white"
                     : "bg-transparent text-[#1C1C1C]"

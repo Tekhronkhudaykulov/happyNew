@@ -23,7 +23,7 @@ const FAQs = () => {
     <div className="my-[50px]">
       <div className="container">
         <div className="lg:flex block items-start lg:justify-between">
-          <div className="flex flex-col gap-[30px] md:justify-normal justify-center items-center md:items-start">
+          <div className="flex flex-col gap-[30px] md:justify-normal justify-center">
             <h1 className="text-[#1C1C1C] lg:text-[40px]/[35px] md:text-[32px]/[32px] text-[28px]/[28px] font-medium">
               {t("faq.title")}
             </h1>
@@ -33,7 +33,7 @@ const FAQs = () => {
             </p>
           </div>
 
-          <div className="flex flex-col gap-[8px] lg:mt-0 mt-[25px] md:mt-[15px] md:justify-normal justify-center items-center md:items-start">
+          <div className="flex flex-col gap-[8px] lg:mt-0 mt-[25px] md:mt-[15px] md:justify-normal justify-center">
             {data?.data?.map((item, idx) => (
               <FAQ key={idx} title={item.question} question={item.answer} />
             ))}

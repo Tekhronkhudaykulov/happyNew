@@ -51,7 +51,7 @@ const InfoItem = ({
       <h2 className="font-normal text-base sm:text-lg text-[#FFFFFF] w-full md:w-40">
         {t(titleKey)}
       </h2>
-      <p className="max-w-full sm:max-w-[485px] text-[#B9B9B9] text-sm sm:text-base font-normal">
+      <p className="max-w-full sm:max-w-[485px] text-[#B9B9B9] text-sm sm:text-[16px]/[18px] font-normal">
         {renderContent()}
       </p>
     </div>

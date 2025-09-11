@@ -57,7 +57,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-3 w-40 bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden z-50"
+                  className="absolute right-0 mt-3 w-full bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden z-50"
                 >
                   {languages
                     .filter((lang) => lang.code !== currentLang.code)

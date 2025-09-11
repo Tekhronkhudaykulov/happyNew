@@ -184,7 +184,7 @@ const Main = () => {
 
             {/* 🔹 Input va tanlanganlar */}
             <div className="search-container ">
-              <div className="flex items-center pl-2 gap-2 flex-wrap">
+              <div className="flex items-center pl-2 gap-2  w-full">
                 {selectedCountries.map((country) => (
                   <span
                     key={country}
@@ -204,7 +204,7 @@ const Main = () => {
                   placeholder={
                     showPlaceholder ? t("placeholder") : t("placeholder-sm")
                   }
-                  className="md:min-w-[300px] text-[#FFFFFF54] min-w-[50px] border-none outline-none p-2 bg-transparent"
+                  className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
                   value={searchTerm}
                   onChange={handleChange}
                 />
@@ -220,59 +220,116 @@ const Main = () => {
             </div>
 
             {/* 🔹 Dropdown */}
-            {searchTerm && (
-              <div className="absolute z-20 mt-2 w-full text-black max-w-[500px] bg-[#FFFFFF] rounded-lg">
-                {regionsData?.data?.length > 0 ? (
-                  regionsData?.data?.map((item: any, index: any) => (
-                    <div
-                      key={item.country}
-                      className={`flex items-center justify-between px-4 py-4 cursor-pointer ${
-                        selectedCountries.includes(item.name)
-                          ? "bg-orange-50 text-orange-600"
-                          : "hover:bg-gray-100"
-                      } ${
-                        index !== filteredDestinations.length - 1
-                          ? "border-b"
-                          : ""
-                      }`}
-                      onClick={() => handleSelect(item)}
-                    >
-                      <div className="flex items-center gap-2">
+            {searchTerm &&
+              (defaultCountries?.length > 1 ? (
+                <div className="pb-[100px]">
+                  <div className="absolute z-20 mt-2 max-w-[90%] w-full text-black md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4">
+                    {regionsData?.data?.length > 0 ? (
+                      regionsData?.data?.map((item: any, index: any) => (
                         <div
-                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                          key={item.country}
+                          className={`flex items-center justify-between px-4 py-4 cursor-pointer  ${
                             selectedCountries.includes(item.name)
-                              ? "border-orange-600"
-                              : "border-gray-400"
+                              ? "bg-orange-50 text-orange-600"
+                              : ""
+                          } ${
+                            index !== filteredDestinations.length - 1
+                              ? "border-b"
+                              : ""
                           }`}
+                          onClick={() => handleSelect(item)}
                         >
-                          {selectedCountries.includes(item.name) && (
-                            <div className="w-2 h-2 rounded-full bg-orange-600" />
-                          )}
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                                selectedCountries.includes(item.name)
+                                  ? "border-orange-600"
+                                  : "border-gray-400"
+                              }`}
+                            >
+                              {selectedCountries.includes(item.name) && (
+                                <div className="w-2 h-2 rounded-full bg-orange-600" />
+                              )}
+                            </div>
+                            <Image
+                              src={`${API_IMAGE}/${item.img}`}
+                              alt={item.country}
+                              className="w-5 h-5"
+                              width={20}
+                              height={20}
+                            />
+                            <span className="text-sm truncate max-w-[120px]">
+                              {item.name}
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {formatPrice(item?.price_sell)}
+                          </span>
+                          <ArrowRight className="text-[#1C1C1C]" />
                         </div>
-                        <Image
-                          src={`${API_IMAGE}/${item.img}`}
-                          alt={item.country}
-                          className="w-5 h-5"
-                          width={20}
-                          height={20}
-                        />
-                        <span className="text-sm truncate max-w-[120px]">
-                          {item.name}
-                        </span>
-                      </div>
-                      <span className="text-xs text-gray-500">
-                        {formatPrice(item?.price_sell)}
-                      </span>
-                      <ArrowRight className="text-[#1C1C1C]" />
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-sm px-3 py-2">
-                    {t("no_results")}
-                  </p>
-                )}
-              </div>
-            )}
+                      ))
+                    ) : (
+                      <p className="text-gray-500 text-sm px-3 py-2 max-w-[50%]">
+                        {t("no_results")}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="pb-[50px]">
+                  <div className="absolute z-20 mt-2 max-w-[90%] w-full text-black md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4">
+                    {regionsData?.data?.length > 0 ? (
+                      regionsData?.data?.map((item: any, index: any) => (
+                        <div
+                          key={item.country}
+                          className={`flex items-center justify-between px-4 py-4 cursor-pointer ${
+                            selectedCountries.includes(item.name)
+                              ? "bg-orange-50 text-orange-600"
+                              : "hover:bg-gray-100"
+                          } ${
+                            index !== filteredDestinations.length - 1
+                              ? "border-b"
+                              : ""
+                          }`}
+                          onClick={() => handleSelect(item)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                                selectedCountries.includes(item.name)
+                                  ? "border-orange-600"
+                                  : "border-gray-400"
+                              }`}
+                            >
+                              {selectedCountries.includes(item.name) && (
+                                <div className="w-2 h-2 rounded-full bg-orange-600" />
+                              )}
+                            </div>
+                            <Image
+                              src={`${API_IMAGE}/${item.img}`}
+                              alt={item.country}
+                              className="w-5 h-5"
+                              width={20}
+                              height={20}
+                            />
+                            <span className="text-sm truncate max-w-[120px]">
+                              {item.name}
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {formatPrice(item?.price_sell)}
+                          </span>
+                          <ArrowRight className="text-[#1C1C1C]" />
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 text-sm px-3 py-2 max-w-[50%]">
+                        {t("no_results")}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
 
             {/* 🔹 Default countries */}
             {!searchTerm && defaultCountries?.length > 0 && (
@@ -319,7 +376,6 @@ const Main = () => {
             src={phone}
             alt="phone"
           />
-          <Image className="main-phone sm:hidden" src={smPhone} alt="smphone" />
         </div>
       </div>
     </div>

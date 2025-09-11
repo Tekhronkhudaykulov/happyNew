@@ -127,48 +127,40 @@ const Hero = () => {
         {/* PHONE */}
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-2 mt-[30px] lg:hidden">
-          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] p-[10px] w-full transition-colors duration-300">
-            <div className="">
-              <h2 className="text-[#FFFFFF] text-start text-[16px] font-medium">
+          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] py-[25px] px-[15px] w-full flex flex-col justify-between">
+              <h2 className="text-[#FFFFFF] text-start text-[16px]/[15px] font-medium">
                 {t("hero.card1_title")}
               </h2>
-              <p className="text-[#595959] text-start line-clamp-7 text-[14px] font-medium mt-4">
+              <p className="text-[#595959] text-start line-clamp-7 text-[15px]/[13px] font-medium mt-4">
                 {t("hero.card1_text")}
               </p>
-            </div>
           </div>
 
-          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] p-[10px] px-[25px] w-full transition-colors duration-300">
-            <div className="">
-              <h2 className="text-[#FFFFFF] text-[18px] font-medium text-start">
+          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] py-[25px] px-[15px] w-full flex flex-col justify-between">
+              <h2 className="text-[#FFFFFF] text-[16px]/[15px] font-medium text-start">
                 {t("hero.card2_title")}
               </h2>
-              <p className="text-[#595959] text-start line-clamp-7 text-[14px] font-medium mt-4">
+              <p className="text-[#595959] text-start line-clamp-7 text-[15px]/[13px] font-medium mt-4">
                 {t("hero.card2_text")}
               </p>
-            </div>
           </div>
 
-          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] p-[10px] w-full transition-colors duration-300">
-            <div className="">
-              <h2 className="text-[#FFFFFF] text-start text-[16px] font-medium">
+          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] py-[25px] px-[15px] w-full flex flex-col justify-between">
+              <h2 className="text-[#FFFFFF] text-start text-[16px]/[15px] font-medium">
                 {t("hero.card3_title")}
               </h2>
-              <p className="text-[#595959] text-start line-clamp-7 text-[14px] font-medium mt-4">
+              <p className="text-[#595959] text-start line-clamp-7 text-[15px]/[13px] font-medium mt-4">
                 {t("hero.card3_text")}
               </p>
-            </div>
           </div>
 
-          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] p-[10px] w-full transition-colors duration-300">
-            <div className="">
-              <h2 className="text-[#FFFFFF] text-start text-[16px] font-medium">
+          <div className="bg-[#282728] hover:bg-[#F06F1E] rounded-[12px] py-[25px] px-[15px] w-full flex flex-col justify-between">
+              <h2 className="text-[#FFFFFF] text-start text-[16px]/[15px] font-medium">
                 {t("hero.card4_title")}
               </h2>
-              <p className="text-[#595959] text-start line-clamp-7 text-[14px] font-medium mt-4">
+              <p className="text-[#595959] text-start line-clamp-7 text-[15px]/[13px] font-medium mt-4">
                 {t("hero.card4_text")}
               </p>
-            </div>
           </div>
         </div>
       </div>
