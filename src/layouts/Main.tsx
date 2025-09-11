@@ -148,12 +148,7 @@ const Main = () => {
   const [sliderRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
-      breakpoints: {
-        "(max-width: 768px)": {
-          slides: { perView: 1, spacing: 10 }, // mobil → 1ta
-        },
-      },
-      slides: { perView: 2, spacing: 16 }, // default → 2ta
+      slides: { perView: 2, spacing: 16 }, 
     },
     [Autoplay]
   );
@@ -333,11 +328,11 @@ const Main = () => {
 
             {/* 🔹 Default countries */}
             {!searchTerm && defaultCountries?.length > 0 && (
-              <div ref={sliderRef} className="keen-slider mt-8">
-                {defaultCountries?.slice(0, 2).map((item: any) => (
+              <div ref={sliderRef} className="keen-slider mt-8 !w-[650px] grid grid-cols-2 overflow-hidden">
+                {defaultCountries?.map((item: any) => (
                   <div
                     key={item.country}
-                    className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                    className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px] "
                     onClick={() =>
                       router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)
                     }
@@ -346,7 +341,7 @@ const Main = () => {
                       <div className="img_wrapper shrink-0">
                         <Image
                           src={`${API_IMAGE}/${item.img}`}
-                          className="destination-flag"
+                          className="destination-flag rounded-full"
                           alt={item.country}
                           width={40}
                           height={40}
@@ -357,12 +352,12 @@ const Main = () => {
                         <h1 className="text-[20px] font-normal text-[#FFFFFF]">
                           {item.name}
                         </h1>
-                        <div>
+                        {/* <div>
                           <Button
                             title={formatPrice(item?.price_sell)}
                             bg="orange"
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

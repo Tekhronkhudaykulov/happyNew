@@ -156,7 +156,7 @@ const Country = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <div className="py-6 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-6 md:pb-6 pb-[125px] container ">
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 sm:mb-8 lg:mb-10">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 md:mb-0">
@@ -181,21 +181,25 @@ const Country = () => {
         </div>
 
         {/* SIM CARDS */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
-          {plansData?.data?.data?.map((item: any, idx: any) => (
-            <ESimCard
-              key={idx}
-              flag={ASSETS.turkey}
-              gb={item.quantity_internet}
-              days={item.expiry_day}
-              price={formatPrice(item.price_sell)}
-              onSelect={() => {
-                localStorage.setItem("obyekt", JSON.stringify(item));
-                setSelectedPackage(item?.id);
-              }}
-              isSelected={selectedPackage === item?.id}
-            />
-          ))}
+        <div className={`${plansData?.data?.data?.length == 0 && "!grid !grid-cols-1"} grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}>
+          {plansData?.data?.data?.length > 0 ? (
+            plansData?.data?.data?.map((item: any, idx: any) => (
+              <ESimCard
+                key={idx}
+                flag={ASSETS.turkey}
+                gb={item.quantity_internet}
+                days={item.expiry_day}
+                price={formatPrice(item.price_sell)}
+                onSelect={() => {
+                  localStorage.setItem("obyekt", JSON.stringify(item));
+                  setSelectedPackage(item?.id);
+                }}
+                isSelected={selectedPackage === item?.id}
+              />
+            ))
+          ): (
+            <p className="text-black text-center">Hech nima topilmadi !</p>
+          ) }
         </div>
         <div onClick={handleBuyClick}>
           <Button classname="mt-10 sm:mt-12   w-full" title={t("auth.buy")} />

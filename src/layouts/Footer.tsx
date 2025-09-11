@@ -120,7 +120,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-[10px]">
+        <div className="flex flex-col gap-[10px]">
           <p className="text-[#FFFFFF] text-[14px] font-norma">
             {t("footer.rights")}
           </p>

@@ -2,6 +2,8 @@
 //   baseURL: import.meta.env.VITE_API_URL,
 // });
 
+import { API_URL } from ".";
+
 // $api.interceptors.response.use(
 //   (response) => response,
 //   (error) => {
@@ -13,23 +15,23 @@
 //   }
 // );
 
-$api.defaults.headers.common["Accept"] = "application/json";
+API_URL.defaults.headers.common["Accept"] = "application/json";
 
 export const tokenName = "safe_road_token";
 
 export const initApp = () => {
   const token = localStorage.getItem(tokenName);
 
-  $api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  API_URL.defaults.headers.common.Authorization = `Bearer ${token}`;
   //   $api.defaults.headers.common["Accept-Language"] = "ru";
 };
 
 export const setToken = (token: string) => {
   localStorage.setItem(tokenName, token);
-  $api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  API_URL.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 export const removeToken = () => {
   localStorage.removeItem(tokenName);
-  $api.defaults.headers.common.Authorization = ``;
+  API_URL.defaults.headers.common.Authorization = ``;
 };

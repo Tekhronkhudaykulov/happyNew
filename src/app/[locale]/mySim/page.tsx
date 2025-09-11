@@ -20,7 +20,7 @@ const MyEsim = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <div className="py-6 container">
+      <div className="py-6 md:pb-6 pb-[125px] container">
         <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <button
             onClick={() => router.back()}

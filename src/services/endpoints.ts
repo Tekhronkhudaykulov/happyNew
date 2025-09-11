@@ -4,6 +4,7 @@ const endpoints = {
   regions: "regions",
   orderCreate: "order-simcard/create",
   payment: "payments",
+  
 };
 
 export default endpoints;

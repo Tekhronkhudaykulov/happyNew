@@ -84,7 +84,7 @@ const Otzives = () => {
   );
 
   return (
-    <div className="py-[50px] my-[50px] rounded-tl-[30px] md:rounded-[20px] bg-[#272727] overflow-hidden">
+    <div className="py-[50px] my-[50px] rounded-none md:rounded-[20px] bg-[#272727] overflow-hidden">
       <div className="container">
         <h1 className="text-[#FFFFFF] lg:text-[40px]/[35px] md:text-[32px]/[32px] text-[28px]/[28px] font-medium">
           {t("otzives.title")}
