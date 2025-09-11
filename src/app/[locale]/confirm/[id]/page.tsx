@@ -167,7 +167,7 @@ const ConfirmPage = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <div className="py-6 container relative mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-6 md:pb-6 pb-[25px] container relative ">
           {/* Header */}
           <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <button
@@ -271,7 +271,7 @@ const ConfirmPage = () => {
 
         {/* Bottom button */}
         <div className="mt-auto">
-          <div className="container">
+          <div className="container md:pb-0 pb-[100px]">
             <button
               disabled={isPending}
               onClick={handlePayment}
