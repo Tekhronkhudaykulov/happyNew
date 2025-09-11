@@ -4,7 +4,7 @@ import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ASSETS } from "@/assets";
 import PackageCard from "@/components/packageCard";
@@ -46,6 +46,8 @@ const ConfirmPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
 
+  const phoneRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const saved = localStorage.getItem("obyekt");
     setObject(saved ? JSON.parse(saved) : null);
@@ -54,6 +56,22 @@ const ConfirmPage = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) setFileName(file.name);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.startsWith('998')) {
+      value = value.substring(3);
+    }
+    if (value.length > 9) value = value.substring(0, 9);
+    if (value.length > 0) {
+      const formatted = `+998 ${value.substring(0, 2)} ${value.substring(2, 5)} ${value.substring(5, 7)} ${value.substring(7, 9)}`.trim();
+      e.target.value = formatted;
+      setPhone(formatted);
+    } else {
+      e.target.value = '';
+      setPhone('');
+    }
   };
 
   const { data: paymentData } = useQuery({
@@ -179,7 +197,7 @@ const ConfirmPage = () => {
                   <input
                     type="text"
                     placeholder="Ivan"
-                    className="w-full bg-white p-2 text-black rounded-lg"
+                    className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
                     onChange={(e) => setFio(e.target.value)}
                   />
                 </div>
@@ -189,10 +207,12 @@ const ConfirmPage = () => {
                     {t("auth.phone")}
                   </p>
                   <input
+                    ref={phoneRef}
                     type="text"
                     placeholder="+998 99 999 99 99"
-                    className="w-full bg-white p-2 text-black rounded-lg"
-                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
+                    value={phone || ""}
+                    onChange={handlePhoneChange}
                   />
                 </div>
 

@@ -63,16 +63,16 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
         className={`grid gap-[12px] ${
           isLocal
             ? data?.length <= 2
-              ? "grid-cols-1 sm:grid-cols-2 justify-center"
-              : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
-            : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2"
+              ? "grid-cols-2 sm:grid-cols-2"
+              : "grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
+            : "grid-cols-2 sm:grid-cols-2 md:grid-cols-2"
         }`}
       >
         {visibleData?.map((item, index) => (
           <div
             onClick={() => router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)}
             key={index}
-            className="flex items-center gap-12 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
+            className="flex items-center gap-2 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
           >
             <div className="img_wrapper shrink-0">
               <Image src={ASSETS.turkey} className="destination-flag" alt="" />

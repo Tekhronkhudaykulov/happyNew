@@ -7,12 +7,11 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export const FooterNav = () => {
-  const t = useTranslations(""); // i18n namespace
+  const t = useTranslations("");
   const pathname = usePathname();
 
   const normalizedPath = pathname.replace(/^\/(ru|en)(?=\/|$)/, "");
 
-  // ✅ Active holatlarni tekshirish
   const isActiveHome = normalizedPath === APP_ROUTES.HOME;
 
   const isActiveMySims =
@@ -25,10 +24,8 @@ export const FooterNav = () => {
     normalizedPath === APP_ROUTES.LOGIN ||
     normalizedPath === APP_ROUTES.VERIFY;
 
-  console.log(isActiveProfile, "isActiveProfile");
-
   return (
-    <div className="w-full flex justify-center pt-[20px] pb-[25px] bg-[#FFFFFF] shadow-[0_1px_20px_0_rgba(0,0,0,0.18)]">
+    <div className="w-full flex fixed justify-center pt-[20px] pb-[25px] bg-[#FFFFFF] shadow-[0_1px_20px_0_rgba(0,0,0,0.18)] md:static bottom-0 left-0 z-50">
       <div className="flex gap-[70px]">
         {/* Home */}
         <Link
