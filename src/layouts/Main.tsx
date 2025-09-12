@@ -5,7 +5,7 @@ import { ASSETS } from "../assets";
 import { localDestinations } from "../data/TabData";
 import { Search, X, ArrowRight } from "lucide-react";
 import "../styles/main.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { APP_ROUTES } from "../router/path";
 import type { LocalDestination } from "../components/destinationCard";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ function Autoplay(slider: any) {
     if (mouseOver) return;
     timeout = setTimeout(() => {
       slider.next();
-    }, 2000); // 2 soniyada bitta slayd o‘tsin
+    }, 2000);
   }
 
   slider.on("created", () => {
@@ -51,7 +51,7 @@ function Autoplay(slider: any) {
 }
 
 async function fetchRegions(params: Record<string, any>) {
-  const query = buildQuery(params); // bu o‘zi avtomat encode qiladi
+  const query = buildQuery(params);
   const res = await fetch(`${API_URL}/${endpoints.regions}?${query}`);
   if (!res.ok) throw new Error("Failed to fetch regions");
   return res.json();
@@ -62,16 +62,9 @@ const Main = () => {
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState<any>("");
-
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-
-  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
-    []
-  );
-
+  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
-
-  console.log(defaultCountries, "defaultCountries");
 
   const { data: regionsData } = useQuery({
     queryKey: ["regions", searchTerm],
@@ -88,50 +81,26 @@ const Main = () => {
   );
 
   useEffect(() => {
-    // if (!searchTerm) {
-    //   const localItems = localDestinations.filter(
-    //     (item) => item.type === "local"
-    //   );
-    //   const shuffled = localItems.sort(() => 0.5 - Math.random());
-    //   const selected = shuffled.slice(0, 2);
-    //   setDefaultCountries(selected);
-    // } else {
-    //   setDefaultCountries([]);
-    // }
-    setDefaultCountries(regionsData?.data);
+    setDefaultCountries(regionsData?.data || []);
   }, [regionsData]);
 
-  const handleSelect = (country: string) => {
-    if (!selectedCountries.includes(country)) {
+  const handleSelect = (country: any) => {
+    if (!selectedCountries.some((c) => c.id === country.id)) {
       setSelectedCountries([...selectedCountries, country]);
     }
     setSearchTerm("");
+    setIsInputFocused(false);
   };
 
-  const handleRemove = (country: string) => {
-    setSelectedCountries(selectedCountries.filter((c) => c !== country));
+  const handleRemove = (country: any) => {
+    setSelectedCountries(selectedCountries.filter((c) => c.id !== country.id));
   };
-
-  console.log(selectedCountries, "selected");
 
   const handleSearchClick = () => {
-    // if (selectedCountries.length > 0) {
-    //   const lastSelected = selectedCountries[selectedCountries.length - 1];
-    //   const selectedDestination = localDestinations.find(
-    //     (item) => item.country === lastSelected
-    //   );
-
-    // }
-    // if (selectedDestination?.id) {
-    //   router.push(`${APP_ROUTES.COUNTRY}`);
-    // }
     if (selectedCountries.length > 0) {
       const ids = selectedCountries.map((c: any) => c.id).join("-");
-
-      // [{id:1}, {id:2}] => "1,2"
       router.push(`${APP_ROUTES.COUNTRY}/${ids}`);
     }
-    // router.push(`${APP_ROUTES.COUNTRY}/${1}`);
   };
 
   const [showPlaceholder, setShowPlaceholder] = useState(
@@ -156,7 +125,24 @@ const Main = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setIsInputFocused(true);
   };
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsInputFocused(false);
+        setSearchTerm("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="main relative bg-[#FFFFFF8F]">
@@ -178,134 +164,132 @@ const Main = () => {
               <p className="main-item hidden sm:block">{t("nav3")}</p>
             </ul>
 
-            {/* 🔹 Input va tanlanganlar */}
-            <div className="search-container ">
-              <div className="flex items-center pl-2 gap-2  w-full">
-                {selectedCountries.map((country) => (
-                  <span
-                    key={country}
-                    className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
-                  >
-                    {country?.name}
-                    <X
-                      size={14}
-                      className="cursor-pointer"
-                      onClick={() => handleRemove(country)}
-                    />
-                  </span>
-                ))}
-
-                <input
-                  type="text"
-                  placeholder={
-                    showPlaceholder ? t("placeholder") : t("placeholder-sm")
-                  }
-                  className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
-                  value={searchTerm}
-                  onChange={handleChange}
-                  onFocus={() => setIsInputFocused(true)}
-                />
-              </div>
-
-              <div className="icon-wrapper">
-                <Search
-                  className="text-[#FFFFFF] cursor-pointer"
-                  size={23}
-                  onClick={handleSearchClick}
-                />
-              </div>
-            </div>
-
-            {/* 🔹 Dropdown */}
-            {(searchTerm || isInputFocused) && ( // 👈 input bosilganda ham ochiladi
-              <div className="pb-[100px]">
+            {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
+            <div className="md:flex md:flex-col-reverse">
+              {/* Keen Slider */}
+              {!searchTerm && defaultCountries?.length > 0 && (
                 <div
-                  className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
-             md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-             max-h-[400px] overflow-y-auto"
+                  ref={sliderRef}
+                  className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
                 >
-                  {regionsData?.data?.length > 0 ? (
-                    regionsData?.data
-                      .filter((item: any) =>
-                        item.name
-                          .toLowerCase()
-                          .includes(searchTerm.toLowerCase())
-                      )
-                      .map((item: any, index: number) => (
-                        <div
-                          key={item.id}
-                          className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
-                          onClick={() => handleSelect(item)}
-                        >
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src={`${API_IMAGE}/${item.img}`}
-                              alt={item.name}
-                              width={20}
-                              height={20}
-                              className="w-5 h-5"
-                            />
-                            <span className="text-sm truncate max-w-[120px]">
-                              {item.name}
-                            </span>
-                          </div>
-                          <ArrowRight className="text-[#1C1C1C]" />
-                        </div>
-                      ))
-                  ) : (
-                    <p className="text-gray-500 text-sm px-3 py-2">
-                      {t("no_results")}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* 🔹 Default countries */}
-            {!searchTerm && defaultCountries?.length > 0 && (
-              <div
-                ref={sliderRef}
-                className="keen-slider mt-8 !w-[650px] grid grid-cols-2 overflow-hidden"
-              >
-                {defaultCountries?.map((item: any) => (
-                  <div
-                    key={item.country}
-                    className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px] "
-                    onClick={() => {
-                      localStorage.setItem(
-                        "selectedObject",
-                        JSON.stringify(item)
-                      );
-                      router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
-                    }}
-                  >
-                    <div className="flex w-full items-center gap-4">
-                      <div className="img_wrapper shrink-0">
-                        <Image
-                          src={`${API_IMAGE}/${item.img}`}
-                          className="destination-flag rounded-full"
-                          alt={item.country}
-                          width={40}
-                          height={40}
-                          unoptimized
-                        />
-                      </div>
-                      <div>
-                        <h1 className="text-[20px] font-normal text-[#FFFFFF]">
-                          {item.name}
-                        </h1>
-                        {/* <div>
-                          <Button
-                            title={formatPrice(item?.price_sell)}
-                            bg="orange"
+                  {defaultCountries?.map((item: any) => (
+                    <div
+                      key={item.country}
+                      className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                      onClick={() => {
+                        localStorage.setItem(
+                          "selectedObject",
+                          JSON.stringify(item)
+                        );
+                        router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="img_wrapper shrink-0">
+                          <Image
+                            src={`${API_IMAGE}/${item.img}`}
+                            className="destination-flag rounded-full"
+                            alt={item.country}
+                            width={40}
+                            height={40}
+                            unoptimized
                           />
-                        </div> */}
+                        </div>
+                        <div>
+                          <h1 className="text-[20px] font-normal text-[#FFFFFF]">
+                            {item.name}
+                          </h1>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              )}
+
+              {/* 🔹 Input va tanlanganlar */}
+              <div className="search-container">
+                <div className="flex items-center pl-2 gap-2 w-full">
+                  {selectedCountries.map((country) => (
+                    <span
+                      key={country.id}
+                      className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
+                    >
+                      {country.name}
+                      <X
+                        size={14}
+                        className="cursor-pointer"
+                        onClick={() => handleRemove(country)}
+                      />
+                    </span>
+                  ))}
+
+                  <input
+                    type="text"
+                    placeholder={
+                      showPlaceholder ? t("placeholder") : t("placeholder-sm")
+                    }
+                    className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
+                    value={searchTerm}
+                    onChange={handleChange}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
+                  />
+                </div>
+
+                <div className="icon-wrapper">
+                  <Search
+                    className="text-[#FFFFFF] cursor-pointer"
+                    size={23}
+                    onClick={handleSearchClick}
+                  />
+                </div>
               </div>
-            )}
+
+              {/* 🔹 Dropdown */}
+              {(searchTerm || isInputFocused) && (
+                <div ref={dropdownRef} className="pb-[100px]">
+                  <div
+                    className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
+               md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+               max-h-[400px] overflow-y-auto"
+                  >
+                    {regionsData?.data?.length > 0 ? (
+                      regionsData?.data
+                        .filter((item: any) =>
+                          item.name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((item: any, index: number) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
+                            onClick={() => handleSelect(item)}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Image
+                                src={`${API_IMAGE}/${item.img}`}
+                                alt={item.name}
+                                width={20}
+                                height={20}
+                                className="w-5 h-5"
+                              />
+                              <span className="text-sm truncate max-w-[120px]">
+                                {item.name}
+                              </span>
+                            </div>
+                            <ArrowRight className="text-[#1C1C1C]" />
+                          </div>
+                        ))
+                    ) : (
+                      <p className="text-gray-500 text-sm px-3 py-2">
+                        {t("no_results")}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <Image

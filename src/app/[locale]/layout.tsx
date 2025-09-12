@@ -5,6 +5,7 @@ import "@/app/[locale]/globals.css";
 import "@/index.css";
 import { Suspense } from "react";
 import { Loading5755 } from "@/components/loading/loading";
+import { AuthModalProvider } from "@/providers/AuthModalProvider";
 
 export default async function LocaleLayout({
   children,
@@ -22,7 +23,9 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ReactQueryProvider>
-            <Suspense fallback={<Loading5755 />}>{children}</Suspense>
+            <AuthModalProvider>
+              <Suspense fallback={<Loading5755 />}>{children}</Suspense>
+            </AuthModalProvider>
           </ReactQueryProvider>
         </NextIntlClientProvider>
       </body>

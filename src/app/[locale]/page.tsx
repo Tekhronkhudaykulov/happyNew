@@ -9,6 +9,7 @@ import WHYus from "@/layouts/WhyUs";
 import Otzives from "@/layouts/Otzives";
 import FAQs from "@/layouts/FAQs";
 import Footer from "@/layouts/Footer";
+import { FooterNav } from "@/layouts/FooterNav";
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
       <Otzives />
       <FAQs />
       <Footer />
+      <FooterNav/>
     </div>
   );
 };

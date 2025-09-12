@@ -166,13 +166,17 @@ const Country = () => {
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 sm:mb-8 lg:mb-10">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 md:mb-0">
-            <button
-              onClick={() => router.back()}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+            <a
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.history.back();
+                }
+              }}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center touch-action-manipulation"
               title={t("auth.back")}
             >
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
-            </button>
+            </a>
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold">
               {object?.name}
             </h1>
@@ -212,7 +216,7 @@ const Country = () => {
           )}
         </div>
         <div onClick={handleBuyClick}>
-          <Button classname="mt-10 sm:mt-12   w-full" title={t("auth.buy")} />
+          <Button classname="mt-2 sm:mt-6 w-full" title={t("auth.buy")} />
         </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">

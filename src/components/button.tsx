@@ -33,9 +33,9 @@ export default function Button({
   return (
     <button
       onClick={handleClick}
-      className={`p-2 rounded-[12px] font-medium transition-colors duration-200 w-full ${
+      className={`p-[6px] md:p-2 rounded-[12px] font-medium transition-colors duration-200 w-full ${
         variantClasses[bg]
-      } ${classname} text-sm md:text-base lg:text-[16px] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-2 focus:ring-${
+      } ${classname} text-[12px] md:text-base lg:text-[16px] hover:opacity-90 active:opacity-80 focus:outline-none focus:ring-2 focus:ring-${
         bg === "usual" ? "orange" : bg
       }-500`}
     >
