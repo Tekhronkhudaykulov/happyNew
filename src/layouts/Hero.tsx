@@ -9,10 +9,10 @@ const Hero = () => {
   const t = useTranslations("");
 
   return (
-    <div className="my-[100px]">
+    <div className="my-[40px] md:my-[100px]">
       <div className="container relative">
         <div className="md:flex items-center justify-between">
-          <h1 className="text-[#1C1C1C] text-start md:text-[40px] text-[28px] font-medium max-w-[490px]">
+          <h1 className="text-[#1C1C1C] text-start md:text-[40px] text-[22px] font-medium max-w-[490px]">
             {t("hero.title")}
           </h1>
           <p className="max-w-[375px] text-start md:text-[16px] text-[14px] mt-4 md:mt-0 text-[#595959A3]">

@@ -40,10 +40,10 @@ const Tabs: React.FC = () => {
   };
 
   return (
-    <div className="mb-[75px] bg-[linear-gradient(177.5deg,rgba(240,111,30,0.09)_4.7%,rgba(255,255,255,0.09)_93.18%)] pt-[75px]">
-      <div className="container px-4 md:px-0">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-0">
-          <h1 className="font-medium text-[24px] md:text-[40px] text-[#1C1C1C]">
+    <div className="mb-[30px] md:mb-[75px] bg-[linear-gradient(177.5deg,rgba(240,111,30,0.09)_4.7%,rgba(255,255,255,0.09)_93.18%)] pt-[40px] md:pt-[75px]">
+      <div className="container">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
+          <h1 className="font-medium text-[22px] md:text-[40px] text-[#1C1C1C]">
             {t("destination.title")}
           </h1>
 
@@ -52,7 +52,7 @@ const Tabs: React.FC = () => {
               <button
                 key={key}
                 onClick={() => handleTabClick(key as DestinationType)}
-                className={`flex-1 md:flex-initial px-2 py-2 md:px-4 md:py-2 rounded-full text-[14px] md:text-base transition-colors duration-150 ${
+                className={`flex-1 md:flex-initial px-1 py-2 md:px-4 md:py-2 rounded-full text-[13px] md:text-base transition-colors duration-150 ${
                   activeTab === key
                     ? "bg-[#ff7a00] text-white"
                     : "bg-transparent text-[#1C1C1C]"
@@ -64,7 +64,7 @@ const Tabs: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-[50px]">
+        <div className="mt-[30px] md:mt-[50px]">
           <DestinationCard type={activeTab} data={plansData?.data?.data} />
         </div>
       </div>

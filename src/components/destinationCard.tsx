@@ -60,7 +60,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
   return (
     <div className="space-y-6">
       <div
-        className={`grid gap-[12px] ${
+        className={`grid gap-[10px] ${
           isLocal
             ? data?.length <= 2
               ? "grid-cols-2 sm:grid-cols-2"
@@ -72,13 +72,13 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
           <div
             onClick={() => router.push(`${APP_ROUTES.COUNTRY}/${item.id}`)}
             key={index}
-            className="flex items-center gap-2 md:gap-4 bg-[#1C1C1C0D] rounded-[12px] p-4 md:p-[22px] md:pr-[45px] cursor-pointer"
+            className="flex items-center gap-4 bg-[#1C1C1C0D] rounded-[12px] p-[10px] pl-0 md:p-[22px] justify-center md:justify-normal cursor-pointer"
           >
             <div className="img_wrapper shrink-0">
               <Image src={ASSETS.turkey} className="destination-flag" alt="" />
             </div>
             <div>
-              <h1 className="destination-country text-black font-bold text-[16px] md:text-[18px]">
+              <h1 className="destination-country text-black font-medium md:font-bold text-[15px] md:text-[18px]">
                 {item?.name}
               </h1>
               <Button bg="orange" title={formatPrice(item?.price_sell)} />
@@ -91,7 +91,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
         <div className="flex justify-center">
           <button
             onClick={() => setShowAll(true)}
-            className="mx-auto mt-5 px-6 py-2 border text-black border-[#1C1C1C] rounded-lg text-sm md:text-base"
+            className="mx-auto mt-0 md:mt-4 px-6 py-2 border text-black border-[#1C1C1C] rounded-lg text-[13px] md:text-base"
           >
             {t("otzives.showAll") ?? "Показать все"}
           </button>
