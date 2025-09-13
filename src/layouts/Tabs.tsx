@@ -7,7 +7,7 @@ import { tabConfig } from "../data/TabData";
 import { useTranslations } from "next-intl";
 import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { buildQuery } from "@/utils/buildQuery";
 
 const tabParams: Record<DestinationType, any> = {
@@ -25,15 +25,20 @@ async function fetchPlans(params: any) {
 
 const Tabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<DestinationType>("local");
-
   const t = useTranslations("");
 
-  const { data: plansData } = useQuery({
-    queryKey: ["plans", activeTab],
-    queryFn: () => fetchPlans(tabParams[activeTab]),
+  // 🔹 3 ta parallel query
+  const results = useQueries({
+    queries: (Object.keys(tabParams) as DestinationType[]).map((key) => ({
+      queryKey: ["plans", key],
+      queryFn: () => fetchPlans(tabParams[key]),
+    })),
   });
 
-  console.log(plansData, "plansData");
+  // 🔹 activeTab bo‘yicha kerakli data olish
+  const activeData = results.find(
+    (_, idx) => Object.keys(tabParams)[idx] === activeTab
+  )?.data;
 
   const handleTabClick = (tab: DestinationType) => {
     setActiveTab(tab);
@@ -65,7 +70,7 @@ const Tabs: React.FC = () => {
         </div>
 
         <div className="mt-[30px] md:mt-[50px]">
-          <DestinationCard type={activeTab} data={plansData?.data?.data} />
+          <DestinationCard type={activeTab} data={activeData?.data?.data} />
         </div>
       </div>
     </div>

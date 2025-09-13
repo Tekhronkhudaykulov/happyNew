@@ -55,18 +55,21 @@ const ConfirmPage = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.startsWith('998')) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.startsWith("998")) {
       value = value.substring(3);
     }
     if (value.length > 9) value = value.substring(0, 9);
     if (value.length > 0) {
-      const formatted = `+998 ${value.substring(0, 2)} ${value.substring(2, 5)} ${value.substring(5, 7)} ${value.substring(7, 9)}`.trim();
+      const formatted = `+998 ${value.substring(0, 2)} ${value.substring(
+        2,
+        5
+      )} ${value.substring(5, 7)} ${value.substring(7, 9)}`.trim();
       e.target.value = formatted;
       setPhone(formatted);
     } else {
-      e.target.value = '';
-      setPhone('');
+      e.target.value = "";
+      setPhone("");
     }
   };
 
@@ -133,6 +136,9 @@ const ConfirmPage = () => {
           setShowCancelModal(false);
         }, 3000);
       }
+    },
+    onError: (data) => {
+      console.log(data, "error");
     },
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),

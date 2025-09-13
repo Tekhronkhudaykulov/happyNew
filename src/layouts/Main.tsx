@@ -15,7 +15,6 @@ import { buildQuery } from "@/utils/buildQuery";
 import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
-import formatPrice from "@/utils/formatPrice";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
@@ -62,11 +61,15 @@ const Main = () => {
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState<any>("");
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<any[]>([]);
+  console.log(selectedCountries, "selected");
+
+  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
+    []
+  );
   const [isInputFocused, setIsInputFocused] = useState(false);
 
-  const { data: regionsData } = useQuery({
+  const { data: regionsData, isLoading } = useQuery({
     queryKey: ["regions", searchTerm],
     queryFn: () =>
       fetchRegions({
@@ -85,6 +88,8 @@ const Main = () => {
   }, [regionsData]);
 
   const handleSelect = (country: any) => {
+    console.log(country, "countr");
+
     if (!selectedCountries.some((c) => c.id === country.id)) {
       setSelectedCountries([...selectedCountries, country]);
     }
@@ -132,7 +137,10 @@ const Main = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsInputFocused(false);
         setSearchTerm("");
       }
@@ -145,161 +153,167 @@ const Main = () => {
   }, []);
 
   return (
-    <div className="main relative bg-[#FFFFFF8F]">
-      <Image className="main-map" src={ASSETS.bgmap} alt="" />
-      <div className="main-container">
-        <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
-          <Image
-            className="main-download mt-[50px]"
-            src={ASSETS.download}
-            alt=""
-          />
-          <Image className="main-esim" src={ASSETS.esim} alt="" />
-          <div className="main-wrapper">
-            <h1 className="main-title">{t("title")}</h1>
+    <>
+      {/* {isLoading && <Loading5755 />} */}
+      <div className="main relative bg-[#FFFFFF8F]">
+        <Image className="main-map" src={ASSETS.bgmap} alt="" />
+        <div className="main-container">
+          <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
+            <Image
+              className="main-download mt-[50px]"
+              src={ASSETS.download}
+              alt=""
+            />
+            <Image className="main-esim" src={ASSETS.esim} alt="" />
+            <div className="main-wrapper">
+              <h1 className="main-title">{t("title")}</h1>
 
-            <ul className="main-list">
-              <p className="main-item">{t("nav1")}</p>
-              <p className="main-item">{t("nav2")}</p>
-              <p className="main-item hidden sm:block">{t("nav3")}</p>
-            </ul>
+              <ul className="main-list">
+                <p className="main-item">{t("nav1")}</p>
+                <p className="main-item">{t("nav2")}</p>
+                <p className="main-item hidden sm:block">{t("nav3")}</p>
+              </ul>
 
-            {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
-            <div className="md:flex md:flex-col-reverse">
-              {/* Keen Slider */}
-              {!searchTerm && defaultCountries?.length > 0 && (
-                <div
-                  ref={sliderRef}
-                  className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
-                >
-                  {defaultCountries?.map((item: any) => (
-                    <div
-                      key={item.country}
-                      className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
-                      onClick={() => {
-                        localStorage.setItem(
-                          "selectedObject",
-                          JSON.stringify(item)
-                        );
-                        router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
-                      }}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="img_wrapper shrink-0">
-                          <Image
-                            src={`${API_IMAGE}/${item.img}`}
-                            className="destination-flag rounded-full"
-                            alt={item.country}
-                            width={40}
-                            height={40}
-                            unoptimized
-                          />
-                        </div>
-                        <div>
-                          <h1 className="text-[20px] font-normal text-[#FFFFFF]">
-                            {item.name}
-                          </h1>
+              {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
+              <div className="md:flex md:flex-col-reverse">
+                {/* Keen Slider */}
+                {!searchTerm && defaultCountries?.length > 0 && (
+                  <div
+                    ref={sliderRef}
+                    className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
+                  >
+                    {defaultCountries?.map((item: any) => (
+                      <div
+                        key={item.country}
+                        className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                        onClick={() => {
+                          localStorage.setItem(
+                            "selectedObject",
+                            JSON.stringify(item)
+                          );
+                          router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="img_wrapper shrink-0">
+                            <Image
+                              src={`${API_IMAGE}/${item.img}`}
+                              className="destination-flag rounded-full"
+                              alt=""
+                              width={40}
+                              height={40}
+                              unoptimized
+                            />
+                          </div>
+                          <div>
+                            <h1 className="text-[20px] font-normal text-[#FFFFFF]">
+                              {item.name}
+                            </h1>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
 
-              {/* 🔹 Input va tanlanganlar */}
-              <div className="search-container">
-                <div className="flex items-center pl-2 gap-2 w-full">
-                  {selectedCountries.map((country) => (
-                    <span
-                      key={country.id}
-                      className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
-                    >
-                      {country.name}
-                      <X
-                        size={14}
-                        className="cursor-pointer"
-                        onClick={() => handleRemove(country)}
-                      />
-                    </span>
-                  ))}
+                {/* 🔹 Input va tanlanganlar */}
+                <div className="search-container">
+                  <div className="flex items-center pl-2 gap-2 w-full">
+                    {selectedCountries.map((country) => (
+                      <span
+                        key={country.id}
+                        className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
+                      >
+                        {country.name}
+                        <X
+                          size={14}
+                          className="cursor-pointer"
+                          onClick={() => handleRemove(country)}
+                        />
+                      </span>
+                    ))}
 
-                  <input
-                    type="text"
-                    placeholder={
-                      showPlaceholder ? t("placeholder") : t("placeholder-sm")
-                    }
-                    className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
-                    value={searchTerm}
-                    onChange={handleChange}
-                    onFocus={() => setIsInputFocused(true)}
-                    onBlur={() => setIsInputFocused(false)}
-                  />
-                </div>
+                    <input
+                      type="text"
+                      placeholder={
+                        showPlaceholder ? t("placeholder") : t("placeholder-sm")
+                      }
+                      className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
+                      value={searchTerm}
+                      onChange={handleChange}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
+                    />
+                  </div>
 
-                <div className="icon-wrapper">
-                  <Search
-                    className="text-[#FFFFFF] cursor-pointer"
-                    size={23}
-                    onClick={handleSearchClick}
-                  />
-                </div>
-              </div>
-
-              {/* 🔹 Dropdown */}
-              {(searchTerm || isInputFocused) && (
-                <div ref={dropdownRef} className="pb-[100px]">
-                  <div
-                    className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
-               md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-               max-h-[400px] overflow-y-auto"
-                  >
-                    {regionsData?.data?.length > 0 ? (
-                      regionsData?.data
-                        .filter((item: any) =>
-                          item.name
-                            .toLowerCase()
-                            .includes(searchTerm.toLowerCase())
-                        )
-                        .map((item: any, index: number) => (
-                          <div
-                            key={item.id}
-                            className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
-                            onClick={() => handleSelect(item)}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Image
-                                src={`${API_IMAGE}/${item.img}`}
-                                alt={item.name}
-                                width={20}
-                                height={20}
-                                className="w-5 h-5"
-                              />
-                              <span className="text-sm truncate max-w-[120px]">
-                                {item.name}
-                              </span>
-                            </div>
-                            <ArrowRight className="text-[#1C1C1C]" />
-                          </div>
-                        ))
-                    ) : (
-                      <p className="text-gray-500 text-sm px-3 py-2">
-                        {t("no_results")}
-                      </p>
-                    )}
+                  <div className="icon-wrapper">
+                    <Search
+                      className="text-[#FFFFFF] cursor-pointer"
+                      size={23}
+                      onClick={handleSearchClick}
+                    />
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
 
-          <Image
-            className="main-phone hidden sm:block"
-            src={phone}
-            alt="phone"
-          />
+                {/* 🔹 Dropdown */}
+                {(searchTerm || isInputFocused) && (
+                  <div ref={dropdownRef} className="pb-[100px]">
+                    <div
+                      className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
+               md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+               max-h-[400px] overflow-y-auto"
+                    >
+                      {regionsData?.data?.length > 0 ? (
+                        regionsData?.data
+                          ?.filter((item: any) =>
+                            item.name
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase())
+                          )
+                          ?.map((item: any, index: number) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
+                              onMouseDown={() => handleSelect(item)}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Image
+                                  src={`${API_IMAGE}/${item.img}`}
+                                  alt="afmskasl"
+                                  width={20}
+                                  height={20}
+                                  className="w-5 h-5"
+                                />
+                                <span
+                                  onClick={() => console.log("sfnaksj")}
+                                  className="text-sm truncate max-w-[120px]"
+                                >
+                                  {item.name}
+                                </span>
+                              </div>
+                              <ArrowRight className="text-[#1C1C1C]" />
+                            </div>
+                          ))
+                      ) : (
+                        <p className="text-gray-500 text-sm px-3 py-2">
+                          {t("no_results")}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <Image
+              className="main-phone hidden sm:block"
+              src={phone}
+              alt="phone"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
