@@ -48,7 +48,7 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
   };
 
   return (
-    <div className="w-full flex fixed justify-center pt-[10px] pb-[15px] md:pt-[20px] md:pb-[25px] bg-[#FFFFFF] shadow-[0_1px_20px_0_rgba(0,0,0,0.18)] md:static bottom-0 left-0 z-50">
+    <div className="w-full flex fixed justify-center pt-[10px] pb-[15px] md:pt-[20px] md:pb-[25px] bg-[#FFFFFF] shadow-[0_1px_20px_0_rgba(0,0,0,0.18)] bottom-0 left-0 z-50">
       <div className="flex gap-[30px] md:gap-[70px]">
         {/* Home */}
         <Link
