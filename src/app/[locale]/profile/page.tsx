@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LogOut } from "lucide-react";
 import { ASSETS } from "@/assets";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { useAuthModal } from "@/providers/AuthModalProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { APP_ROUTES } from "@/router/path";
+import { API_IMAGE } from "@/config";
 
 const tokenName = "token";
 
@@ -45,6 +47,7 @@ const Profile = () => {
   const [modalPhone, setModalPhone] = useState<string>("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [activateToken, setActivateToken] = useState<string | null>(null);
 
   // Ma’lumot kelganda state ichiga yozib qo‘yish
   useEffect(() => {
@@ -54,6 +57,12 @@ const Profile = () => {
       setPhone(profileData?.data?.phone || "");
     }
   }, [profileData]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setActivateToken(localStorage.getItem("token"));
+    }
+  }, []);
 
   const handleModalPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
@@ -175,19 +184,34 @@ const Profile = () => {
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     /> */}
 
-                    <div className="relative">
-                      <input
-                        type="text"
-                        className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
-                        value={fileName || "Загрузить"}
-                        readOnly
-                      />
-                      <input
-                        type="file"
-                        className="absolute  inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={handleFileUpload}
-                      />
-                    </div>
+                    {profileData?.data?.passport_image ? (
+                      // Agar passport_image mavjud bo‘lsa rasmni chiqarish
+                      <div className="flex flex-col gap-2">
+                        <img
+                          src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
+                          alt="Passport"
+                          className="w-[200px] h-auto rounded-lg border"
+                        />
+                        <p className="text-sm text-gray-600">
+                          {profileData?.data?.passport_image.split("/").pop()}
+                        </p>
+                      </div>
+                    ) : (
+                      // Agar passport_image yo‘q bo‘lsa — yuklash inputi
+                      <div className="relative">
+                        <input
+                          type="text"
+                          className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
+                          value={fileName || "Загрузить"}
+                          readOnly
+                        />
+                        <input
+                          type="file"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          onChange={handleFileUpload}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -197,19 +221,10 @@ const Profile = () => {
                     <input
                       type="tel"
                       placeholder={t("ready.phonenum")}
-                      value={modalPhone}
+                      value={modalPhone || profileData?.data?.phone || ""}
                       onChange={handleModalPhoneChange}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     />
-                  </div>
-                  <div>
-                    <label className="text-sm text-[#1C1C1C0D] font-medium  block mb-[23px]"></label>
-                    <button
-                      onClick={handleSave}
-                      className="w-full p-3 bg-[#ED713C] text-white rounded-lg"
-                    >
-                      {isPending ? "Loading..." : "Сохранить"}
-                    </button>
                   </div>
                 </div>
               </div>
@@ -242,6 +257,30 @@ const Profile = () => {
                 className="hidden md:block absolute top-[218px] rounded-[12px] right-[187px] w-[225px] h-[95px]"
               />
             </div>
+
+            {activateToken ? (
+              <div className="flex justify-center items-center mt-[20px]">
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    router.push(`${APP_ROUTES.HOME}`);
+                  }}
+                  className="text-black flex items-center gap-x-[10px] text-[22px]"
+                >
+                  <LogOut size={22} /> {t("ready.logout")}
+                </button>
+              </div>
+            ) : (
+              <div>
+                <label className="text-sm text-[#1C1C1C0D] font-medium  block mb-[23px]"></label>
+                <button
+                  onClick={handleSave}
+                  className="w-full p-3 bg-[#ED713C] text-white rounded-lg"
+                >
+                  {isPending ? "Loading..." : "Сохранить"}
+                </button>
+              </div>
+            )}
           </>
         ) : (
           <div className="text-center mt-10">

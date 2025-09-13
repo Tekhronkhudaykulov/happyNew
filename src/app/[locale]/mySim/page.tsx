@@ -10,11 +10,36 @@ import { useState } from "react";
 import { ASSETS } from "@/assets";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchEsim() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(
+    `https://crm.uztu.uz/api/client/order-simcard/my-orders`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch profile");
+  return res.json();
+}
 
 const MyEsim = () => {
   const t = useTranslations();
   const [variant, setVariant] = useState<"active" | "balance">("active");
   const router = useRouter();
+
+  const { data: esims, isLoading } = useQuery({
+    queryKey: ["esims"],
+    queryFn: fetchEsim,
+  });
+
+  console.log(esims);
 
   return (
     <div className="min-h-screen flex flex-col">
