@@ -31,6 +31,7 @@ import card4 from './card4.png'
 import download from './download.svg'
 import esim from './sim.svg'
 import bggsmth from './bgg.png'
+import grey from './Subtract.png'
 
 export const ASSETS = {
   facebook,
@@ -65,5 +66,6 @@ export const ASSETS = {
   card4,
   download,
   esim,
-  bggsmth
+  bggsmth,
+  grey
 };
