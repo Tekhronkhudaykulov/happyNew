@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { APP_ROUTES } from "@/router/path";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { setToken } from "@/config/api";
 
 interface AuthModalContextType {
   isModalOpen: boolean;
@@ -145,9 +146,11 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+
       const dataJson = await res.json();
 
-      // ❗ success false bo‘lsa xato sifatida tashlaymiz
+      setToken(dataJson?.data?.token);
+
       if (!dataJson.success) {
         throw new Error(dataJson.message || "Noma’lum xato");
       }
@@ -155,7 +158,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
       return dataJson;
     },
     onSuccess: (res) => {
-      setIsVerifyStep(false);
+      closeAuthModal();
     },
     onError: (err) => {
       toast.error(err?.message);

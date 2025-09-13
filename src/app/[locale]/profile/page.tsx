@@ -7,25 +7,121 @@ import { ArrowLeft } from "lucide-react";
 import { ASSETS } from "@/assets";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthModal } from "@/providers/AuthModalProvider";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-const tokenName = "safe_road_token";
+const tokenName = "token";
+
+async function fetchPlans() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`https://crm.uztu.uz/api/client/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch profile");
+  return res.json();
+}
 
 const Profile = () => {
   const t = useTranslations();
   const router = useRouter();
   const { openAuthModal } = useAuthModal();
-  const [phone, setPhone] = useState<string>("");
-  const phoneRef = useRef<HTMLInputElement>(null);
 
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchPlans,
+  });
+
+  // ✨ Edit qilish uchun local state
+  const [name, setName] = useState("");
+
+  const [passport, setPassport] = useState("");
+  const [phone, setPhone] = useState("");
+  const [modalPhone, setModalPhone] = useState<string>("");
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  // Ma’lumot kelganda state ichiga yozib qo‘yish
   useEffect(() => {
-    const token = localStorage.getItem(tokenName);
-    console.log("useEffect: token found:", token);
-    if (token) {
-      setPhone(token);
+    if (profileData) {
+      setName(profileData?.data?.full_name || "");
+      setPassport(profileData?.data?.passport || "");
+      setPhone(profileData?.data?.phone || "");
     }
-  }, []);
+  }, [profileData]);
+
+  const handleModalPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "");
+    setPhone(value);
+    if (value.startsWith("998")) {
+      value = value.substring(3);
+    }
+    if (value.length > 9) value = value.substring(0, 9);
+    if (value.length > 0) {
+      const formatted = `+998 ${value.substring(0, 2)} ${value.substring(
+        2,
+        5
+      )} ${value.substring(5, 7)} ${value.substring(7, 9)}`.trim();
+      e.target.value = formatted;
+      setModalPhone(formatted);
+    } else {
+      e.target.value = "";
+      setModalPhone("");
+    }
+  };
+
+  const token = localStorage.getItem("token");
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: FormData) => {
+      const res = await fetch(`https://crm.uztu.uz/api/client/profile`, {
+        method: "PUT",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: data,
+      });
+
+      const dataJson = await res.json();
+
+      if (!dataJson.success) {
+        throw new Error(dataJson.message || "Noma’lum xato");
+      }
+
+      return dataJson;
+    },
+    onSuccess: (res) => {
+      console.log("Updated:", res);
+    },
+    onError: (err: any) => {
+      console.log(err, "errorlar");
+    },
+  });
+
+  const handleSave = () => {
+    const formData = new FormData();
+    formData.append("full_name", name);
+    formData.append("phone", phone);
+
+    if (file) {
+      formData.append("passport_image", file);
+    }
+
+    mutate(formData);
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name); // faqat ko‘rsatish uchun
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -56,7 +152,8 @@ const Profile = () => {
                     <input
                       type="text"
                       placeholder={t("ready.name")}
-                      defaultValue="Иван"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     />
                   </div>
@@ -65,11 +162,27 @@ const Profile = () => {
                     <label className="text-sm font-medium mb-1 block text-black">
                       {t("ready.passport")}
                     </label>
-                    <input
+                    {/* <input
                       type="text"
                       placeholder={t("ready.passport")}
+                      value={passport}
+                      onChange={(e) => setPassport(e.target.value)}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
-                    />
+                    /> */}
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
+                        value={fileName || "Загрузить"}
+                        readOnly
+                      />
+                      <input
+                        type="file"
+                        className="absolute  inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={handleFileUpload}
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -77,13 +190,21 @@ const Profile = () => {
                       {t("ready.phonenum")}
                     </label>
                     <input
-                      ref={phoneRef}
                       type="tel"
                       placeholder={t("ready.phonenum")}
-                      value={phone}
+                      value={modalPhone}
+                      onChange={handleModalPhoneChange}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
-                      readOnly
                     />
+                  </div>
+                  <div>
+                    <label className="text-sm text-[#1C1C1C0D] font-medium  block mb-[23px]"></label>
+                    <button
+                      onClick={handleSave}
+                      className="w-full p-3 bg-[#ED713C] text-white rounded-lg"
+                    >
+                      {isPending ? "Loading..." : "Сохранить"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -97,10 +218,10 @@ const Profile = () => {
                     <h2 className="text-[30px] font-medium">LOGO</h2>
                   </div>
                   <h1 className="text-[30px] md:text-[35px] font-bold mt-4">
-                    70 000 UZS
+                    {profileData?.data?.balance} UZS
                   </h1>
                   <p className="text-xs md:text-[14px] mt-auto">
-                    {t("ready.orders")}: 30
+                    {t("ready.orders")}: {profileData?.ordersCount ?? 0}
                   </p>
                 </div>
               </div>

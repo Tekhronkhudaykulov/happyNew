@@ -31,8 +31,7 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
     normalizedPath === APP_ROUTES.LOGIN ||
     normalizedPath === APP_ROUTES.VERIFY;
 
-
-  const isAuthenticated = !!localStorage.getItem("safe_road_token");
+  const isAuthenticated = !!localStorage.getItem("token");
 
   const handleProfileClick = () => {
     if (!isAuthenticated) {
@@ -40,7 +39,7 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
         openAuthModal();
       } else if (typeof contextOpenAuthModal === "function") {
         contextOpenAuthModal();
-      } else {;
+      } else {
         window.location.href = APP_ROUTES.LOGIN;
       }
     } else {

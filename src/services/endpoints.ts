@@ -1,10 +1,10 @@
 const endpoints = {
-  faqs: "faqs",
-  plans: "plans",
-  regions: "regions",
-  orderCreate: "order-simcard/create",
-  payment: "payments",
-  login: "client/login-sms",
+  faqs: "public/faqs",
+  plans: "public/plans",
+  regions: "public/regions",
+  orderCreate: "public/order-simcard/create",
+  payment: "public/payments",
+  login: "public/client/login-sms",
 };
 
 export default endpoints;
