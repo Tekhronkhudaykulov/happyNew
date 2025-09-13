@@ -264,7 +264,14 @@ const Country = () => {
                     key={idx}
                     className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
                   >
-                    <div className="flex items-center gap-2 sm:gap-3">
+                    <div
+                      onClick={() => {
+                        localStorage.setItem("obyekt", JSON.stringify(item));
+                        // setSelectedPackage(item?.id);
+                        router.push(`${APP_ROUTES.CONFIRM_ORDER}/${item?.id}`);
+                      }}
+                      className="flex items-center gap-2 sm:gap-3"
+                    >
                       <Image
                         alt="flag"
                         src={item.flag}

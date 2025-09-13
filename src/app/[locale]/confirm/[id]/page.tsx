@@ -27,6 +27,20 @@ async function fetchPayments() {
   return res.json();
 }
 
+async function fetchProfile() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`https://crm.uztu.uz/api/client/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch profile");
+  return res.json();
+}
+
 const ConfirmPage = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -78,6 +92,11 @@ const ConfirmPage = () => {
     queryFn: fetchPayments,
   });
 
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: fetchProfile,
+  });
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: any) => {
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
@@ -102,14 +121,10 @@ const ConfirmPage = () => {
 
   // 📌 Paymentni boshlash
   const handlePayment = () => {
-    if (!fio || !phone) {
-      alert("FIO va telefon raqamini kiriting!");
-      return;
-    }
     mutate({
       plan_id: object?.id,
       fio,
-      phone,
+      phone, // ✅ bu endi profileData'dan kelsa o'sha, bo'sh bo'lsa user yozgani
       payment_type_id: selectedMethod,
       passport: fileName,
     });
@@ -146,7 +161,16 @@ const ConfirmPage = () => {
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
   });
-
+  useEffect(() => {
+    if (profileData?.data) {
+      if (profileData.data.phone) {
+        setPhone(profileData.data.phone); // 📱 telefonni yozib qo'yadi
+      }
+      if (profileData.data.full_name) {
+        setFio(profileData.data.full_name); // 👤 ism familyani yozib qo'yadi
+      }
+    }
+  }, [profileData]);
   return (
     <>
       {isPending && (
@@ -218,6 +242,7 @@ const ConfirmPage = () => {
                     type="text"
                     placeholder="Ivan"
                     className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
+                    value={fio || ""} // ✅ profileData'dan kelsa avtomatik to'ldiriladi
                     onChange={(e) => setFio(e.target.value)}
                   />
                 </div>
@@ -231,7 +256,7 @@ const ConfirmPage = () => {
                     type="text"
                     placeholder="+998 99 999 99 99"
                     className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={phone || ""}
+                    value={phone || ""} // ✅ doim phone state ishlatiladi
                     onChange={handlePhoneChange}
                   />
                 </div>
