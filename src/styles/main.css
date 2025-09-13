@@ -133,6 +133,19 @@
   right: 4%;
 }
 
+.main-headingg {
+  position: absolute;
+  max-width: 100px;
+  z-index: 0;
+  top: 93%;
+  right: 1%;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  text-align: right;
+}
+
 .main-phone {
   height: 605px;
   margin-top: -115px;
@@ -187,7 +200,8 @@
   }
   .main-destination1,
   .main-destination2,
-  .main-gray {
+  .main-gray,
+  .main-headingg {
     display: none !important;
   }
 
