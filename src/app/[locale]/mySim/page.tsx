@@ -3,17 +3,20 @@
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft } from "lucide-react";
-
 import PackageCard from "@/components/packageCard";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useAuthModal } from "@/providers/AuthModalProvider";
 import { ASSETS } from "@/assets";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { APP_ROUTES } from "@/router/path";
+import { Loading5755 } from "@/components/loading/loading";
+
+const tokenName = "token";
 
 async function fetchEsim() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(tokenName);
 
   const res = await fetch(
     `https://crm.uztu.uz/api/client/order-simcard/my-orders`,
@@ -25,26 +28,69 @@ async function fetchEsim() {
     }
   );
 
-  if (!res.ok) throw new Error("Failed to fetch profile");
-  return res.json();
+  if (!res.ok) throw new Error("Failed to fetch eSIM data");
+  const data = await res.json();
+  console.log("eSIM data:", data);
+  return data;
 }
 
 const MyEsim = () => {
   const t = useTranslations();
-  const [variant, setVariant] = useState<"active" | "balance">("active");
   const router = useRouter();
+  const { openAuthModal } = useAuthModal();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [showAll, setShowAll] = useState(false); // State for show all
+  const [isDesktop, setIsDesktop] = useState(true); // State for device detection
+
+  useEffect(() => {
+    const token = localStorage.getItem(tokenName);
+    setIsAuthenticated(!!token);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { data: esims, isLoading } = useQuery({
     queryKey: ["esims"],
     queryFn: fetchEsim,
+    enabled: isAuthenticated,
   });
 
-  console.log(esims);
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="py-6 pb-[100px] container text-center mt-10">
+          <p className="text-gray-500">{t("auth.please_login")}</p>
+          <button
+            onClick={openAuthModal}
+            className="mt-4 p-3 bg-[#ED713C] text-white rounded-lg"
+          >
+            {t("auth.button")}
+          </button>
+        </div>
+        <div className="mt-auto">
+          <FooterNav openAuthModal={openAuthModal} />
+        </div>
+      </div>
+    );
+  }
+
+  const limit = isDesktop ? 6 : 4; 
+  const shouldLimit = esims?.length > limit && !showAll;
+  const visibleEsims = shouldLimit ? esims.slice(0, limit) : esims;
+  console.log(esims)
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-
       <div className="py-6 pb-[100px] container">
         <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <a
@@ -62,25 +108,46 @@ const MyEsim = () => {
             {t("my.title")}
           </h1>
         </div>
+          <>
+            <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
+              {visibleEsims?.length > 0 ? (
+                visibleEsims.map((esim: any, index: number) => (
+                  <PackageCard
+                    key={esim.id || index}
+                    flag={
+                      ASSETS[esim.region_group?.name.toLowerCase()] ||
+                      ASSETS.turkey
+                    }
+                    country={esim.region_group?.name}
+                    gb={esim.plan?.quantity_internet}
+                    days={esim.days_remaining}
+                    price={esim.total_payments_amount}
+                    createdAt={esim.created_at}
+                    iccid={esim.simcards?.[0]?.ssid}
+                    balance={esim.total_payments_amount}
+                    variant="active" 
+                  />
+                ))
+              ) : (
+               ""
+              )}
+            </div>
 
-        <div>
-          <PackageCard
-            flag={ASSETS.turkey}
-            country="Turkey"
-            gb={1}
-            days={7}
-            price={100000}
-            createdAt="2025-08-13 18:08:19"
-            iccid="892200660704000030"
-            balance={37000}
-            variant={variant}
-            onCheckBalance={() => setVariant("balance")}
-          />
-        </div>
+            {shouldLimit && (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="mx-auto mt-4 px-6 py-2 border text-black border-[#1C1C1C] rounded-lg text-[13px] md:text-base"
+                >
+                  {t("otzives.showAll") || "Show All"}
+                </button>
+              </div>
+            )}
+          </>
       </div>
 
       <div className="mt-auto">
-        <FooterNav />
+        <FooterNav openAuthModal={openAuthModal} />
       </div>
     </div>
   );
