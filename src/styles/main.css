@@ -248,6 +248,11 @@
     height: 30px;
   }
 
+  .main-container {
+    position: relative;
+    padding-bottom: 135px;
+  }
+
   .main-map {
     position: absolute !important;
     z-index: 0;

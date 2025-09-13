@@ -9,7 +9,7 @@ const Footer = () => {
   const t = useTranslations("");
 
   return (
-    <footer className="mt-[30px] md:mt-[50px] bg-[#272727] text-[#FFFFFF]">
+    <footer className="mt-[30px] md:pb-0 pb-[55px]  md:mt-[50px] bg-[#272727] text-[#FFFFFF]">
       <div className="container py-[33px] border-[#00000030] border-t-1  md:flex hidden flex-col gap-[70px]">
         <div className="flex items-end justify-between">
           <h1 className="max-w-[285px] font-normal md:text-[22px]/[26px]">

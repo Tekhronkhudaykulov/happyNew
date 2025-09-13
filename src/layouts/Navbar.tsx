@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <header className="bg-[#282728] text-[#FFFFFF8F]">
       <div className="container">
-        <nav className="flex justify-between items-center py-[30px] w-full gap-4">
+        <nav className="flex justify-between items-center py-[15px] md:py-[30px] w-full gap-4">
           <Link href={`/${locale}`}>
             <Image
               src={ASSETS.logowhite}

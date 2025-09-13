@@ -6,6 +6,7 @@ import "@/index.css";
 import { Suspense } from "react";
 import { Loading5755 } from "@/components/loading/loading";
 import { AuthModalProvider } from "@/providers/AuthModalProvider";
+import { AutoScrollToTop } from "@/components/scrollToTop";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { ToastProvider } from "@/providers/ToastProvider";
@@ -27,6 +28,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ReactQueryProvider>
             <AuthModalProvider>
+              <AutoScrollToTop/>
               <Suspense fallback={<Loading5755 />}>
                 <ToastProvider />
                 {children}

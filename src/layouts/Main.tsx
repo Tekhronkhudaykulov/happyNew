@@ -88,6 +88,10 @@ const Main = () => {
   }, [regionsData]);
 
   const handleSelect = (country: any) => {
+    if (!country.id) {
+      console.error("Country ID is missing:", country);
+      return;
+    }
     console.log(country, "countr");
 
     if (!selectedCountries.some((c) => c.id === country.id)) {
@@ -95,6 +99,8 @@ const Main = () => {
     }
     setSearchTerm("");
     setIsInputFocused(false);
+    localStorage.setItem("selectedObject", JSON.stringify(country));
+    router.push(`${APP_ROUTES.COUNTRY}/${country.id}`);
   };
 
   const handleRemove = (country: any) => {
@@ -174,47 +180,46 @@ const Main = () => {
                 <p className="main-item hidden sm:block">{t("nav3")}</p>
               </ul>
 
-              {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
-              <div className="md:flex md:flex-col-reverse">
-                {/* Keen Slider */}
-                {!searchTerm && defaultCountries?.length > 0 && (
-                  <div
-                    ref={sliderRef}
-                    className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
-                  >
-                    {defaultCountries?.map((item: any) => (
-                      <div
-                        key={item.country}
-                        className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
-                        onClick={() => {
-                          localStorage.setItem(
-                            "selectedObject",
-                            JSON.stringify(item)
-                          );
-                          router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
-                        }}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="img_wrapper shrink-0">
-                            <Image
-                              src={`${API_IMAGE}/${item.img}`}
-                              className="destination-flag rounded-full"
-                              alt=""
-                              width={40}
-                              height={40}
-                              unoptimized
-                            />
-                          </div>
-                          <div>
-                            <h1 className="text-[20px] font-normal text-[#FFFFFF]">
-                              {item.name}
-                            </h1>
-                          </div>
+            {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
+            <div className="md:flex md:flex-col-reverse">
+              {!searchTerm && defaultCountries?.length > 0 && (
+                <div
+                  ref={sliderRef}
+                  className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
+                >
+                  {defaultCountries?.map((item: any) => (
+                    <div
+                      key={item.country}
+                      className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                      onClick={() => {
+                        localStorage.setItem(
+                          "selectedObject",
+                          JSON.stringify(item)
+                        );
+                        router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="img_wrapper shrink-0">
+                          <Image
+                            src={`${API_IMAGE}/${item.img}`}
+                            className="destination-flag rounded-full"
+                            alt={item.country}
+                            width={40}
+                            height={40}
+                            unoptimized
+                          />
+                        </div>
+                        <div>
+                          <h1 className="text-[20px] font-normal text-[#FFFFFF]">
+                            {item.name}
+                          </h1>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  ))}
+                </div>
+              )}
 
                 {/* 🔹 Input va tanlanganlar */}
                 <div className="search-container">
@@ -255,55 +260,55 @@ const Main = () => {
                   </div>
                 </div>
 
-                {/* 🔹 Dropdown */}
-                {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="pb-[100px]">
-                    <div
-                      className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
-               md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-               max-h-[400px] overflow-y-auto"
-                    >
-                      {regionsData?.data?.length > 0 ? (
-                        regionsData?.data
-                          ?.filter((item: any) =>
-                            item.name
-                              .toLowerCase()
-                              .includes(searchTerm.toLowerCase())
-                          )
-                          ?.map((item: any, index: number) => (
-                            <div
-                              key={index}
-                              className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
-                              onMouseDown={() => handleSelect(item)}
-                            >
-                              <div className="flex items-center gap-2">
-                                <Image
-                                  src={`${API_IMAGE}/${item.img}`}
-                                  alt="afmskasl"
-                                  width={20}
-                                  height={20}
-                                  className="w-5 h-5"
-                                />
-                                <span
-                                  onClick={() => console.log("sfnaksj")}
-                                  className="text-sm truncate max-w-[120px]"
-                                >
-                                  {item.name}
-                                </span>
-                              </div>
-                              <ArrowRight className="text-[#1C1C1C]" />
+              {/* 🔹 Dropdown */}
+              {(searchTerm || isInputFocused) && (
+                <div ref={dropdownRef} className="">
+                  <div
+                    className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
+                    md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+                    md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
+                  >
+                    {regionsData?.data?.length > 0 ? (
+                      regionsData?.data
+                        .filter((item: any) =>
+                          item.name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase())
+                        )
+                        .map((item: any, index: number) => (
+                          <div
+                            key={item.id}
+                            className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
+                            onClick={(e) => {
+                              e.stopPropagation(); 
+                              handleSelect(item);
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Image
+                                src={`${API_IMAGE}/${item.img}`}
+                                alt={item.name}
+                                width={20}
+                                height={20}
+                                className="w-5 h-5"
+                              />
+                              <span className="text-sm truncate max-w-[120px]">
+                                {item.name}
+                              </span>
                             </div>
-                          ))
-                      ) : (
-                        <p className="text-gray-500 text-sm px-3 py-2">
-                          {t("no_results")}
-                        </p>
-                      )}
-                    </div>
+                            <ArrowRight className="text-[#1C1C1C]" />
+                          </div>
+                        ))
+                    ) : (
+                      <p className="text-gray-500 text-sm px-3 py-2">
+                        {t("no_results")}
+                      </p>
+                    )}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+          </div>
 
             <Image
               className="main-phone hidden sm:block"

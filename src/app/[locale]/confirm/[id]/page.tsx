@@ -176,25 +176,40 @@ const ConfirmPage = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <div className="py-6 md:pb-6 pb-[25px] container relative ">
+        <div className="py-6 md:pb-4 pb-[15px] container relative ">
           {/* Header */}
-          <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-            <button
-              onClick={() => router.back()}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-8">
+            <a
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.history.back();
+                }
+              }}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center touch-action-manipulation"
+              title={t("auth.back")}
             >
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
-            </button>
+            </a>
             <h1 className="font-semibold text-black text-xl sm:text-2xl lg:text-[35px]">
               {t("auth.confirm")}
             </h1>
           </div>
 
-          <div className="flex flex-col md:flex-row items-stretch gap-[13px]">
+          <div className="flex flex-col md:flex-row items-stretch gap-[10px] md:gap-[13px]">
+            <div className="block md:hidden">
+              <PackageCard
+                flag={ASSETS.turkey}
+                country={object?.name}
+                gb={object?.quantity_internet}
+                days={object?.expiry_day}
+                price={formatPrice(object?.price_sell)}
+                variant="buy"
+              />
+            </div>
             {/* Form */}
-            <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-6 flex flex-col gap-8">
+            <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-8">
               {/* Inputs */}
-              <div className="flex flex-col sm:flex-row gap-[20px]">
+              <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
                 <div className="w-full">
                   <p className="text-sm mb-2 text-[#595959]">
                     {t("auth.name")}
@@ -244,14 +259,14 @@ const ConfirmPage = () => {
               {/* Payment methods */}
               <div>
                 <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
                   {paymentData?.data?.map((method: any) =>
                     ["click", "payme", "visa", "octo_uzs"].includes(
                       method?.key
                     ) ? (
                       <div
                         key={method?.id}
-                        className={`w-full h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                        className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
                           selectedMethod === method?.id
                             ? "border border-[#F06F1E]"
                             : ""
@@ -267,20 +282,22 @@ const ConfirmPage = () => {
             </div>
 
             {/* PackageCard */}
-            <PackageCard
-              flag={ASSETS.turkey}
-              country={object?.name}
-              gb={object?.quantity_internet}
-              days={object?.expiry_day}
-              price={formatPrice(object?.price_sell)}
-              variant="buy"
-            />
+            <div className="md:block hidden">
+              <PackageCard
+                flag={ASSETS.turkey}
+                country={object?.name}
+                gb={object?.quantity_internet}
+                days={object?.expiry_day}
+                price={formatPrice(object?.price_sell)}
+                variant="buy"
+              />
+            </div>
           </div>
         </div>
 
         {/* Bottom button */}
         <div className="mt-auto">
-          <div className="container md:pb-0 pb-[100px]">
+          <div className="container md:pb-0 pb-[60px]">
             <button
               disabled={isPending}
               onClick={handlePayment}
