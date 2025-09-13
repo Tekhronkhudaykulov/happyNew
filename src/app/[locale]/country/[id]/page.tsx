@@ -14,7 +14,6 @@ import InfoItem from "@/components/infoitem";
 import Image from "next/image";
 import "@/app/[locale]/globals.css";
 import { useTranslations } from "next-intl";
-
 import PhoneInput from "@/components/phoneInput";
 import { ASSETS } from "@/assets";
 import { buildQuery } from "@/utils/buildQuery";
@@ -164,8 +163,8 @@ const Country = () => {
 
       <div className="py-6 md:pb-6 pb-[125px] container ">
         {/* HEADER */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 sm:mb-8 lg:mb-10">
-          <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 md:mb-0">
+        <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
             <a
               onClick={() => {
                 if (typeof window !== "undefined") {
@@ -182,9 +181,9 @@ const Country = () => {
             </h1>
           </div>
 
-          <div className="flex items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-xl py-3 sm:py-4 px-4 sm:px-5">
+          <div className="flex items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
             <Info size={16} className="text-[#F06F1E] sm:size-5" />
-            <p className="font-normal text-[#1C1C1C] text-sm sm:text-base">
+            <p className="font-normal text-[#1C1C1C] md:block hidden text-sm sm:text-base">
               {t("country.not-avaiable")}
             </p>
           </div>
@@ -215,8 +214,12 @@ const Country = () => {
             <p className="text-black text-center">Hech nima topilmadi !</p>
           )}
         </div>
-        <div onClick={handleBuyClick}>
-          <Button classname="mt-2 sm:mt-6 w-full" title={t("auth.buy")} />
+        <div className="" onClick={handleBuyClick}>
+          <Button
+            classname="mt-0 sm:mt-6 w-full"
+            title={t("auth.buy")}
+            disabled={selectedPackage === null}
+          />
         </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">

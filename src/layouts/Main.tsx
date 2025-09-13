@@ -85,11 +85,17 @@ const Main = () => {
   }, [regionsData]);
 
   const handleSelect = (country: any) => {
+    if (!country.id) {
+      console.error("Country ID is missing:", country);
+      return;
+    }
     if (!selectedCountries.some((c) => c.id === country.id)) {
       setSelectedCountries([...selectedCountries, country]);
     }
     setSearchTerm("");
     setIsInputFocused(false);
+    localStorage.setItem("selectedObject", JSON.stringify(country));
+    router.push(`${APP_ROUTES.COUNTRY}/${country.id}`);
   };
 
   const handleRemove = (country: any) => {
@@ -147,7 +153,7 @@ const Main = () => {
   return (
     <div className="main relative bg-[#FFFFFF8F]">
       <Image className="main-map" src={ASSETS.bgmap} alt="" />
-      <div className="main-container">
+      <div className="main-container md:pb-[20px] pb-[150px]">
         <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
           <Image
             className="main-download mt-[50px]"
@@ -166,7 +172,6 @@ const Main = () => {
 
             {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
             <div className="md:flex md:flex-col-reverse">
-              {/* Keen Slider */}
               {!searchTerm && defaultCountries?.length > 0 && (
                 <div
                   ref={sliderRef}
@@ -247,11 +252,11 @@ const Main = () => {
 
               {/* 🔹 Dropdown */}
               {(searchTerm || isInputFocused) && (
-                <div ref={dropdownRef} className="pb-[100px]">
+                <div ref={dropdownRef} className="">
                   <div
-                    className="absolute z-20 mt-2 max-w-[90%] w-full text-black 
-               md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-               max-h-[400px] overflow-y-auto"
+                    className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
+                    md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+                    md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
                   >
                     {regionsData?.data?.length > 0 ? (
                       regionsData?.data
@@ -264,7 +269,10 @@ const Main = () => {
                           <div
                             key={item.id}
                             className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
-                            onClick={() => handleSelect(item)}
+                            onClick={(e) => {
+                              e.stopPropagation(); 
+                              handleSelect(item);
+                            }}
                           >
                             <div className="flex items-center gap-2">
                               <Image

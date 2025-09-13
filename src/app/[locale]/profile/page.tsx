@@ -31,7 +31,7 @@ const Profile = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <div className="py-6 md:pb-6 pb-[125px] container relative">
+      <div className="py-6 md:pb-6 pb-[80px] container relative">
         {localStorage.getItem(tokenName) ? (
           <>
             <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
