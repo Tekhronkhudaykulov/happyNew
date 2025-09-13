@@ -4,16 +4,29 @@ import { useRouter } from "next/navigation";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ASSETS } from "@/assets";
 import InfoItem from "@/components/infoitem";
 import Button from "@/components/button";
 import { APP_ROUTES } from "@/router/path";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import QrCode from "@/components/qrCode";
 
 const SimReady = () => {
   const t = useTranslations();
   const router = useRouter();
+  const simKard = localStorage.getItem("simkard");
+
+  const object = JSON.parse(simKard);
+
+  console.log(object);
+
+  const handleActivate = () => {
+    if (!object?.qr_code) {
+      return;
+    }
+
+    // iPhone Safari orqali ochish uchun
+    window.location.href = object?.qr_code;
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -85,7 +98,10 @@ const SimReady = () => {
                     {t("ready.iphone")}
                   </h4>
                   <div className="mt-4 border border-white rounded-xl py-3 px-4 flex items-center justify-between">
-                    <p className="text-white mr-[5px] text-sm sm:text-base font-medium">
+                    <p
+                      onClick={handleActivate}
+                      className="text-white mr-[5px] text-sm sm:text-base font-medium"
+                    >
                       {t("ready.go")}
                     </p>
                     <ArrowRight size={20} className="text-white" />
@@ -103,7 +119,7 @@ const SimReady = () => {
                   </div>
                   <div className="mt-4 border border-[#FFFFFF6B] rounded-xl py-3 px-4 flex items-center justify-center">
                     <p className="text-[#FFFFFF6B] text-sm font-medium text-center truncate">
-                      LPA:1$RSP.BILLIONCONNECT.COM$B9543DD3925943FD9808B4994B1F5AC5
+                      {object?.qr_code}
                     </p>
                   </div>
                 </div>
@@ -115,15 +131,16 @@ const SimReady = () => {
           <div className="w-full lg:w-1/3 flex flex-col gap-[8px]">
             <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[18px] pt-[8px] pb-[20px] rounded-xl">
               <h3 className="text-[#1C1C1C] font-medium text-lg sm:text-xl lg:text-2xl">
-                {t("ready.order")}#162
+                {/* {t("ready.order")}#162 */}
               </h3>
 
               <div className="my-4 flex justify-center">
-                <Image
+                {/* <Image
                   src={ASSETS.qr}
                   alt="QR Code"
                   className="max-w-[150px] sm:max-w-[200px] h-auto"
-                />
+                /> */}
+                <QrCode link={object?.qr_code} />
               </div>
 
               <h3 className="text-[#1C1C1C] font-medium text-lg sm:text-xl lg:text-2xl">
@@ -136,7 +153,7 @@ const SimReady = () => {
                     ICCID:
                   </p>
                   <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate">
-                    89812003919118650899
+                    {object?.ssid}
                   </h3>
                 </div>
 
@@ -145,7 +162,7 @@ const SimReady = () => {
                     UID:
                   </p>
                   <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate">
-                    19118650899
+                    {object?.uid}
                   </h3>
                 </div>
 
@@ -154,7 +171,7 @@ const SimReady = () => {
                     PIN:
                   </p>
                   <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate">
-                    1234
+                    {object?.pin}
                   </h3>
                 </div>
 
@@ -163,7 +180,7 @@ const SimReady = () => {
                     PUK:
                   </p>
                   <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate">
-                    03558176
+                    {object?.puk}
                   </h3>
                 </div>
               </div>

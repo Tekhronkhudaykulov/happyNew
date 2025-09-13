@@ -90,6 +90,7 @@ const ConfirmPage = () => {
     },
     onSuccess: (res) => {
       const orderId = res?.order_id ?? res?.data?.order_id;
+
       if (orderId) {
         socket?.emit("join_order", String(orderId));
       }
@@ -122,6 +123,8 @@ const ConfirmPage = () => {
     },
     onOrderUpdated: (data) => {
       if (data?.status_name === "Активный") {
+        console.log(data, "data");
+        localStorage.setItem("simkard", JSON.stringify(data?.simcards[0]));
         setShowSuccessModal(true);
 
         setTimeout(() => {

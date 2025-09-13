@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import { redirect } from "next/navigation";
 import { APP_ROUTES } from "@/router/path";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 interface AuthModalContextType {
   isModalOpen: boolean;
@@ -12,14 +14,22 @@ interface AuthModalContextType {
   closeAuthModal: () => void;
 }
 
-const AuthModalContext = createContext<AuthModalContextType | undefined>(undefined);
+const AuthModalContext = createContext<AuthModalContextType | undefined>(
+  undefined
+);
 
 export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
   const t = useTranslations();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalPhone, setModalPhone] = useState<string>("");
+
+  const cleanedPhone = modalPhone.replace(/\s/g, "");
+  console.log(cleanedPhone, "modalphone");
+
   const [code, setCode] = useState<string>("");
   const [isVerifyStep, setIsVerifyStep] = useState(false);
+  const [phone, setPhone] = useState<any>();
+  const [newCode, setNewCode] = useState<any>();
 
   const openAuthModal = () => {
     setIsModalOpen(true);
@@ -34,6 +44,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
 
   const handleModalPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
+    setPhone(value);
     if (value.startsWith("998")) {
       value = value.substring(3);
     }
@@ -50,19 +61,18 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
       setModalPhone("");
     }
   };
-
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 5) value = value.substring(0, 5);
+    let value = e.target.value.replace(/\D/g, ""); // faqat raqamlarni oladi
+
+    if (value.length > 6) value = value.substring(0, 6); // maksimal uzunlik 6 ta
+    setNewCode(value);
     if (value.length > 0) {
-      const formatted = `${value.substring(0, 1)} ${value.substring(
-        1,
-        2
-      )} ${value.substring(2, 3)} ${value.substring(3, 4)} ${value.substring(
-        4,
-        5
-      )}`.trim();
+      // har bir belgini bo‘sh joy bilan ajratib formatlaymiz
+      const formatted = value.split("").join(" ").trim();
+
       e.target.value = formatted;
+      console.log(formatted, "formatted");
+
       setCode(formatted);
     } else {
       e.target.value = "";
@@ -71,7 +81,14 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleLogin = () => {
-    console.log("handleLogin called, isVerifyStep:", isVerifyStep, "modalPhone:", modalPhone, "code:", code);
+    console.log(
+      "handleLogin called, isVerifyStep:",
+      isVerifyStep,
+      "modalPhone:",
+      modalPhone,
+      "code:",
+      code
+    );
     if (!isVerifyStep) {
       if (modalPhone) {
         setIsVerifyStep(true);
@@ -83,13 +100,79 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
         setCode("");
         setIsVerifyStep(false);
         closeAuthModal();
-        redirect(APP_ROUTES.PROFILE)
+        redirect(APP_ROUTES.PROFILE);
       }
     }
   };
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await fetch(`https://crm.uztu.uz/api/client/login-sms`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const dataJson = await res.json();
+
+      // ❗ success false bo‘lsa xato sifatida tashlaymiz
+      if (!dataJson.success) {
+        throw new Error(dataJson.message || "Noma’lum xato");
+      }
+
+      return dataJson;
+    },
+    onSuccess: (res) => {
+      setIsVerifyStep(true);
+    },
+    onError: (err: any) => {
+      console.log(err, "errorlar");
+
+      toast.error(err?.message);
+    },
+  });
+
+  const handlePayment = () => {
+    mutate({
+      phone,
+    });
+  };
+
+  const { mutate: sendCode, isPending: sendCodePending } = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await fetch(`https://crm.uztu.uz/api/client/confirm-sms`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const dataJson = await res.json();
+
+      // ❗ success false bo‘lsa xato sifatida tashlaymiz
+      if (!dataJson.success) {
+        throw new Error(dataJson.message || "Noma’lum xato");
+      }
+
+      return dataJson;
+    },
+    onSuccess: (res) => {
+      setIsVerifyStep(false);
+    },
+    onError: (err) => {
+      toast.error(err?.message);
+    },
+  });
+
+  const handleSendCode = () => {
+    sendCode({
+      phone: phone,
+      code: newCode,
+    });
+  };
+
   return (
-    <AuthModalContext.Provider value={{ isModalOpen, openAuthModal, closeAuthModal }}>
+    <AuthModalContext.Provider
+      value={{ isModalOpen, openAuthModal, closeAuthModal }}
+    >
       {children}
       {isModalOpen && (
         <div
@@ -132,17 +215,16 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
                   value={code}
                   onChange={handleCodeChange}
                   className="w-full bg-[#CFCFCF1F] px-4 py-2 text-[#1C1C1C] rounded-lg focus:outline-none text-base sm:text-lg"
-                  placeholder="9 9 9 9 9"
+                  placeholder="0 0 0 0 0 0"
                 />
               </div>
             )}
 
             <button
-              title={t("login.submit")}
               className="w-full mt-6 bg-[#F06F1E] text-white rounded-lg py-2 sm:py-3 hover:bg-[#8F4D26] cursor-pointer transition-colors text-base sm:text-lg"
-              onClick={handleLogin}
+              onClick={isVerifyStep ? handleSendCode : handlePayment}
             >
-              {t("auth.button")}
+              {isPending || sendCodePending ? "Loading..." : t("auth.button")}
             </button>
           </div>
         </div>
