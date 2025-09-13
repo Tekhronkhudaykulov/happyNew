@@ -35,12 +35,17 @@ const Profile = () => {
         {localStorage.getItem(tokenName) ? (
           <>
             <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-              <button
-                onClick={() => router.back()}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+              <a
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.history.back();
+                  }
+                }}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center touch-action-manipulation"
+                title={t("auth.back")}
               >
-                <ArrowLeft size={16} className="text-[#1C1C1C] md:size-5" />
-              </button>
+                <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
+              </a>
               <h1 className="font-bold text-xl md:text-2xl lg:text-[35px] leading-tight tracking-[-0.06em] text-black">
                 {t("ready.personal")}
               </h1>

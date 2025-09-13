@@ -15,7 +15,6 @@ import { buildQuery } from "@/utils/buildQuery";
 import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
-import formatPrice from "@/utils/formatPrice";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
@@ -62,11 +61,15 @@ const Main = () => {
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState<any>("");
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<any[]>([]);
+  console.log(selectedCountries, "selected");
+
+  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
+    []
+  );
   const [isInputFocused, setIsInputFocused] = useState(false);
 
-  const { data: regionsData } = useQuery({
+  const { data: regionsData, isLoading } = useQuery({
     queryKey: ["regions", searchTerm],
     queryFn: () =>
       fetchRegions({
@@ -89,6 +92,8 @@ const Main = () => {
       console.error("Country ID is missing:", country);
       return;
     }
+    console.log(country, "countr");
+
     if (!selectedCountries.some((c) => c.id === country.id)) {
       setSelectedCountries([...selectedCountries, country]);
     }
@@ -138,7 +143,10 @@ const Main = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsInputFocused(false);
         setSearchTerm("");
       }
@@ -151,24 +159,26 @@ const Main = () => {
   }, []);
 
   return (
-    <div className="main relative bg-[#FFFFFF8F]">
-      <Image className="main-map" src={ASSETS.bgmap} alt="" />
-      <div className="main-container md:pb-[20px] pb-[150px]">
-        <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
-          <Image
-            className="main-download mt-[50px]"
-            src={ASSETS.download}
-            alt=""
-          />
-          <Image className="main-esim" src={ASSETS.esim} alt="" />
-          <div className="main-wrapper">
-            <h1 className="main-title">{t("title")}</h1>
+    <>
+      {/* {isLoading && <Loading5755 />} */}
+      <div className="main relative bg-[#FFFFFF8F]">
+        <Image className="main-map" src={ASSETS.bgmap} alt="" />
+        <div className="main-container">
+          <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
+            <Image
+              className="main-download mt-[50px]"
+              src={ASSETS.download}
+              alt=""
+            />
+            <Image className="main-esim" src={ASSETS.esim} alt="" />
+            <div className="main-wrapper">
+              <h1 className="main-title">{t("title")}</h1>
 
-            <ul className="main-list">
-              <p className="main-item">{t("nav1")}</p>
-              <p className="main-item">{t("nav2")}</p>
-              <p className="main-item hidden sm:block">{t("nav3")}</p>
-            </ul>
+              <ul className="main-list">
+                <p className="main-item">{t("nav1")}</p>
+                <p className="main-item">{t("nav2")}</p>
+                <p className="main-item hidden sm:block">{t("nav3")}</p>
+              </ul>
 
             {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
             <div className="md:flex md:flex-col-reverse">
@@ -211,44 +221,44 @@ const Main = () => {
                 </div>
               )}
 
-              {/* 🔹 Input va tanlanganlar */}
-              <div className="search-container">
-                <div className="flex items-center pl-2 gap-2 w-full">
-                  {selectedCountries.map((country) => (
-                    <span
-                      key={country.id}
-                      className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
-                    >
-                      {country.name}
-                      <X
-                        size={14}
-                        className="cursor-pointer"
-                        onClick={() => handleRemove(country)}
-                      />
-                    </span>
-                  ))}
+                {/* 🔹 Input va tanlanganlar */}
+                <div className="search-container">
+                  <div className="flex items-center pl-2 gap-2 w-full">
+                    {selectedCountries.map((country) => (
+                      <span
+                        key={country.id}
+                        className="flex items-center gap-1 bg-orange-100 text-orange-600 px-2 py-1 rounded-md text-sm"
+                      >
+                        {country.name}
+                        <X
+                          size={14}
+                          className="cursor-pointer"
+                          onClick={() => handleRemove(country)}
+                        />
+                      </span>
+                    ))}
 
-                  <input
-                    type="text"
-                    placeholder={
-                      showPlaceholder ? t("placeholder") : t("placeholder-sm")
-                    }
-                    className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
-                    value={searchTerm}
-                    onChange={handleChange}
-                    onFocus={() => setIsInputFocused(true)}
-                    onBlur={() => setIsInputFocused(false)}
-                  />
-                </div>
+                    <input
+                      type="text"
+                      placeholder={
+                        showPlaceholder ? t("placeholder") : t("placeholder-sm")
+                      }
+                      className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
+                      value={searchTerm}
+                      onChange={handleChange}
+                      onFocus={() => setIsInputFocused(true)}
+                      onBlur={() => setIsInputFocused(false)}
+                    />
+                  </div>
 
-                <div className="icon-wrapper">
-                  <Search
-                    className="text-[#FFFFFF] cursor-pointer"
-                    size={23}
-                    onClick={handleSearchClick}
-                  />
+                  <div className="icon-wrapper">
+                    <Search
+                      className="text-[#FFFFFF] cursor-pointer"
+                      size={23}
+                      onClick={handleSearchClick}
+                    />
+                  </div>
                 </div>
-              </div>
 
               {/* 🔹 Dropdown */}
               {(searchTerm || isInputFocused) && (
@@ -300,14 +310,15 @@ const Main = () => {
             </div>
           </div>
 
-          <Image
-            className="main-phone hidden sm:block"
-            src={phone}
-            alt="phone"
-          />
+            <Image
+              className="main-phone hidden sm:block"
+              src={phone}
+              alt="phone"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -90,6 +90,7 @@ const ConfirmPage = () => {
     },
     onSuccess: (res) => {
       const orderId = res?.order_id ?? res?.data?.order_id;
+
       if (orderId) {
         socket?.emit("join_order", String(orderId));
       }
@@ -122,6 +123,8 @@ const ConfirmPage = () => {
     },
     onOrderUpdated: (data) => {
       if (data?.status_name === "Активный") {
+        console.log(data, "data");
+        localStorage.setItem("simkard", JSON.stringify(data?.simcards[0]));
         setShowSuccessModal(true);
 
         setTimeout(() => {
@@ -136,6 +139,9 @@ const ConfirmPage = () => {
           setShowCancelModal(false);
         }, 3000);
       }
+    },
+    onError: (data) => {
+      console.log(data, "error");
     },
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
@@ -173,19 +179,24 @@ const ConfirmPage = () => {
         <div className="py-6 md:pb-4 pb-[15px] container relative ">
           {/* Header */}
           <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-8">
-            <button
-              onClick={() => router.back()}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+            <a
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.history.back();
+                }
+              }}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center touch-action-manipulation"
+              title={t("auth.back")}
             >
               <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
-            </button>
+            </a>
             <h1 className="font-semibold text-black text-xl sm:text-2xl lg:text-[35px]">
               {t("auth.confirm")}
             </h1>
           </div>
 
           <div className="flex flex-col md:flex-row items-stretch gap-[10px] md:gap-[13px]">
-          <div className="block md:hidden">
+            <div className="block md:hidden">
               <PackageCard
                 flag={ASSETS.turkey}
                 country={object?.name}

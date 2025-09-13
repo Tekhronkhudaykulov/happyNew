@@ -22,12 +22,17 @@ const MyEsim = () => {
 
       <div className="py-6 md:pb-6 pb-[100px] container">
         <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <button
-            onClick={() => router.back()}
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center"
+          <a
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.history.back();
+              }
+            }}
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1C1C1C0D] flex items-center justify-center touch-action-manipulation"
+            title={t("auth.back")}
           >
             <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
-          </button>
+          </a>
           <h1 className="font-semibold text-black text-xl sm:text-2xl lg:text-[35px] leading-tight tracking-[-0.06em]">
             {t("my.title")}
           </h1>
