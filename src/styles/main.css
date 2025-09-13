@@ -114,23 +114,35 @@
 .main-map {
   position: absolute !important;
   z-index: 0;
-  top: 44%;
-  left: 40%;
+  top: 37.5%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .main-download {
   position: absolute;
   z-index: 1;
-  top: 80%;
-  right: 45%;
+  top: 77%;
+  right: 43%;
 }
 
 .main-esim {
   position: absolute;
   z-index: 0;
   top: 55%;
-  right: 1%;
+  right: 4%;
+}
+
+.main-phone {
+  height: 605px;
+  margin-top: -115px;
+}
+
+.main-gray {
+  position: absolute;
+  z-index: 0;
+  top: -18%;
+  right: -1%;
 }
 
 .search-container {
@@ -165,11 +177,6 @@
   flex-direction: column;
 }
 
-.main-phone {
-  height: 605px;
-  margin-top: -115px;
-}
-
 .search-destinations {
   margin-top: 32px;
 }
@@ -179,7 +186,8 @@
     display: block !important;
   }
   .main-destination1,
-  .main-destination2 {
+  .main-destination2,
+  .main-gray {
     display: none !important;
   }
 

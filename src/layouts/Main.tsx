@@ -164,12 +164,13 @@ const Main = () => {
       <div className="main relative bg-[#FFFFFF8F]">
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
         <div className="main-container">
-          <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[150px]">
+          <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
             <Image
               className="main-download mt-[50px]"
               src={ASSETS.download}
               alt=""
             />
+            <Image className="main-gray" src={ASSETS.grey} alt="" />
             <Image className="main-esim" src={ASSETS.esim} alt="" />
             <div className="main-wrapper">
               <h1 className="main-title">{t("title")}</h1>
