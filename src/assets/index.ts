@@ -32,6 +32,7 @@ import download from './download.svg'
 import esim from './sim.svg'
 import bggsmth from './bgg.png'
 import grey from './Subtract.png'
+import bycard from './bycard.svg'
 
 export const ASSETS = {
   facebook,
@@ -67,5 +68,6 @@ export const ASSETS = {
   download,
   esim,
   bggsmth,
-  grey
+  grey,
+  bycard
 };

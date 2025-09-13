@@ -34,7 +34,7 @@ const SimReady = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <div className="py-4 md:pb-8 pb-[100px] sm:py-6 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-4  pb-[80px] md:pb-[120px]  container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <a
             onClick={() => {

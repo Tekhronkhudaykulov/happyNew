@@ -20,6 +20,7 @@ import {
 } from "@/components/loading/loading";
 import { socket } from "@/socket/socketClient";
 import { useOrderSocket } from "@/socket/useSocketEvents";
+import Image from "next/image";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -47,6 +48,7 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [passportFile, setPassportFile] = useState<File | null>(null);
   const [object, setObject] = useState<any>(null);
 
   const [phone, setPhone] = useState<string>();
@@ -65,7 +67,10 @@ const ConfirmPage = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) setFileName(file.name);
+    if (file) {
+      setPassportFile(file);
+      setFileName(file.name);
+    }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,17 +104,25 @@ const ConfirmPage = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: any) => {
+      const formData = new FormData();
+      formData.append("plan_id", data.plan_id);
+      formData.append("fio", data.fio);
+      formData.append("phone", data.phone);
+      formData.append("payment_type_id", data.payment_type_id);
+      if (data.passport) formData.append("passport", data.passport);
+      if (data.passport_image)
+        formData.append("passport_image", data.passport_image);
+
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: formData,
       });
+
       if (!res.ok) throw new Error("Failed to create payment");
       return res.json();
     },
     onSuccess: (res) => {
       const orderId = res?.order_id ?? res?.data?.order_id;
-
       if (orderId) {
         socket?.emit("join_order", String(orderId));
       }
@@ -119,14 +132,14 @@ const ConfirmPage = () => {
     },
   });
 
-  // 📌 Paymentni boshlash
   const handlePayment = () => {
     mutate({
       plan_id: object?.id,
       fio,
-      phone, // ✅ bu endi profileData'dan kelsa o'sha, bo'sh bo'lsa user yozgani
+      phone,
       payment_type_id: selectedMethod,
       passport: fileName,
+      passport_image: passportFile,
     });
   };
 
@@ -161,16 +174,18 @@ const ConfirmPage = () => {
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
   });
+
   useEffect(() => {
     if (profileData?.data) {
       if (profileData.data.phone) {
-        setPhone(profileData.data.phone); // 📱 telefonni yozib qo'yadi
+        setPhone(profileData.data.phone);
       }
       if (profileData.data.full_name) {
-        setFio(profileData.data.full_name); // 👤 ism familyani yozib qo'yadi
+        setFio(profileData.data.full_name);
       }
     }
   }, [profileData]);
+
   return (
     <>
       {isPending && (
@@ -201,7 +216,6 @@ const ConfirmPage = () => {
         <Navbar />
 
         <div className="py-6 md:pb-4 pb-[15px] container relative ">
-          {/* Header */}
           <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-8">
             <a
               onClick={() => {
@@ -230,9 +244,7 @@ const ConfirmPage = () => {
                 variant="buy"
               />
             </div>
-            {/* Form */}
             <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-8">
-              {/* Inputs */}
               <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
                 <div className="w-full">
                   <p className="text-sm mb-2 text-[#595959]">
@@ -242,7 +254,7 @@ const ConfirmPage = () => {
                     type="text"
                     placeholder="Ivan"
                     className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={fio || ""} // ✅ profileData'dan kelsa avtomatik to'ldiriladi
+                    value={fio || ""}
                     onChange={(e) => setFio(e.target.value)}
                   />
                 </div>
@@ -256,7 +268,7 @@ const ConfirmPage = () => {
                     type="text"
                     placeholder="+998 99 999 99 99"
                     className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={phone || ""} // ✅ doim phone state ishlatiladi
+                    value={phone || ""}
                     onChange={handlePhoneChange}
                   />
                 </div>
@@ -281,32 +293,45 @@ const ConfirmPage = () => {
                 </div>
               </div>
 
-              {/* Payment methods */}
               <div>
                 <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
-                  {paymentData?.data?.map((method: any) =>
-                    ["click", "payme", "visa", "octo_uzs"].includes(
-                      method?.key
-                    ) ? (
-                      <div
-                        key={method?.id}
-                        className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                          selectedMethod === method?.id
-                            ? "border border-[#F06F1E]"
-                            : ""
-                        }`}
-                        onClick={() => setSelectedMethod(method?.id)}
-                      >
-                        <p>{method?.name}</p>
-                      </div>
-                    ) : null
-                  )}
+                  <div
+                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                      selectedMethod === "click" ? "border border-[#F06F1E]" : ""
+                    }`}
+                    onClick={() => setSelectedMethod("click")}
+                  >
+                    <Image src={ASSETS.click} alt="click" className="h-6 md:h-8 object-contain" />
+                  </div>
+                  <div
+                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                      selectedMethod === "payme" ? "border border-[#F06F1E]" : ""
+                    }`}
+                    onClick={() => setSelectedMethod("payme")}
+                  >
+                    <Image src={ASSETS.payme} alt="payme" className="h-6 md:h-8 object-contain" />
+                  </div>
+                  <div
+                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                      selectedMethod === "visa" ? "border border-[#F06F1E]" : ""
+                    }`}
+                    onClick={() => setSelectedMethod("visa")}
+                  >
+                    <Image src={ASSETS.visa} alt="visa" className="h-6 md:h-8 object-contain" />
+                  </div>
+                  <div
+                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                      selectedMethod === "octo_uzs" ? "border border-[#F06F1E]" : ""
+                    }`}
+                    onClick={() => setSelectedMethod("octo_uzs")}
+                  >
+                    <Image src={ASSETS.bycard} alt="octo_uzs" className="h-6 md:h-8 object-contain" />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* PackageCard */}
             <div className="md:block hidden">
               <PackageCard
                 flag={ASSETS.turkey}
@@ -320,9 +345,7 @@ const ConfirmPage = () => {
           </div>
         </div>
 
-        {/* Bottom button */}
-        <div className="mt-auto">
-          <div className="container md:pb-0 pb-[60px]">
+        <div className="container md:pb-0 pb-[60px] mt-auto">
             <button
               disabled={isPending}
               onClick={handlePayment}
@@ -331,6 +354,8 @@ const ConfirmPage = () => {
               {isPending ? "Loading..." : t("auth.pay")}
             </button>
           </div>
+
+        <div className="">
           <FooterNav />
         </div>
       </div>

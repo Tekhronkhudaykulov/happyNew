@@ -161,7 +161,7 @@ const Country = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <div className="py-6 md:pb-6 pb-[125px] container ">
+      <div className="py-6 pb-[111px] container ">
         {/* HEADER */}
         <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
