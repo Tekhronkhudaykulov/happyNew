@@ -33,7 +33,7 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
 
   const isAuthenticated = !!localStorage.getItem("token");
 
-  const handleProfileClick = () => {
+  const handleIsAutheticated = (destination: string) => {
     if (!isAuthenticated) {
       if (typeof openAuthModal === "function") {
         openAuthModal();
@@ -43,7 +43,7 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
         window.location.href = APP_ROUTES.LOGIN;
       }
     } else {
-      window.location.href = APP_ROUTES.PROFILE;
+      window.location.href = destination;
     }
   };
 
@@ -71,9 +71,9 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
         </Link>
 
         {/* My Sims */}
-        <Link
-          href={APP_ROUTES.MY_SIMS}
-          className={`flex flex-col justify-center items-center gap-[3px] ${
+        <div
+          onClick={() => handleIsAutheticated(APP_ROUTES.MY_SIMS)}
+          className={`flex flex-col justify-center items-center gap-[3px] cursor-pointer ${
             isActiveMySims ? "text-[#F06F1E]" : ""
           }`}
         >
@@ -88,11 +88,11 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
           >
             {t("footernav.myesims")}
           </p>
-        </Link>
+        </div>
 
         {/* Profile */}
         <div
-          onClick={handleProfileClick}
+          onClick={() => handleIsAutheticated(APP_ROUTES.PROFILE)}
           className={`flex flex-col justify-center items-center gap-[3px] cursor-pointer ${
             isActiveProfile ? "text-[#F06F1E]" : ""
           }`}

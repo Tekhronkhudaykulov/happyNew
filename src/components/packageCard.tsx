@@ -5,6 +5,7 @@ import { Share2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useState } from "react"; 
 
 type PackageCardProps = {
   flag?: string;
@@ -15,8 +16,8 @@ type PackageCardProps = {
   createdAt?: string;
   iccid?: string;
   balance?: number;
-  variant: "buy" | "active" | "balance";
-  onCheckBalance?: () => void;
+  variant?: "buy" | "active" | "balance"; 
+  onCheckBalance?: () => void; 
 };
 
 const PackageCard: FC<PackageCardProps> = ({
@@ -28,16 +29,23 @@ const PackageCard: FC<PackageCardProps> = ({
   createdAt,
   iccid,
   balance,
-  variant,
-  onCheckBalance,
+  variant: initialVariant = "active", // Default to "active"
 }) => {
   const t = useTranslations("");
-
   const router = useRouter();
+  const [variant, setVariant] = useState<"buy" | "active" | "balance">(initialVariant); // Manage variant state locally
+
+  const handleCheckBalance = () => {
+    setVariant("balance"); // Toggle to balance for this card only
+  };
 
   return (
     <div>
-      <div className={`bg-[#1C1C1C0D] ${variant == "buy" ? "hidden md:flex" : "flex"} flex-col w-full sm:w-11/12 md:w-3/5 lg:w-2/5 max-w-[400px] min-w-[280px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}>
+      <div
+        className={`bg-[#1C1C1C0D] ${
+          variant === "buy" ? "hidden md:flex" : "flex"
+        } flex-col w-full max-w-[400px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <Image
@@ -109,7 +117,7 @@ const PackageCard: FC<PackageCardProps> = ({
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
             <button
               className="flex-1 bg-[#F06F1E20] text-[#F06F1E] py-2 rounded-lg text-sm sm:text-base"
-              onClick={onCheckBalance}
+              onClick={handleCheckBalance} // Use local handler
             >
               {t("my.check")}
             </button>
@@ -137,8 +145,12 @@ const PackageCard: FC<PackageCardProps> = ({
         )}
       </div>
 
-      <div className={`bg-[#1C1C1C0D] ${ variant == 'buy' ? "md:hidden flex flex-col" : "hidden" } w-full rounded-[12px] py-2 px-3 gap-2`}>
-        <div className="flex items-center justify-between ">
+      <div
+        className={`bg-[#1C1C1C0D] ${
+          variant === "buy" ? "md:hidden flex flex-col" : "hidden"
+        } w-full rounded-[12px] py-2 px-3 gap-2`}
+      >
+        <div className="flex items-center justify-between">
           <div className="flex items-center w-full justify-between pb-[15px] border-[#E4E4E4] border-b">
             <div className="flex items-center gap-4">
               <Image
@@ -146,33 +158,29 @@ const PackageCard: FC<PackageCardProps> = ({
                 alt={`${country} flag`}
                 className="w-8 h-8 object-cover destination-flag"
               />
-              <h1 className="text-[14px]  text-black font-medium truncate">
+              <h1 className="text-[14px] text-black font-medium truncate">
                 {t("auth.paket")} {country}
               </h1>
             </div>
-
-            <h3 className="text-[14px] font-medium text-[#F06F1E]">
-              {price}
-            </h3>
+            <h3 className="text-[14px] font-medium text-[#F06F1E]">{price}</h3>
           </div>
         </div>
 
         <div className="my-2 flex w-full justify-between">
-            <div>
-              <h2 className="text-[#1C1C1C] text-[14px]" >{`${gb}GB - ${days}${t("country.days")}`}</h2>
-              <p className="text-[#595959] text-[14px]">{t("my.tarif")}</p>
-            </div>
-
-            <div>
-              <h2 className="text-[#1C1C1C] text-[14px]" >{t("auth.ism")}</h2>
-              <p className="text-[#595959] text-[14px]">{t("auth.set")}</p>
-            </div>
-
-            <div>
-              <h2 className="text-[#1C1C1C] text-[14px]" >{t("auth.available")}</h2>
-              <p className="text-[#595959] text-[14px]">{t("auth.razdacha")}</p>
-            </div>
-
+          <div>
+            <h2 className="text-[#1C1C1C] text-[14px]">
+              {`${gb}GB - ${days}${t("country.days")}`}
+            </h2>
+            <p className="text-[#595959] text-[14px]">{t("my.tarif")}</p>
+          </div>
+          <div>
+            <h2 className="text-[#1C1C1C] text-[14px]">{t("auth.ism")}</h2>
+            <p className="text-[#595959] text-[14px]">{t("auth.set")}</p>
+          </div>
+          <div>
+            <h2 className="text-[#1C1C1C] text-[14px]">{t("auth.available")}</h2>
+            <p className="text-[#595959] text-[14px]">{t("auth.razdacha")}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -181,10 +189,10 @@ const PackageCard: FC<PackageCardProps> = ({
 
 const Row = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex items-center justify-between py-3 border-b border-[#E4E4E4] last:border-b-0">
-    <p className="text-[#595959] text-sm sm:text-base font-normal truncate max-w-[50%]">
+    <p className="text-[#595959] text-sm sm:text-base font-normal max-w-[50%]">
       {label}
     </p>
-    <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate max-w-[50%]">
+    <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] max-w-[50%]">
       {value}
     </h3>
   </div>
