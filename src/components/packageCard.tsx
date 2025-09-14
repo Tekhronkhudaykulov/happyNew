@@ -44,7 +44,7 @@ const PackageCard: FC<PackageCardProps> = ({
       <div
         className={`bg-[#1C1C1C0D] ${
           variant === "buy" ? "hidden md:flex" : "flex"
-        } flex-col w-full max-w-[400px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}
+        } flex-col min-w-[300px] w-full max-w-[400px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
