@@ -21,6 +21,7 @@ import {
 import { socket } from "@/socket/socketClient";
 import { useOrderSocket } from "@/socket/useSocketEvents";
 import Image from "next/image";
+import { number } from "framer-motion";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -47,7 +48,7 @@ const ConfirmPage = () => {
   const router = useRouter();
 
   const [fileName, setFileName] = useState<string | null>(null);
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [object, setObject] = useState<any>(null);
 
@@ -67,10 +68,7 @@ const ConfirmPage = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      setPassportFile(file);
-      setFileName(file.name);
-    }
+    if (file) setFileName(file.name);
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,12 +108,12 @@ const ConfirmPage = () => {
       formData.append("phone", data.phone);
       formData.append("payment_type_id", data.payment_type_id);
       if (data.passport) formData.append("passport", data.passport);
-      if (data.passport_image)
-        formData.append("passport_image", data.passport_image);
+      formData.append("passport_image", data.passport_image);
 
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) throw new Error("Failed to create payment");
@@ -174,6 +172,8 @@ const ConfirmPage = () => {
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
   });
+
+  console.log(paymentData);
 
   useEffect(() => {
     if (profileData?.data) {
@@ -296,38 +296,31 @@ const ConfirmPage = () => {
               <div>
                 <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
-                  <div
-                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                      selectedMethod === "click" ? "border border-[#F06F1E]" : ""
-                    }`}
-                    onClick={() => setSelectedMethod("click")}
-                  >
-                    <Image src={ASSETS.click} alt="click" className="h-6 md:h-8 object-contain" />
-                  </div>
-                  <div
-                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                      selectedMethod === "payme" ? "border border-[#F06F1E]" : ""
-                    }`}
-                    onClick={() => setSelectedMethod("payme")}
-                  >
-                    <Image src={ASSETS.payme} alt="payme" className="h-6 md:h-8 object-contain" />
-                  </div>
-                  <div
-                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                      selectedMethod === "visa" ? "border border-[#F06F1E]" : ""
-                    }`}
-                    onClick={() => setSelectedMethod("visa")}
-                  >
-                    <Image src={ASSETS.visa} alt="visa" className="h-6 md:h-8 object-contain" />
-                  </div>
-                  <div
-                    className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                      selectedMethod === "octo_uzs" ? "border border-[#F06F1E]" : ""
-                    }`}
-                    onClick={() => setSelectedMethod("octo_uzs")}
-                  >
-                    <Image src={ASSETS.bycard} alt="octo_uzs" className="h-6 md:h-8 object-contain" />
-                  </div>
+                  {paymentData?.data?.map((method: any) =>
+                    ["click", "payme", "visa", "octo_uzs"].includes(
+                      method?.key
+                    ) ? (
+                      <div
+                        key={method?.id}
+                        className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                          selectedMethod === method?.id
+                            ? "border border-[#F06F1E]"
+                            : ""
+                        }`}
+                        onClick={() => setSelectedMethod(method?.id)}
+                      >
+                        <Image alt="" src={
+                            method?.name === "Click"
+                              ? ASSETS.click
+                              : method?.name === "Payme"
+                              ? ASSETS.payme
+                              : method?.name === "Visa"
+                              ? ASSETS.visa
+                              : ASSETS.bycard
+                          } className="md:w-fit w-12" />
+                      </div>
+                    ) : null
+                  )}
                 </div>
               </div>
             </div>
@@ -346,14 +339,14 @@ const ConfirmPage = () => {
         </div>
 
         <div className="container md:pb-0 pb-[60px] mt-auto">
-            <button
-              disabled={isPending}
-              onClick={handlePayment}
-              className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2"
-            >
-              {isPending ? "Loading..." : t("auth.pay")}
-            </button>
-          </div>
+          <button
+            disabled={isPending}
+            onClick={handlePayment}
+            className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2"
+          >
+            {isPending ? "Loading..." : t("auth.pay")}
+          </button>
+        </div>
 
         <div className="">
           <FooterNav />
