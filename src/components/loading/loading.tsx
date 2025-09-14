@@ -133,7 +133,7 @@ const PaymentSuccess = () => {
         </div>
 
         {/* Success text */}
-        <h2 className="text-2xl font-semibold text-white">
+        <h2 className="text-2xl text-center font-semibold text-white">
           Оплата успешно принята, Пожалуйста, не закрывайте окно, до получения
           данных e-sim
         </h2>
