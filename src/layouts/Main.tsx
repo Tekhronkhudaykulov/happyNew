@@ -172,9 +172,7 @@ const Main = () => {
             />
             <Image className="main-gray" src={ASSETS.grey} alt="" />
             <Image className="main-esim" src={ASSETS.esim} alt="" />
-            <h3 className="main-headingg">
-              {t("heaidngg")}
-            </h3>
+            <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
             <div className="main-wrapper">
               <h1 className="main-title">{t("title")}</h1>
 
@@ -194,7 +192,7 @@ const Main = () => {
                     {defaultCountries?.map((item: any) => (
                       <div
                         key={item.country}
-                        className="keen-slider__slide cursor-pointer bg-[#4546477A] rounded-[12px] p-[15px]"
+                        className="keen-slider__slide cursor-pointer h-max bg-[#4546477A]  rounded-[12px] p-[15px]"
                         onClick={() => {
                           localStorage.setItem(
                             "selectedObject",
@@ -215,9 +213,9 @@ const Main = () => {
                             />
                           </div>
                           <div>
-                            <h1 className="text-[20px] font-normal text-[#FFFFFF]">
+                            <p className="text-[20px] font-normal text-[#FFFFFF]">
                               {item.name}
-                            </h1>
+                            </p>
                           </div>
                         </div>
                       </div>

@@ -83,10 +83,10 @@ const MyEsim = () => {
     );
   }
 
-  const limit = isDesktop ? 6 : 4; 
+  const limit = isDesktop ? 6 : 4;
   const shouldLimit = esims?.length > limit && !showAll;
   const visibleEsims = shouldLimit ? esims.slice(0, limit) : esims;
-  console.log(esims)
+  console.log(esims);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -108,10 +108,10 @@ const MyEsim = () => {
             {t("my.title")}
           </h1>
         </div>
-          <>
-            <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
-              {visibleEsims?.length > 0 ? (
-                visibleEsims.map((esim: any, index: number) => (
+        <>
+          <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
+            {visibleEsims?.length > 0
+              ? visibleEsims.map((esim: any, index: number) => (
                   <PackageCard
                     key={esim.id || index}
                     flag={
@@ -125,25 +125,30 @@ const MyEsim = () => {
                     createdAt={esim.created_at}
                     iccid={esim.simcards?.[0]?.ssid}
                     balance={esim.total_payments_amount}
-                    variant="active" 
+                    variant="active"
+                    handleRoute={() => {
+                      localStorage.setItem(
+                        "simkard",
+                        JSON.stringify(esim?.simcards[0])
+                      );
+                      router.push("/simDone");
+                    }}
                   />
                 ))
-              ) : (
-               ""
-              )}
-            </div>
+              : ""}
+          </div>
 
-            {shouldLimit && (
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setShowAll(true)}
-                  className="mx-auto mt-4 px-6 py-2 border text-black border-[#1C1C1C] rounded-lg text-[13px] md:text-base"
-                >
-                  {t("otzives.showAll") || "Show All"}
-                </button>
-              </div>
-            )}
-          </>
+          {shouldLimit && (
+            <div className="flex justify-center">
+              <button
+                onClick={() => setShowAll(true)}
+                className="mx-auto mt-4 px-6 py-2 border text-black border-[#1C1C1C] rounded-lg text-[13px] md:text-base"
+              >
+                {t("otzives.showAll") || "Show All"}
+              </button>
+            </div>
+          )}
+        </>
       </div>
 
       <div className="mt-auto">

@@ -21,7 +21,6 @@ export const useOrderSocket = ({
     if (!socket.connected) socket.connect();
 
     socket.on("connect", () => {
-      console.log("✅ Ulandi:", socket.id);
       onConnect?.(socket?.id);
     });
 
@@ -38,7 +37,6 @@ export const useOrderSocket = ({
     }
 
     socket.on("disconnect", (reason) => {
-      console.log("❌ Uzildi:", reason);
       onDisconnect?.(reason);
     });
 

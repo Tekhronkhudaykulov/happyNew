@@ -89,7 +89,7 @@ const LoadingWaiting = () => {
 
         {/* Text with animated dots */}
         <div className="text-xl font-medium text-white flex items-center">
-        Ожидается оплата
+          Ожидается оплата
           <span className="ml-2 flex w-6 justify-start">
             <span className="dot">.</span>
             <span className="dot">.</span>
@@ -134,7 +134,8 @@ const PaymentSuccess = () => {
 
         {/* Success text */}
         <h2 className="text-2xl font-semibold text-white">
-          Оплата прошла успешно
+          Оплата успешно принята, Пожалуйста, не закрывайте окно, до получения
+          данных e-sim
         </h2>
       </div>
     </div>

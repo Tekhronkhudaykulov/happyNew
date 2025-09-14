@@ -22,6 +22,8 @@ import { socket } from "@/socket/socketClient";
 import { useOrderSocket } from "@/socket/useSocketEvents";
 import Image from "next/image";
 import { number } from "framer-motion";
+import { toast } from "react-toastify";
+import Button from "@/components/button";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -68,7 +70,10 @@ const ConfirmPage = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) setFileName(file.name);
+    if (file) {
+      setFileName(file.name);
+      setPassportFile(file); // ✅ Файлни сақланг
+    }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,35 +113,63 @@ const ConfirmPage = () => {
       formData.append("phone", data.phone);
       formData.append("payment_type_id", data.payment_type_id);
       if (data.passport) formData.append("passport", data.passport);
-      formData.append("passport_image", data.passport_image);
+      if (data.passport_image)
+        formData.append("passport_image", data.passport_image);
 
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        // headers: { "Content-Type": "application/json" }, // ❌ Учиринг!
+        body: formData, // ✅ FormData юборинг
       });
 
-      if (!res.ok) throw new Error("Failed to create payment");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          `Failed to create payment: ${JSON.stringify(errorData)}`
+        );
+      }
       return res.json();
     },
     onSuccess: (res) => {
       const orderId = res?.order_id ?? res?.data?.order_id;
+      if (res?.token) {
+        localStorage.setItem("token", res?.token);
+      }
       if (orderId) {
-        socket?.emit("join_order", String(orderId));
+        const token = localStorage.getItem("token");
+        socket?.emit("join_order", {
+          orderId: orderId,
+          token,
+        });
       }
     },
     onError: (err) => {
-      console.error("❌ Payment error:", err);
+      toast.error(err?.message);
     },
   });
 
   const handlePayment = () => {
+    if (!fio || fio.trim() === "") {
+      toast.error("Исмни киритинг!");
+      return;
+    }
+    if (!phone || phone.trim() === "") {
+      toast.error("Телефон рақамини киритинг!");
+      return;
+    }
+    if (!selectedMethod) {
+      toast.error("Тўлов усулини танланг!");
+      return;
+    }
+    if (!passportFile) {
+      toast.error("Паспорт расмини юкланг!");
+      return;
+    }
     mutate({
       plan_id: object?.id,
       fio,
       phone,
       payment_type_id: selectedMethod,
-      passport: fileName,
       passport_image: passportFile,
     });
   };
@@ -149,7 +182,6 @@ const ConfirmPage = () => {
     },
     onOrderUpdated: (data) => {
       if (data?.status_name === "Активный") {
-        console.log(data, "data");
         localStorage.setItem("simkard", JSON.stringify(data?.simcards[0]));
         setShowSuccessModal(true);
 
@@ -167,7 +199,7 @@ const ConfirmPage = () => {
       }
     },
     onError: (data) => {
-      console.log(data, "error");
+      toast.error(data?.message);
     },
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
@@ -309,7 +341,9 @@ const ConfirmPage = () => {
                         }`}
                         onClick={() => setSelectedMethod(method?.id)}
                       >
-                        <Image alt="" src={
+                        <Image
+                          alt=""
+                          src={
                             method?.name === "Click"
                               ? ASSETS.click
                               : method?.name === "Payme"
@@ -317,7 +351,9 @@ const ConfirmPage = () => {
                               : method?.name === "Visa"
                               ? ASSETS.visa
                               : ASSETS.bycard
-                          } className="md:w-fit w-12" />
+                          }
+                          className="md:w-fit w-12"
+                        />
                       </div>
                     ) : null
                   )}
@@ -338,14 +374,39 @@ const ConfirmPage = () => {
           </div>
         </div>
 
-        <div className="container md:pb-0 pb-[60px] mt-auto">
-          <button
-            disabled={isPending}
+        <div
+          className="container md:pb-0 pb-[60px] mt-auto"
+          onClick={handlePayment}
+        >
+          {/* <button
+            disabled={
+              isPending ||
+              !fio ||
+              fio.trim() === "" ||
+              !phone ||
+              phone.trim() === "" ||
+              !selectedMethod ||
+              !passportFile
+            }
             onClick={handlePayment}
             className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2"
           >
             {isPending ? "Loading..." : t("auth.pay")}
-          </button>
+          </button> */}
+
+          <Button
+            classname="mt-0 sm:mt-6 w-full"
+            title={isPending ? "Loading..." : t("auth.pay")}
+            disabled={
+              isPending ||
+              !fio ||
+              fio.trim() === "" ||
+              !phone ||
+              phone.trim() === "" ||
+              !selectedMethod ||
+              !passportFile
+            }
+          />
         </div>
 
         <div className="">

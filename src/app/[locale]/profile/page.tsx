@@ -187,14 +187,14 @@ const Profile = () => {
                     {profileData?.data?.passport_image ? (
                       // Agar passport_image mavjud bo‘lsa rasmni chiqarish
                       <div className="flex flex-col gap-2">
-                        <img
+                        {/* <Image
                           src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
                           alt="Passport"
                           className="w-[200px] h-auto rounded-lg border"
-                        />
-                        <p className="text-sm text-gray-600">
+                        /> */}
+                        {/* <p className="text-sm text-gray-600">
                           {profileData?.data?.passport_image.split("/").pop()}
-                        </p>
+                        </p> */}
                       </div>
                     ) : (
                       // Agar passport_image yo‘q bo‘lsa — yuklash inputi
@@ -235,7 +235,7 @@ const Profile = () => {
                     <h2 className="text-sm md:text-[14px] font-normal">
                       {t("ready.keshbek")}
                     </h2>
-                    <h2 className="text-[30px] font-medium">LOGO</h2>
+                    <Image src={ASSETS.logowhite} alt="" />
                   </div>
                   <h1 className="text-[30px] md:text-[35px] font-bold mt-4">
                     {profileData?.data?.balance} UZS

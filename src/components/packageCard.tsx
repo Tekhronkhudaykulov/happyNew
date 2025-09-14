@@ -5,7 +5,7 @@ import { Share2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useState } from "react"; 
+import { useState } from "react";
 
 type PackageCardProps = {
   flag?: string;
@@ -16,8 +16,9 @@ type PackageCardProps = {
   createdAt?: string;
   iccid?: string;
   balance?: number;
-  variant?: "buy" | "active" | "balance"; 
-  onCheckBalance?: () => void; 
+  variant?: "buy" | "active" | "balance";
+  onCheckBalance?: () => void;
+  handleRoute?: any;
 };
 
 const PackageCard: FC<PackageCardProps> = ({
@@ -29,11 +30,14 @@ const PackageCard: FC<PackageCardProps> = ({
   createdAt,
   iccid,
   balance,
-  variant: initialVariant = "active", // Default to "active"
+  variant: initialVariant = "active",
+  handleRoute, // Default to "active"
 }) => {
   const t = useTranslations("");
   const router = useRouter();
-  const [variant, setVariant] = useState<"buy" | "active" | "balance">(initialVariant); // Manage variant state locally
+  const [variant, setVariant] = useState<"buy" | "active" | "balance">(
+    initialVariant
+  ); // Manage variant state locally
 
   const handleCheckBalance = () => {
     setVariant("balance"); // Toggle to balance for this card only
@@ -122,7 +126,7 @@ const PackageCard: FC<PackageCardProps> = ({
               {t("my.check")}
             </button>
             <div
-              onClick={() => router.push("/simDone")}
+              onClick={handleRoute}
               className="flex-1 bg-[#E4E4E4] text-[#1C1C1C] flex items-center justify-center py-2 rounded-lg text-sm sm:text-base"
             >
               {t("my.detail")}
@@ -178,7 +182,9 @@ const PackageCard: FC<PackageCardProps> = ({
             <p className="text-[#595959] text-[14px]">{t("auth.set")}</p>
           </div>
           <div>
-            <h2 className="text-[#1C1C1C] text-[14px]">{t("auth.available")}</h2>
+            <h2 className="text-[#1C1C1C] text-[14px]">
+              {t("auth.available")}
+            </h2>
             <p className="text-[#595959] text-[14px]">{t("auth.razdacha")}</p>
           </div>
         </div>
