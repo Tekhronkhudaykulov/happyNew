@@ -8,6 +8,7 @@ import { APP_ROUTES } from "@/router/path";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { setToken } from "@/config/api";
+import { API_URL } from "@/config";
 
 interface AuthModalContextType {
   isModalOpen: boolean;
@@ -108,7 +109,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: any) => {
-      const res = await fetch(`https://crm.uztu.uz/api/client/login-sms`, {
+      const res = await fetch(`${API_URL}/client/login-sms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -141,7 +142,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
 
   const { mutate: sendCode, isPending: sendCodePending } = useMutation({
     mutationFn: async (data: any) => {
-      const res = await fetch(`https://crm.uztu.uz/api/client/confirm-sms`, {
+      const res = await fetch(`${API_URL}/client/confirm-sms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

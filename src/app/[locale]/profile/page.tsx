@@ -11,14 +11,15 @@ import { useState, useEffect } from "react";
 import { useAuthModal } from "@/providers/AuthModalProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_ROUTES } from "@/router/path";
-import { API_IMAGE } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
 
 const tokenName = "token";
 
 async function fetchPlans() {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`https://crm.uztu.uz/api/client/me`, {
+  const res = await fetch(`${API_URL}/${endpoints.profile}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
@@ -88,7 +89,7 @@ const Profile = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: FormData) => {
-      const res = await fetch(`https://crm.uztu.uz/api/client/profile`, {
+      const res = await fetch(`${API_URL}/${endpoints.profile}`, {
         method: "PUT",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",

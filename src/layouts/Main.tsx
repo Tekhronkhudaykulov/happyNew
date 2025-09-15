@@ -58,6 +58,7 @@ async function fetchRegions(params: Record<string, any>) {
 
 const Main = () => {
   const t = useTranslations("main");
+  const p = useTranslations("");
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState<any>("");
@@ -165,11 +166,16 @@ const Main = () => {
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
         <div className="main-container">
           <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
-            <Image
+            <div className="main-download mt-[50px] w-[150px] h-[150px] rounded-full border border-[#F06F1E] flex items-center justify-center">
+              <p className="text-[#F06F1E] text-center">
+                {p("download.title")}
+              </p>
+            </div>
+            {/* <Image
               className="main-download mt-[50px]"
               src={ASSETS.download}
               alt=""
-            />
+            /> */}
             <Image className="main-gray" src={ASSETS.grey} alt="" />
             <Image className="main-esim" src={ASSETS.esim} alt="" />
             <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
@@ -213,7 +219,13 @@ const Main = () => {
                             />
                           </div>
                           <div>
-                            <p className="text-[20px] font-normal text-[#FFFFFF]">
+                            <p
+                              className={`font-normal text-[#FFFFFF] ${
+                                item.name.length > 10
+                                  ? "text-[16px]"
+                                  : "text-[20px]"
+                              }`}
+                            >
                               {item.name}
                             </p>
                           </div>

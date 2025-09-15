@@ -34,7 +34,7 @@ async function fetchPayments() {
 async function fetchProfile() {
   const token = localStorage.getItem("token");
 
-  const res = await fetch(`https://crm.uztu.uz/api/client/me`, {
+  const res = await fetch(`${API_URL}/${endpoints.profile}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",

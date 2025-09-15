@@ -11,15 +11,39 @@ import { useTranslations } from "next-intl";
 import QrCode from "@/components/qrCode";
 import { ASSETS } from "@/assets";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchCheckBalance(params: any) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/${endpoints.checkBalance(params)}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch plans");
+  return res.json();
+}
 
 const SimReady = () => {
   const t = useTranslations();
   const router = useRouter();
   const simKard = localStorage.getItem("simkard");
 
-  const object = JSON.parse(simKard);
+  const [id, setId] = useState();
 
-  console.log(object);
+  const {
+    data: balanceData,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ["checkBalance", id],
+    queryFn: () => fetchCheckBalance(id),
+    enabled: false,
+  });
+  const object = JSON.parse(simKard);
 
   const handleActivate = () => {
     if (!object?.qr_code) {
@@ -28,6 +52,13 @@ const SimReady = () => {
 
     // iPhone Safari orqali ochish uchun
     window.location.href = object?.qr_code;
+  };
+
+  const handleCheckBalance = async (orderId: any) => {
+    setId(orderId);
+    setTimeout(() => {
+      refetch();
+    }, 0);
   };
 
   return (
@@ -192,11 +223,17 @@ const SimReady = () => {
                 </div>
               </div>
             </div>
-
             <Button
-              navigate={APP_ROUTES.MY_SIMS}
+              onclick={() => handleCheckBalance(object?.pivot?.order_id)}
               bg="orange"
-              title={t("my.check")}
+              title={
+                balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
+                  ? (
+                      balanceData.balance[0].subOrderList[0].remainingTraffic /
+                      (1024 * 1024)
+                    ).toFixed(2) + " MB"
+                  : t("my.check")
+              }
               classname="w-full"
             />
 
@@ -250,7 +287,7 @@ const SimReady = () => {
                       ICCID:
                     </p>
                     <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
-                      89812003919118650899
+                      {object?.ssid}
                     </h3>
                   </div>
 
@@ -260,7 +297,7 @@ const SimReady = () => {
                         UID:
                       </p>
                       <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
-                        19118650899
+                        {object?.uid}
                       </h3>
                     </div>
 
@@ -269,7 +306,7 @@ const SimReady = () => {
                         PIN:
                       </p>
                       <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
-                        1234
+                        {object?.pin}
                       </h3>
                     </div>
                   </div>
@@ -279,7 +316,7 @@ const SimReady = () => {
                       PUK:
                     </p>
                     <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
-                      03558176
+                      {object?.puk}
                     </h3>
                   </div>
                 </div>
@@ -294,9 +331,16 @@ const SimReady = () => {
             </div>
 
             <Button
-              navigate={APP_ROUTES.MY_SIMS}
+              onclick={() => handleCheckBalance(object?.pivot?.order_id)}
               bg="orange"
-              title={t("my.check")}
+              title={
+                balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
+                  ? (
+                      balanceData.balance[0].subOrderList[0].remainingTraffic /
+                      (1024 * 1024)
+                    ).toFixed(2) + " MB"
+                  : t("my.check")
+              }
               classname="w-full"
             />
           </div>
@@ -312,7 +356,10 @@ const SimReady = () => {
                   <h4 className="text-white text-base font-normal">
                     {t("ready.iphone")}
                   </h4>
-                  <div className="mt-[15px] bg-[#F06F1E14] rounded-xl py-2 px-4 flex items-center justify-between">
+                  <div
+                    onClick={handleActivate}
+                    className="mt-[15px] bg-[#F06F1E14] rounded-xl py-2 px-4 flex items-center justify-between"
+                  >
                     <p className="text-[#F06F1E] mr-[5px] text-[14px] font-medium">
                       {t("ready.go")}
                     </p>
@@ -331,7 +378,7 @@ const SimReady = () => {
                   </div>
                   <div className="mt-4 border border-[#FFFFFF6B] rounded-xl py-2 px-4 flex items-center justify-center">
                     <p className="text-[#FFFFFF6B] text-sm font-medium text-center truncate">
-                      LPA:1$RSP.BILLIONCONNECT.COM$B9543DD3925943FD9808B4994B1F5AC5
+                      {object?.qr_code}
                     </p>
                   </div>
                 </div>

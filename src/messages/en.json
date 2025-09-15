@@ -180,5 +180,8 @@
     "buy": "Купить пакет",
     "confirm": "Подтвердить заказ",
     "submit": "Отправить код"
+  },
+  "download": {
+    "title": "Download app"
   }
 }

@@ -10,23 +10,21 @@ import { ASSETS } from "@/assets";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { APP_ROUTES } from "@/router/path";
-import { Loading5755 } from "@/components/loading/loading";
+
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
 
 const tokenName = "token";
 
 async function fetchEsim() {
   const token = localStorage.getItem(tokenName);
 
-  const res = await fetch(
-    `https://crm.uztu.uz/api/client/order-simcard/my-orders`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    }
-  );
+  const res = await fetch(`${API_URL}/${endpoints.simOrder}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
 
   if (!res.ok) throw new Error("Failed to fetch eSIM data");
   const data = await res.json();
@@ -40,7 +38,10 @@ const MyEsim = () => {
   const { openAuthModal } = useAuthModal();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [showAll, setShowAll] = useState(false); // State for show all
-  const [isDesktop, setIsDesktop] = useState(true); // State for device detection
+  const [isDesktop, setIsDesktop] = useState(true);
+  const [id, setId] = useState();
+
+  console.log(id); // State for device detection
 
   useEffect(() => {
     const token = localStorage.getItem(tokenName);
@@ -111,8 +112,9 @@ const MyEsim = () => {
         <>
           <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
             {visibleEsims?.length > 0
-              ? visibleEsims.map((esim: any, index: number) => (
+              ? visibleEsims?.map((esim: any, index: number) => (
                   <PackageCard
+                    id={esim?.id}
                     key={esim.id || index}
                     flag={
                       ASSETS[esim.region_group?.name.toLowerCase()] ||
@@ -131,6 +133,7 @@ const MyEsim = () => {
                         "simkard",
                         JSON.stringify(esim?.simcards[0])
                       );
+
                       router.push("/simDone");
                     }}
                   />

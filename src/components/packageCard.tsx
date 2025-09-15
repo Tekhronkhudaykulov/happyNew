@@ -6,8 +6,12 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { API_URL } from "@/config";
+import endpoints from "@/services/endpoints";
+import { useQuery } from "@tanstack/react-query";
 
 type PackageCardProps = {
+  id?: any;
   flag?: string;
   country?: string;
   gb?: number;
@@ -21,6 +25,17 @@ type PackageCardProps = {
   handleRoute?: any;
 };
 
+async function fetchCheckBalance(params: any) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/${endpoints.checkBalance(params)}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch plans");
+  return res.json();
+}
+
 const PackageCard: FC<PackageCardProps> = ({
   flag,
   country,
@@ -32,6 +47,7 @@ const PackageCard: FC<PackageCardProps> = ({
   balance,
   variant: initialVariant = "active",
   handleRoute, // Default to "active"
+  id,
 }) => {
   const t = useTranslations("");
   const router = useRouter();
@@ -39,8 +55,21 @@ const PackageCard: FC<PackageCardProps> = ({
     initialVariant
   ); // Manage variant state locally
 
-  const handleCheckBalance = () => {
-    setVariant("balance"); // Toggle to balance for this card only
+  const {
+    data: balanceData,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["checkBalance", id],
+    queryFn: () => fetchCheckBalance(id),
+    enabled: false,
+  });
+
+  console.log(balanceData);
+
+  const handleCheckBalance = async () => {
+    await refetch(); // ✅ tugma bosilganda fetch ishlaydi
+    setVariant("balance");
   };
 
   return (
@@ -137,7 +166,13 @@ const PackageCard: FC<PackageCardProps> = ({
         {variant === "balance" && (
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
             <button className="flex-1 bg-[#F06F1E] text-white py-2 rounded-lg text-sm sm:text-base truncate">
-              {t("my.ostatok")} {balance} MB
+              {t("my.ostatok")}
+              {(
+                (balanceData?.balance?.[0]?.subOrderList?.[0]
+                  ?.remainingTraffic || balance) /
+                (1024 * 1024)
+              ).toFixed(2)}
+              MB
             </button>
             <div
               onClick={() => router.push("/simDone")}

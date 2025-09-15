@@ -5,6 +5,9 @@ const endpoints = {
   orderCreate: "public/order-simcard/create",
   payment: "public/payments",
   login: "public/client/login-sms",
+  checkBalance: (id: any) => `client/order-simcard/balance/${id}`,
+  simOrder: "client/order-simcard/my-orders",
+  profile: "client/me",
 };
 
 export default endpoints;
