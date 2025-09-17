@@ -138,7 +138,9 @@ const MyEsim = () => {
                     }}
                   />
                 ))
-              : ""}
+              : (
+                <p className="text-black text-left">{t("my.no")}</p>
+              )}
           </div>
 
           {shouldLimit && (

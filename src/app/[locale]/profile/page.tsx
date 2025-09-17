@@ -236,7 +236,7 @@ const Profile = () => {
                     <h2 className="text-sm md:text-[14px] font-normal">
                       {t("ready.keshbek")}
                     </h2>
-                    <Image src={ASSETS.logowhite} alt="" />
+                    <Image className="md:w-fit md:h-fit h-8 w-24" src={ASSETS.logowhite} alt="" />
                   </div>
                   <h1 className="text-[30px] md:text-[35px] font-bold mt-4">
                     {profileData?.data?.balance} UZS

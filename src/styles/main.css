@@ -272,7 +272,6 @@
 
   .main-container {
     position: relative;
-    padding-bottom: 135px;
   }
 
   .main-map {
@@ -293,7 +292,6 @@
     max-width: 100%;
     padding: 4px;
     margin: 0;
-    margin-top: 20px;
   }
 
   .search-input {
