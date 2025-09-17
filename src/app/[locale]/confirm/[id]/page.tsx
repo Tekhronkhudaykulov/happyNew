@@ -375,7 +375,7 @@ const ConfirmPage = () => {
         </div>
 
         <div
-          className="container md:pb-0 pb-[60px] mt-auto"
+          className="container md:pb-0 pb-[85px] mt-auto"
           onClick={handlePayment}
         >
           {/* <button

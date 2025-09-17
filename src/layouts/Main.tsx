@@ -63,11 +63,6 @@ const Main = () => {
 
   const [searchTerm, setSearchTerm] = useState<any>("");
   const [selectedCountries, setSelectedCountries] = useState<any[]>([]);
-  console.log(selectedCountries, "selected");
-
-  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
-    []
-  );
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const { data: regionsData, isLoading } = useQuery({
@@ -78,12 +73,7 @@ const Main = () => {
       }),
   });
 
-  const filteredDestinations = localDestinations.filter(
-    (item) =>
-      item.type === "local" &&
-      item.country.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>([]);
   useEffect(() => {
     setDefaultCountries(regionsData?.data || []);
   }, [regionsData]);
@@ -93,15 +83,12 @@ const Main = () => {
       console.error("Country ID is missing:", country);
       return;
     }
-    console.log(country, "countr");
-
     if (!selectedCountries.some((c) => c.id === country.id)) {
       setSelectedCountries([...selectedCountries, country]);
     }
     setSearchTerm("");
     setIsInputFocused(false);
     localStorage.setItem("selectedObject", JSON.stringify(country));
-    // router.push(`${APP_ROUTES.COUNTRY}/${country.id}`);
   };
 
   const handleRemove = (country: any) => {
@@ -152,43 +139,32 @@ const Main = () => {
         setSearchTerm("");
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
     <>
-      {/* {isLoading && <Loading5755 />} */}
       <div className="main relative bg-[#FFFFFF8F]">
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
-        <div className="main-container">
+        <div
+          className={`main-container`}
+        >
           <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
             <div className="main-download mt-[50px] w-[150px] h-[150px] rounded-full border border-[#F06F1E] flex items-center justify-center">
-              <p className="text-[#F06F1E] text-center">
-                {p("download.title")}
-              </p>
+              <p className="text-[#F06F1E] text-center">{p("download.title")}</p>
             </div>
-            {/* <Image
-              className="main-download mt-[50px]"
-              src={ASSETS.download}
-              alt=""
-            /> */}
             <Image className="main-gray" src={ASSETS.grey} alt="" />
             <Image className="main-esim" src={ASSETS.esim} alt="" />
             <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
             <div className="main-wrapper">
               <h1 className="main-title">{t("title")}</h1>
-
               <ul className="main-list">
                 <p className="main-item">{t("nav1")}</p>
                 <p className="main-item">{t("nav2")}</p>
                 <p className="main-item hidden sm:block">{t("nav3")}</p>
               </ul>
 
-              {/* 🔹 Keen Slider и Search Container переставлены для планшетов и выше */}
               <div className="md:flex md:flex-col-reverse">
                 {!searchTerm && defaultCountries?.length > 0 && (
                   <div
@@ -198,12 +174,9 @@ const Main = () => {
                     {defaultCountries?.map((item: any) => (
                       <div
                         key={item.country}
-                        className="keen-slider__slide cursor-pointer h-max bg-[#4546477A]  rounded-[12px] p-[15px]"
+                        className="keen-slider__slide cursor-pointer h-fit bg-[#4546477A] rounded-[12px] p-[15px]"
                         onClick={() => {
-                          localStorage.setItem(
-                            "selectedObject",
-                            JSON.stringify(item)
-                          );
+                          localStorage.setItem("selectedObject", JSON.stringify(item));
                           router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
                         }}
                       >
@@ -220,10 +193,8 @@ const Main = () => {
                           </div>
                           <div>
                             <p
-                              className={`font-normal text-[#FFFFFF] ${
-                                item.name.length > 10
-                                  ? "text-[16px]"
-                                  : "text-[20px]"
+                              className={`font-normal text-[#FFFFFF] md:text-[18px] text-[14px] ${
+                                item.name.length > 10 ? " max-w-[150px]" : ""
                               }`}
                             >
                               {item.name}
@@ -276,7 +247,7 @@ const Main = () => {
 
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="">
+                  <div ref={dropdownRef} className="pb-[100px]">
                     <div
                       className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
                     md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4

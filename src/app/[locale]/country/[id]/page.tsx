@@ -232,6 +232,7 @@ const Country = () => {
             available={t("country.not")}
           />
           <ServiceCard title={t("country.sms")} available={t("country.not")} />
+          <ServiceCard title={"5G"} available={t("country.yes")} />
         </div>
 
         {/* INFO + OTHERS */}

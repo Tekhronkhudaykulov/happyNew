@@ -136,7 +136,8 @@
     "created": "Created",
     "ostatok": "Balance:",
     "check": "Check balance",
-    "detail": "More details"
+    "detail": "More details",
+    "no": "You have not bought any SIM card"
   },
   "ready": {
     "title": "Your SIM card is ready!",
