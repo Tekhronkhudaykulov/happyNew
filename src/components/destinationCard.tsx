@@ -52,8 +52,14 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
   }, []);
 
   const limit = isDesktop ? 8 : 6;
-  const shouldLimit = data?.length > limit && !showAll;
-  const visibleData = shouldLimit ? data?.slice(0, limit) : data;
+  const items: any[] = (data as any[]) ?? [];
+  const filteredData: any[] = items.filter(
+    (item: any) => !(item?.b2b === 1 && item?.hide_site === true)
+  );
+  const shouldLimit = filteredData.length > limit && !showAll;
+  const visibleData: any[] = shouldLimit
+    ? filteredData.slice(0, limit)
+    : filteredData;
 
   const router = useRouter();
 

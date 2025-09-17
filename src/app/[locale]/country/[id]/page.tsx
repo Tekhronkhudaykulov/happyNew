@@ -154,8 +154,11 @@ const Country = () => {
   //   }
   // };
 
-  const selectedObject = localStorage.getItem("selectedObject");
-  const object = JSON.parse(selectedObject);
+  const selectedObject =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("selectedObject")
+      : null;
+  const object = selectedObject ? JSON.parse(selectedObject) : null;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -196,20 +199,24 @@ const Country = () => {
           } grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}
         >
           {plansData?.data?.data?.length > 0 ? (
-            plansData?.data?.data?.map((item: any, idx: any) => (
-              <ESimCard
-                key={idx}
-                flag={ASSETS.turkey}
-                gb={item.quantity_internet}
-                days={item.expiry_day}
-                price={formatPrice(item.price_sell)}
-                onSelect={() => {
-                  localStorage.setItem("obyekt", JSON.stringify(item));
-                  setSelectedPackage(item?.id);
-                }}
-                isSelected={selectedPackage === item?.id}
-              />
-            ))
+            plansData?.data?.data
+              ?.filter(
+                (item: any) => !(item?.b2b === 1 || item?.hide_site === true)
+              )
+              .map((item: any, idx: any) => (
+                <ESimCard
+                  key={idx}
+                  flag={ASSETS.turkey}
+                  gb={item.quantity_internet}
+                  days={item.expiry_day}
+                  price={formatPrice(item.price_sell)}
+                  onSelect={() => {
+                    localStorage.setItem("obyekt", JSON.stringify(item));
+                    setSelectedPackage(item?.id);
+                  }}
+                  isSelected={selectedPackage === item?.id}
+                />
+              ))
           ) : (
             <p className="text-black text-center">Hech nima topilmadi !</p>
           )}
@@ -260,36 +267,43 @@ const Country = () => {
               </h1>
 
               <div className="flex flex-col gap-3 sm:gap-6">
-                {regionPlans?.data?.data.map((item: any, idx: any) => (
-                  <div
-                    key={idx}
-                    className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
-                  >
+                {regionPlans?.data?.data
+                  ?.filter(
+                    (item: any) =>
+                      !(item?.b2b === 1 || item?.hide_site === true)
+                  )
+                  .map((item: any, idx: any) => (
                     <div
-                      onClick={() => {
-                        localStorage.setItem("obyekt", JSON.stringify(item));
-                        // setSelectedPackage(item?.id);
-                        router.push(`${APP_ROUTES.CONFIRM_ORDER}/${item?.id}`);
-                      }}
-                      className="flex items-center gap-2 sm:gap-3"
+                      key={idx}
+                      className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
                     >
-                      <Image
-                        alt="flag"
-                        src={item.flag}
-                        width={32}
-                        height={32}
-                        className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
-                      />
-                      <div>
-                        <h4 className="text-sm sm:text-base text-black">
-                          {item?.name}
-                        </h4>
-                        {/* <p className="text-xs sm:text-sm text-black">Евразия</p> */}
+                      <div
+                        onClick={() => {
+                          localStorage.setItem("obyekt", JSON.stringify(item));
+                          // setSelectedPackage(item?.id);
+                          router.push(
+                            `${APP_ROUTES.CONFIRM_ORDER}/${item?.id}`
+                          );
+                        }}
+                        className="flex items-center gap-2 sm:gap-3"
+                      >
+                        <Image
+                          alt="flag"
+                          src={item.flag}
+                          width={32}
+                          height={32}
+                          className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
+                        />
+                        <div>
+                          <h4 className="text-sm sm:text-base text-black">
+                            {item?.name}
+                          </h4>
+                          {/* <p className="text-xs sm:text-sm text-black">Евразия</p> */}
+                        </div>
                       </div>
+                      <ArrowRight className="text-[#1C1C1C] w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <ArrowRight className="text-[#1C1C1C] w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           )}

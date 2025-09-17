@@ -5,7 +5,7 @@ import Navbar from "@/layouts/Navbar";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ASSETS } from "@/assets";
 import PackageCard from "@/components/packageCard";
 import formatPrice from "@/utils/formatPrice";
@@ -48,6 +48,8 @@ async function fetchProfile() {
 const ConfirmPage = () => {
   const t = useTranslations();
   const router = useRouter();
+
+  const { id } = useParams<{ id: string }>();
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
@@ -166,7 +168,7 @@ const ConfirmPage = () => {
       return;
     }
     mutate({
-      plan_id: object?.id,
+      plan_id: id,
       fio,
       phone,
       payment_type_id: selectedMethod,

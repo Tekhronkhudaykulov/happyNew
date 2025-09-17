@@ -73,7 +73,9 @@ const Main = () => {
       }),
   });
 
-  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>([]);
+  const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
+    []
+  );
   useEffect(() => {
     setDefaultCountries(regionsData?.data || []);
   }, [regionsData]);
@@ -147,12 +149,12 @@ const Main = () => {
     <>
       <div className="main relative bg-[#FFFFFF8F]">
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
-        <div
-          className={`main-container`}
-        >
+        <div className={`main-container`}>
           <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
             <div className="main-download mt-[50px] w-[150px] h-[150px] rounded-full border border-[#F06F1E] flex items-center justify-center">
-              <p className="text-[#F06F1E] text-center">{p("download.title")}</p>
+              <p className="text-[#F06F1E] text-center">
+                {p("download.title")}
+              </p>
             </div>
             <Image className="main-gray" src={ASSETS.grey} alt="" />
             <Image className="main-esim" src={ASSETS.esim} alt="" />
@@ -176,7 +178,10 @@ const Main = () => {
                         key={item.country}
                         className="keen-slider__slide cursor-pointer h-fit bg-[#4546477A] rounded-[12px] p-[15px]"
                         onClick={() => {
-                          localStorage.setItem("selectedObject", JSON.stringify(item));
+                          localStorage.setItem(
+                            "selectedObject",
+                            JSON.stringify(item)
+                          );
                           router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
                         }}
                       >
@@ -259,6 +264,11 @@ const Main = () => {
                             item.name
                               .toLowerCase()
                               .includes(searchTerm.toLowerCase())
+                          )
+                          .sort((a: any, b: any) =>
+                            a.name.localeCompare(b.name, "ru", {
+                              sensitivity: "base",
+                            })
                           )
                           .map((item: any, index: number) => (
                             <div
