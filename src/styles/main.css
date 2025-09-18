@@ -108,7 +108,7 @@
 
 .main-container {
   position: relative;
-  padding-bottom: 150px;
+  padding-bottom: 111px;
 }
 
 .main-map {
@@ -246,7 +246,7 @@
   }
 
   .main-container {
-    padding-bottom: 50px;
+    padding-bottom: 10px;
   }
 
   .main-download,

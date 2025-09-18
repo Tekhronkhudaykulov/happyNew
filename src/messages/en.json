@@ -137,7 +137,8 @@
     "ostatok": "Balance:",
     "check": "Check balance",
     "detail": "More details",
-    "no": "You have not bought any SIM card"
+    "no": "You have not bought any e-sim yet",
+    "buy": "Buy e-sim"
   },
   "ready": {
     "title": "Your SIM card is ready!",

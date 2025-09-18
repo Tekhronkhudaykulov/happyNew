@@ -13,6 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
+import { APP_ROUTES } from "@/router/path";
+import Button from "@/components/button";
 
 const tokenName = "token";
 
@@ -92,8 +94,8 @@ const MyEsim = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="py-6 pb-[100px] container">
-        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+      <div className="py-6  container">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-[100px]">
           <a
             onClick={() => {
               if (typeof window !== "undefined") {
@@ -110,10 +112,11 @@ const MyEsim = () => {
           </h1>
         </div>
         <>
-          <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
+          <div>
             {visibleEsims?.length > 0
               ? visibleEsims?.map((esim: any, index: number) => (
-                  <PackageCard
+                 <div key={esim.id || index} className="grid md:grid-cols-3 gap-4 grid-cols-1">
+                   <PackageCard
                     id={esim?.id}
                     key={esim.id || index}
                     flag={
@@ -137,9 +140,15 @@ const MyEsim = () => {
                       router.push("/simDone");
                     }}
                   />
+                 </div>
                 ))
               : (
-                <p className="text-black text-left">{t("my.no")}</p>
+                <div className="flex flex-col items-center justify-center w-full gap-2">
+                  <p className="text-black text-left">{t("my.no")}</p>
+                  <div className="w-fit">
+                  <Button bg="orange" title={t("my.buy")} navigate={APP_ROUTES.HOME}/>
+                  </div>
+                </div>
               )}
           </div>
 

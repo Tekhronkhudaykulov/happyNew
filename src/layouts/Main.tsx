@@ -167,7 +167,7 @@ const Main = () => {
                 <p className="main-item hidden sm:block">{t("nav3")}</p>
               </ul>
 
-              <div className="md:flex md:flex-col-reverse">
+              <div className="flex flex-col-reverse pt-8">
                 {!searchTerm && defaultCountries?.length > 0 && (
                   <div
                     ref={sliderRef}
@@ -185,7 +185,7 @@ const Main = () => {
                           router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
                         }}
                       >
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center md:gap-4 gap-2">
                           <div className="img_wrapper shrink-0">
                             <Image
                               src={`${API_IMAGE}/${item.img}`}
@@ -213,7 +213,7 @@ const Main = () => {
 
                 {/* 🔹 Input va tanlanganlar */}
                 <div className="search-container">
-                  <div className="flex items-center pl-2 gap-2 w-full">
+                  <div className="flex items-center flex-wrap pl-2 gap-2 w-full">
                     {selectedCountries.map((country) => (
                       <span
                         key={country.id}
@@ -231,9 +231,9 @@ const Main = () => {
                     <input
                       type="text"
                       placeholder={
-                        showPlaceholder ? t("placeholder") : t("placeholder-sm")
+                        t("placeholder-sm")
                       }
-                      className="text-[#FFFFFF54] w-full border-none outline-none p-2 bg-transparent"
+                      className="text-[#FFFFFF54] border-none outline-none p-2 w-16 bg-transparent"
                       value={searchTerm}
                       onChange={handleChange}
                       onFocus={() => setIsInputFocused(true)}
@@ -252,9 +252,9 @@ const Main = () => {
 
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="pb-[100px]">
+                  <div ref={dropdownRef} className="">
                     <div
-                      className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
+                      className="absolute z-30 mt-[75px]  md:mt-[110px] max-w-[93%] w-full text-black 
                     md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
                     md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
                     >
