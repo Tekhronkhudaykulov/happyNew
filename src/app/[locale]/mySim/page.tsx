@@ -115,7 +115,7 @@ const MyEsim = () => {
           <div>
             {visibleEsims?.length > 0
               ? visibleEsims?.map((esim: any, index: number) => (
-                 <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
+                 <div key={esim.id || index} className="grid md:grid-cols-3 gap-4 grid-cols-1">
                    <PackageCard
                     id={esim?.id}
                     key={esim.id || index}
