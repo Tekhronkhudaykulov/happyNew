@@ -9,8 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import { APP_ROUTES } from "../router/path";
 import type { LocalDestination } from "../components/destinationCard";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import phone from "@/assets/phone.png";
+import { useTranslations } from "next-intl"
 import { buildQuery } from "@/utils/buildQuery";
 import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
@@ -157,7 +156,6 @@ const Main = () => {
               </p>
             </div>
             <Image className="main-gray" src={ASSETS.grey} alt="" />
-            <Image className="main-esim" src={ASSETS.esim} alt="" />
             <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
             <div className="main-wrapper">
               <h1 className="main-title">{t("title")}</h1>
@@ -307,7 +305,7 @@ const Main = () => {
 
             <Image
               className="main-phone hidden sm:block"
-              src={phone}
+              src={ASSETS.tell}
               alt="phone"
             />
           </div>

@@ -148,7 +148,9 @@
 
 .main-phone {
   height: 605px;
-  margin-top: -115px;
+  width: 400px;
+  margin-top: -125px;
+  object-fit: contain;
 }
 
 .main-gray {
