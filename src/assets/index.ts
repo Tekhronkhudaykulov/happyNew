@@ -14,6 +14,7 @@ import destination from './destination.png'
 import bgmap from './bgmap.png'
 import phone from './phone.png'
 import smphone from './sm-phone.png'
+import tell from './tell.png'
 import mdi from './mdi.svg'
 import click from './click.svg'
 import payme from './payme.svg'
@@ -69,5 +70,6 @@ export const ASSETS = {
   esim,
   bggsmth,
   grey,
-  bycard
+  bycard,
+  tell
 };
