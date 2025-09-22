@@ -86,7 +86,7 @@ const PackageCard: FC<PackageCardProps> = ({
               alt={`${country} flag`}
               className="w-6 h-6 sm:w-8 sm:h-8 object-cover destination-flag"
             />
-            <h1 className="text-base sm:text-lg text-black font-medium truncate">
+            <h1 className="text-base sm:text-lg text-black font-medium line-clamp-2 sm:line-clamp-3">
               {t("auth.paket")} {country}
             </h1>
           </div>
@@ -103,7 +103,7 @@ const PackageCard: FC<PackageCardProps> = ({
             <>
               <Row
                 label={t("my.tarif")}
-                value={`${gb}GB - ${days}${t("country.days")}`}
+                value={`${gb || 0}GB - ${days}${t("country.days")}`}
               />
               <Row label={t("auth.set")} value={t("auth.ism")} />
               <Row label={t("auth.razdacha")} value={t("auth.available")} />

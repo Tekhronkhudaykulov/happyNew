@@ -55,6 +55,7 @@ const ConfirmPage = () => {
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [object, setObject] = useState<any>(null);
+  console.log(object, "object");
 
   const [phone, setPhone] = useState<string>();
   const [fio, setFio] = useState<string>();
