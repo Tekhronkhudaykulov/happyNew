@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import formatPrice from "@/utils/formatPrice";
 import { ASSETS } from "@/assets";
+import { API_IMAGE } from "@/config";
 
 export type DestinationType = "local" | "regional" | "global";
 

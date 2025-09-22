@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import InfoItem from "@/components/infoitem";
 import Image from "next/image";
 import "@/app/[locale]/globals.css";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import PhoneInput from "@/components/phoneInput";
 import { ASSETS } from "@/assets";
 import { buildQuery } from "@/utils/buildQuery";
@@ -33,6 +33,7 @@ async function fetchPlans(params: any) {
 const Country = () => {
   const t = useTranslations("");
   const params = useParams();
+  const locale = useLocale();
 
   const id = params.id?.toString().split("-") || [];
 
@@ -187,6 +188,7 @@ const Country = () => {
           <div className="flex items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
             <Info size={16} className="text-[#F06F1E] sm:size-5" />
             <p className="font-normal text-[#1C1C1C] md:block hidden text-sm sm:text-base">
+              {regionPlans?.data?.data[0]?.[`note_${locale}`] || ""}
               {t("country.not-avaiable")}
             </p>
           </div>
