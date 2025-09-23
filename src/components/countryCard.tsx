@@ -5,7 +5,7 @@ import Button from "./button";
 import Image from "next/image";
 
 interface Card {
-  flag: string;
+  flag: any;
   gb: number;
   days: number;
   price: string;
@@ -35,7 +35,9 @@ export default function ESimCard({
           <Image
             src={flag}
             alt="flag"
-            className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
+            width={32}
+            height={32}
+            className="w-6 h-6 sm:w-8 sm:h-8 destination-flag rounded-full"
           />
         </div>
 

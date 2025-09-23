@@ -10,7 +10,7 @@ import { ASSETS } from "@/assets";
 import PackageCard from "@/components/packageCard";
 import formatPrice from "@/utils/formatPrice";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import {
   Loading5755,
@@ -271,7 +271,7 @@ const ConfirmPage = () => {
           <div className="flex flex-col md:flex-row items-stretch gap-[10px] md:gap-[13px]">
             <div className="block md:hidden">
               <PackageCard
-                flag={ASSETS.turkey}
+                flag={`${API_IMAGE}/${object?.region_group?.img}`}
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}
@@ -366,7 +366,7 @@ const ConfirmPage = () => {
 
             <div className="md:block hidden">
               <PackageCard
-                flag={ASSETS.turkey}
+                flag={`${API_IMAGE}/${object?.region_group?.img}`}
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}

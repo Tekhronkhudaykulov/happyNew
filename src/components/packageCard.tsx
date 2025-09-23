@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 
 type PackageCardProps = {
   id?: any;
-  flag?: string;
+  flag?: any;
   country?: string;
   gb?: number;
   days: number;
@@ -57,7 +57,7 @@ const PackageCard: FC<PackageCardProps> = ({
 
   const {
     data: balanceData,
-    isLoading,
+
     refetch,
   } = useQuery({
     queryKey: ["checkBalance", id],
@@ -82,9 +82,11 @@ const PackageCard: FC<PackageCardProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <Image
-              src={flag ?? ""}
+              src={flag}
               alt={`${country} flag`}
-              className="w-6 h-6 sm:w-8 sm:h-8 object-cover destination-flag"
+              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag rounded-full object-cover"
+              height={32}
+              width={32}
             />
             <h1 className="text-base sm:text-lg text-black font-medium line-clamp-2 sm:line-clamp-3">
               {t("auth.paket")} {country}
@@ -193,7 +195,9 @@ const PackageCard: FC<PackageCardProps> = ({
           <div className="flex items-center w-full justify-between pb-[15px] border-[#E4E4E4] border-b">
             <div className="flex items-center gap-4">
               <Image
-                src={flag ?? ""}
+                width={32}
+                height={32}
+                src={flag}
                 alt={`${country} flag`}
                 className="w-8 h-8 object-cover destination-flag"
               />

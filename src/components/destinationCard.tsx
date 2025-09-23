@@ -41,15 +41,30 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
 
   const isLocal = type === "local";
 
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsDesktop(window.innerWidth >= 1024);
+  //   };
+
+  //   handleResize();
+
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
+
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      if (typeof window !== "undefined") {
+        setIsDesktop(window.innerWidth >= 1024);
+      }
     };
 
     handleResize();
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
   const limit = isDesktop ? 8 : 6;
@@ -85,7 +100,15 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
             className="flex items-center gap-4 bg-[#1C1C1C0D] rounded-[12px] p-[10px] pl-0 md:p-[22px] justify-center md:justify-normal cursor-pointer"
           >
             <div className="img_wrapper shrink-0">
-              <Image src={ASSETS.turkey} className="destination-flag" alt="" />
+              <Image
+                src={
+                  `${API_IMAGE}/${item?.region_group?.img}` || ASSETS.noImage
+                }
+                alt="flag"
+                width={50}
+                height={50}
+                className="destination-flag rounded-full h-[80px] w-[80px] object-cover"
+              />
             </div>
             <div>
               <h1 className="destination-country text-black font-medium md:font-bold text-[15px] md:text-[18px]">

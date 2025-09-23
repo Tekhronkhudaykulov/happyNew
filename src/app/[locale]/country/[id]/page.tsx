@@ -17,7 +17,7 @@ import { useLocale, useTranslations } from "next-intl";
 import PhoneInput from "@/components/phoneInput";
 import { ASSETS } from "@/assets";
 import { buildQuery } from "@/utils/buildQuery";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 import formatPrice from "@/utils/formatPrice";
@@ -208,7 +208,9 @@ const Country = () => {
               .map((item: any, idx: any) => (
                 <ESimCard
                   key={idx}
-                  flag={ASSETS.turkey}
+                  flag={
+                    `${API_IMAGE}/${item?.region_group?.img}` || ASSETS.noImage
+                  }
                   gb={item.quantity_internet}
                   days={item.expiry_day}
                   price={formatPrice(item.price_sell)}
@@ -291,7 +293,7 @@ const Country = () => {
                       >
                         <Image
                           alt="flag"
-                          src={item.flag}
+                          src={`${API_IMAGE}/${item?.flag}`}
                           width={32}
                           height={32}
                           className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"

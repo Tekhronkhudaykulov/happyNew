@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { ASSETS } from "../assets";
-import { localDestinations } from "../data/TabData";
 import { Search, X, ArrowRight } from "lucide-react";
 import "../styles/main.css";
 import { useEffect, useState, useRef } from "react";
