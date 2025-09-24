@@ -19,30 +19,44 @@ import "keen-slider/keen-slider.min.css";
 
 function Autoplay(slider: any) {
   let timeout: ReturnType<typeof setTimeout>;
-  let mouseOver = false;
+  let isPaused = false;
 
   function clearNextTimeout() {
     clearTimeout(timeout);
   }
+
   function nextTimeout() {
     clearTimeout(timeout);
-    if (mouseOver) return;
+    if (isPaused) return;
     timeout = setTimeout(() => {
       slider.next();
     }, 2000);
   }
 
   slider.on("created", () => {
+    // Mouse events for desktop
     slider.container.addEventListener("mouseover", () => {
-      mouseOver = true;
+      isPaused = true;
       clearNextTimeout();
     });
     slider.container.addEventListener("mouseout", () => {
-      mouseOver = false;
+      isPaused = false;
       nextTimeout();
     });
+
+    // Touch events for mobile
+    slider.container.addEventListener("touchstart", () => {
+      isPaused = true;
+      clearNextTimeout();
+    });
+    slider.container.addEventListener("touchend", () => {
+      isPaused = false;
+      nextTimeout();
+    });
+
     nextTimeout();
   });
+
   slider.on("dragStarted", clearNextTimeout);
   slider.on("animationEnded", nextTimeout);
   slider.on("updated", nextTimeout);
@@ -60,7 +74,7 @@ const Main = () => {
   const p = useTranslations("");
   const router = useRouter();
 
-  const [searchTerm, setSearchTerm] = useState<any>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCountries, setSelectedCountries] = useState<any[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
@@ -75,6 +89,7 @@ const Main = () => {
   const [defaultCountries, setDefaultCountries] = useState<LocalDestination[]>(
     []
   );
+
   useEffect(() => {
     setDefaultCountries(regionsData?.data || []);
   }, [regionsData]);
@@ -90,6 +105,8 @@ const Main = () => {
     setSearchTerm("");
     setIsInputFocused(false);
     localStorage.setItem("selectedObject", JSON.stringify(country));
+    // Resume slider autoplay
+    slider?.next();
   };
 
   const handleRemove = (country: any) => {
@@ -115,7 +132,7 @@ const Main = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const [sliderRef] = useKeenSlider<HTMLDivElement>(
+  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
       slides: { perView: 2, spacing: 16 },
@@ -131,24 +148,30 @@ const Main = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsInputFocused(false);
         setSearchTerm("");
+        // Resume slider autoplay
+        slider?.next();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.addEventListener("touchend", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchend", handleClickOutside);
+    };
+  }, [slider]);
 
   return (
     <>
       <div className="main relative bg-[#FFFFFF8F]">
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
-        <div className={`main-container`}>
+        <div className="main-container">
           <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
             <div className="main-download mt-[50px] w-[150px] h-[150px] rounded-full border border-[#F06F1E] flex items-center justify-center">
               <p className="text-[#F06F1E] text-center">
@@ -209,8 +232,8 @@ const Main = () => {
                   </div>
                 )}
 
-                {/* 🔹 Input va tanlanganlar */}
-                <div className="search-container">
+                {/* 🔹 Input and selected countries */}
+                <div className={`${selectedCountries? "md:mt-0 mt-4" : ""} search-container`}>
                   <div className="flex items-center pl-2 gap-2 w-full">
                     {selectedCountries.map((country) => (
                       <span
@@ -235,7 +258,6 @@ const Main = () => {
                       value={searchTerm}
                       onChange={handleChange}
                       onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
                     />
                   </div>
 
@@ -252,9 +274,9 @@ const Main = () => {
                 {(searchTerm || isInputFocused) && (
                   <div ref={dropdownRef} className="md:pb-0 pb-[125px]">
                     <div
-                      className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
-                    md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-                    md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
+                      className="absolute z-30 mt-4 md:mt-[110px] max-w-[90%] w-full text-black 
+                      md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+                      md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
                     >
                       {regionsData?.data?.length > 0 ? (
                         regionsData?.data
@@ -268,7 +290,7 @@ const Main = () => {
                               sensitivity: "base",
                             })
                           )
-                          .map((item: any, index: number) => (
+                          .map((item: any) => (
                             <div
                               key={item.id}
                               className="flex items-center justify-between px-4 py-4 cursor-pointer hover:bg-gray-100"
