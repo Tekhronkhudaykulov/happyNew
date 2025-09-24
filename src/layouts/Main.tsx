@@ -199,9 +199,7 @@ const Main = () => {
               <div className="md:flex md:flex-col-reverse">
                 {/* 🔹 Input and selected countries */}
                 <div
-                  className={`${
-                    selectedCountries ? "md:mt-0 mt-4" : ""
-                  } search-container`}
+                  className={`search-container`}
                 >
                   <div className="flex items-center pl-2 gap-2 w-full">
                     {selectedCountries.map((country) => (
@@ -240,11 +238,11 @@ const Main = () => {
                 </div>
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="md:pb-0 pb-[125px]">
+                  <div ref={dropdownRef} className="">
                     <div
-                      className="absolute z-30 mt-4 md:mt-[110px] max-w-[90%] w-full text-black 
+                      className="absolute z-30 mt-4 md:mt-[110px] max-w-[92%] w-full text-black 
                       md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-                      md:max-h-[calc(100vh-500px)] max-h-[110px] overflow-y-auto"
+                      md:max-h-[calc(100vh-500px)] max-h-[165px] overflow-y-auto"
                     >
                       {regionsData?.data?.length > 0 ? (
                         regionsData?.data
