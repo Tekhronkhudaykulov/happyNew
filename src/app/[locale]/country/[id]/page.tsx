@@ -317,13 +317,16 @@ const Country = () => {
             <p className="text-black text-center">Hech nima topilmadi !</p>
           )}
         </div>
-        <div className="" onClick={handleBuyClick}>
-          <Button
-            classname="mt-0 sm:mt-6 w-full"
-            title={t("auth.buy")}
-            disabled={selectedPackage === null}
-          />
-        </div>
+        <div
+        className="fixed bottom-19 flex justify-center right-0.5  sm:static w-full sm:w-auto px-4 sm:px-0 z-40 sm:z-auto"
+        onClick={handleBuyClick}
+      >
+        <Button
+          classname="w-full sm:mt-6"
+          title={t("auth.buy")}
+          disabled={selectedPackage === null}
+        />
+      </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
           <ServiceCard

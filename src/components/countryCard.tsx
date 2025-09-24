@@ -34,12 +34,12 @@ export default function ESimCard({
     >
       <div className="flex items-center  justify-between mb-4 sm:mb-5">
         <div className="flex items-center w-full justify-between">
-          <p>{tarrifName}</p>
+          <p className="text-black">{tarrifName}</p>
           <Image
             src={flag}
             alt="flag"
-            width={32}
-            height={32}
+            width={24}
+            height={24}
             className="w-6 h-6 sm:w-8 sm:h-8 destination-flag rounded-full"
           />
         </div>
