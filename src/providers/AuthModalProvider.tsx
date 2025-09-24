@@ -52,7 +52,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
     }
     if (value.length > 9) value = value.substring(0, 9);
     if (value.length > 0) {
-      const formatted = `+998 ${value.substring(0, 2)} ${value.substring(
+      const formatted = `${value.substring(0, 2)} ${value.substring(
         2,
         5
       )} ${value.substring(5, 7)} ${value.substring(7, 9)}`.trim();
@@ -202,7 +202,7 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
               </p>
               <input
                 type="tel"
-                value={modalPhone}
+                value={`+998 ${modalPhone}`}
                 onChange={handleModalPhoneChange}
                 className="w-full bg-[#CFCFCF1F] px-4 py-2 text-[#1C1C1C] rounded-lg focus:outline-none text-base sm:text-lg"
                 placeholder="+998 99 999 99 99"

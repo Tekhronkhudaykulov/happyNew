@@ -29,21 +29,26 @@ async function fetchCheckBalance(params: any) {
 
 const SimReady = () => {
   const t = useTranslations();
-  const router = useRouter();
-  const simKard = localStorage.getItem("simkard");
 
   const [id, setId] = useState();
 
-  const {
-    data: balanceData,
-    isPending,
-    refetch,
-  } = useQuery({
+  const { data: balanceData, refetch } = useQuery({
     queryKey: ["checkBalance", id],
     queryFn: () => fetchCheckBalance(id),
     enabled: false,
   });
-  const object = JSON.parse(simKard);
+  const [object, setObject] = useState<any>(null);
+
+  useEffect(() => {
+    const simKard = localStorage.getItem("simkard");
+    if (simKard) {
+      try {
+        setObject(JSON.parse(simKard));
+      } catch (err) {
+        console.error("JSON parse error:", err);
+      }
+    }
+  }, []);
 
   const handleActivate = () => {
     if (!object?.qr_code) {
@@ -229,9 +234,10 @@ const SimReady = () => {
               title={
                 balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
                   ? (
-                      balanceData.balance[0].subOrderList[0].remainingTraffic /
+                      balanceData?.balance[0]?.subOrderList[0]
+                        ?.remainingTraffic /
                       (1024 * 1024)
-                    ).toFixed(2) + " MB"
+                    )?.toFixed(2) + " MB"
                   : t("my.check")
               }
               classname="w-full"
@@ -336,9 +342,10 @@ const SimReady = () => {
               title={
                 balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
                   ? (
-                      balanceData.balance[0].subOrderList[0].remainingTraffic /
+                      balanceData?.balance[0]?.subOrderList[0]
+                        ?.remainingTraffic /
                       (1024 * 1024)
-                    ).toFixed(2) + " MB"
+                    )?.toFixed(2) + " MB"
                   : t("my.check")
               }
               classname="w-full"
