@@ -198,7 +198,7 @@ const Country = () => {
         <div
           className={`${
             plansData?.data?.data?.length == 0 && "!grid !grid-cols-1"
-          } grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}
+          } grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}
         >
           {plansData?.data?.data?.length > 0 ? (
             plansData?.data?.data
@@ -207,6 +207,7 @@ const Country = () => {
               )
               .map((item: any, idx: any) => (
                 <ESimCard
+                  tarrifName={item?.name}
                   key={idx}
                   flag={
                     `${API_IMAGE}/${item?.region_group?.img}` || ASSETS.noImage
@@ -263,54 +264,6 @@ const Country = () => {
               hasBorder={false}
             />
           </div>
-
-          {regionPlans?.data?.data.length > 0 && (
-            <div className="bg-[#F06F1E1F] pt-4 sm:pt-6 pr-4 sm:pr-6 pb-6 sm:pb-8 pl-4 sm:pl-5 flex flex-col gap-4 sm:gap-6 rounded-xl">
-              <h1 className="max-w-full sm:max-w-[300px] font-medium text-[#1C1C1C] text-base sm:text-xl">
-                {t("country.others")}
-              </h1>
-
-              <div className="flex flex-col gap-3 sm:gap-6">
-                {regionPlans?.data?.data
-                  ?.filter(
-                    (item: any) =>
-                      !(item?.b2b === 1 || item?.hide_site === true)
-                  )
-                  .map((item: any, idx: any) => (
-                    <div
-                      key={idx}
-                      className="flex justify-between items-center pb-2 border-b border-[#E4E4E4]"
-                    >
-                      <div
-                        onClick={() => {
-                          localStorage.setItem("obyekt", JSON.stringify(item));
-                          // setSelectedPackage(item?.id);
-                          router.push(
-                            `${APP_ROUTES.CONFIRM_ORDER}/${item?.id}`
-                          );
-                        }}
-                        className="flex items-center gap-2 sm:gap-3"
-                      >
-                        <Image
-                          alt="flag"
-                          src={`${API_IMAGE}/${item?.flag}`}
-                          width={32}
-                          height={32}
-                          className="w-6 h-6 sm:w-8 sm:h-8 destination-flag"
-                        />
-                        <div>
-                          <h4 className="text-sm sm:text-base text-black">
-                            {item?.name}
-                          </h4>
-                          {/* <p className="text-xs sm:text-sm text-black">Евразия</p> */}
-                        </div>
-                      </div>
-                      <ArrowRight className="text-[#1C1C1C] w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* BUY BUTTON */}

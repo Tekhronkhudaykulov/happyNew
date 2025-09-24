@@ -11,6 +11,7 @@ interface Card {
   price: string;
   isSelected: boolean;
   onSelect: () => void;
+  tarrifName: string;
 }
 
 export default function ESimCard({
@@ -20,6 +21,7 @@ export default function ESimCard({
   price,
   isSelected,
   onSelect,
+  tarrifName,
 }: Card) {
   const t = useTranslations(""); // ✅ namespace "main"
   console.log(flag, "flag");
@@ -30,8 +32,9 @@ export default function ESimCard({
       }`}
       onClick={onSelect}
     >
-      <div className="flex items-center justify-between mb-4 sm:mb-5">
-        <div className="img_wrapper shrink-0">
+      <div className="flex items-center  justify-between mb-4 sm:mb-5">
+        <div className="flex items-center w-full justify-between">
+          <p>{tarrifName}</p>
           <Image
             src={flag}
             alt="flag"
@@ -40,21 +43,20 @@ export default function ESimCard({
             className="w-6 h-6 sm:w-8 sm:h-8 destination-flag rounded-full"
           />
         </div>
-
-        <div>
-          <Button title={`${price}`} bg="orange" />
-        </div>
       </div>
+
       <div className="flex items-center justify-between">
         <p className="flex items-center gap-1 sm:gap-2 font-medium text-base sm:text-lg text-[#1C1C1C]">
           {gb}
-          GB
+          GB /
+          <p className="flex items-center gap-1 sm:gap-2 font-medium text-base sm:text-lg text-[#1C1C1C]">
+            {days}
+            {t("country.days")}
+          </p>
         </p>
-
-        <p className="flex items-center gap-1 sm:gap-2 font-medium text-base sm:text-lg text-[#1C1C1C]">
-          {days}
-          {t("country.days")}
-        </p>
+        <div>
+          <p className="text-[#F06F1E] font-bold">{price}</p>
+        </div>
       </div>
     </div>
   );

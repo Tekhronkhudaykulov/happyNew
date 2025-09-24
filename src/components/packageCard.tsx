@@ -23,6 +23,7 @@ type PackageCardProps = {
   variant?: "buy" | "active" | "balance";
   onCheckBalance?: () => void;
   handleRoute?: any;
+  item?: any;
 };
 
 async function fetchCheckBalance(params: any) {
@@ -48,6 +49,7 @@ const PackageCard: FC<PackageCardProps> = ({
   variant: initialVariant = "active",
   handleRoute, // Default to "active"
   id,
+  item,
 }) => {
   const t = useTranslations("");
   const router = useRouter();
@@ -89,7 +91,7 @@ const PackageCard: FC<PackageCardProps> = ({
               width={32}
             />
             <h1 className="text-base sm:text-lg text-black font-medium line-clamp-2 sm:line-clamp-3">
-              {t("auth.paket")} {country}
+              {country}
             </h1>
           </div>
 
@@ -107,8 +109,14 @@ const PackageCard: FC<PackageCardProps> = ({
                 label={t("my.tarif")}
                 value={`${gb || 0}GB - ${days}${t("country.days")}`}
               />
-              <Row label={t("auth.set")} value={t("auth.ism")} />
-              <Row label={t("auth.razdacha")} value={t("auth.available")} />
+              <Row label={t("auth.set")} value={t("4G/5G")} />
+              {/* <Row label={t("auth.razdacha")} value={t("auth.available")} /> */}
+              <Row
+                label="Минуты"
+                value={item?.quantity_minute || "Недоступно"}
+              />
+              <Row label="Смс" value={item?.quantity_sms || "Недоступно"} />
+              {/* <Row label="Смс" value={item?.quantity_sms || 0} /> */}
             </>
           )}
 

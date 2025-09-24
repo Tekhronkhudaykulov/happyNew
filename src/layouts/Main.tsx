@@ -180,8 +180,16 @@ const Main = () => {
             </div>
             <Image className="main-gray" src={ASSETS.grey} alt="" />
             <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
-            <div className="main-wrapper">
+            <div className="main-wrapper mb-[50px]">
               <h1 className="main-title">{t("title")}</h1>
+              <div>
+                <a
+                  href="tel:*#06#"
+                  className="text-[#F06F1E] text-[20px] underline"
+                >
+                  Проверить поддержку ESIM
+                </a>
+              </div>
               <ul className="main-list">
                 <p className="main-item">{t("nav1")}</p>
                 <p className="main-item">{t("nav2")}</p>
@@ -189,51 +197,12 @@ const Main = () => {
               </ul>
 
               <div className="md:flex md:flex-col-reverse">
-                {!searchTerm && defaultCountries?.length > 0 && (
-                  <div
-                    ref={sliderRef}
-                    className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
-                  >
-                    {defaultCountries?.map((item: any) => (
-                      <div
-                        key={item.country}
-                        className="keen-slider__slide cursor-pointer h-fit bg-[#4546477A] rounded-[12px] p-[15px]"
-                        onClick={() => {
-                          localStorage.setItem(
-                            "selectedObject",
-                            JSON.stringify(item)
-                          );
-                          router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
-                        }}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="img_wrapper shrink-0">
-                            <Image
-                              src={`${API_IMAGE}/${item.img}`}
-                              className="destination-flag rounded-full"
-                              alt={item.country}
-                              width={40}
-                              height={40}
-                              unoptimized
-                            />
-                          </div>
-                          <div>
-                            <p
-                              className={`font-normal text-[#FFFFFF] md:text-[18px] text-[14px] ${
-                                item.name.length > 10 ? " max-w-[150px]" : ""
-                              }`}
-                            >
-                              {item.name}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
                 {/* 🔹 Input and selected countries */}
-                <div className={`${selectedCountries? "md:mt-0 mt-4" : ""} search-container`}>
+                <div
+                  className={`${
+                    selectedCountries ? "md:mt-0 mt-4" : ""
+                  } search-container`}
+                >
                   <div className="flex items-center pl-2 gap-2 w-full">
                     {selectedCountries.map((country) => (
                       <span
@@ -269,7 +238,6 @@ const Main = () => {
                     />
                   </div>
                 </div>
-
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
                   <div ref={dropdownRef} className="md:pb-0 pb-[125px]">
@@ -320,6 +288,48 @@ const Main = () => {
                         </p>
                       )}
                     </div>
+                  </div>
+                )}
+                {!searchTerm && defaultCountries?.length > 0 && (
+                  <div
+                    ref={sliderRef}
+                    className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
+                  >
+                    {defaultCountries?.map((item: any) => (
+                      <div
+                        key={item.country}
+                        className="keen-slider__slide cursor-pointer h-fit bg-[#4546477A] rounded-[12px] p-[15px]"
+                        onClick={() => {
+                          localStorage.setItem(
+                            "selectedObject",
+                            JSON.stringify(item)
+                          );
+                          router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="img_wrapper shrink-0">
+                            <Image
+                              src={`${API_IMAGE}/${item.img}`}
+                              className="destination-flag rounded-full"
+                              alt={item.country}
+                              width={40}
+                              height={40}
+                              unoptimized
+                            />
+                          </div>
+                          <div>
+                            <p
+                              className={`font-normal text-[#FFFFFF] md:text-[18px] text-[14px] ${
+                                item.name.length > 10 ? " max-w-[150px]" : ""
+                              }`}
+                            >
+                              {item.name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
