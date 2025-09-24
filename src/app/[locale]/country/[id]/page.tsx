@@ -168,7 +168,7 @@ const Country = () => {
 
       <div className="py-6 md:pb-[175px] pb-[111px] container ">
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
+        <div className="flex md:items-cente items-start gap-2 justify-between mb-6 sm:mb-8 lg:mb-10">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
             <a
               onClick={() => {
@@ -186,9 +186,9 @@ const Country = () => {
             </h1>
           </div>
 
-          <div onClick={() => setIsNoteVisible(!isNoteVisible)} className="flex cursor-pointer items-start md:items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
+          <div onClick={() => setIsNoteVisible(!isNoteVisible)} className="flex cursor-pointer items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
             <Info size={16} className="text-[#F06F1E] sm:size-5" />
-            <p className={`font-normal text-[#1C1C1C] md:block text-[12px] sm:text-base ${isNoteVisible ? "" : "hidden"}`}>
+            <p className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base ${isNoteVisible ? "" : "hidden"}`}>
               {regionPlans?.data?.data[0]?.[`note_${locale}`] ||
                 t("country.not-avaiable")}
             </p>
