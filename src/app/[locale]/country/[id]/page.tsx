@@ -206,7 +206,7 @@ const Country = () => {
               !(item?.b2b === 1 || item?.hide_site === true)
           ).length > 0 && (
             <>
-              <h2 className="col-span-full font-bold text-lg mb-2">
+              <h2 className="col-span-full font-bold text-lg mb-2 text-black">
                 Локальные тарифы
               </h2>
               {plansData?.data?.data
@@ -241,7 +241,7 @@ const Country = () => {
               !(item?.b2b === 1 || item?.hide_site === true)
           ).length > 0 && (
             <>
-              <h2 className="col-span-full font-bold text-lg mb-2">
+              <h2 className="col-span-full font-bold text-lg mb-2 text-black">
                 Региональные тарифы
               </h2>
               {plansData?.data?.data
@@ -277,7 +277,7 @@ const Country = () => {
               !(item?.b2b === 1 || item?.hide_site === true)
           ).length > 0 && (
             <>
-              <h2 className="col-span-full font-bold text-lg mb-2">
+              <h2 className="col-span-full font-bold text-lg mb-2 text-black">
                 Глобальные тарифы
               </h2>
               {plansData?.data?.data
