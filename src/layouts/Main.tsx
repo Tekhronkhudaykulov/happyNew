@@ -99,7 +99,7 @@ const Main = () => {
       console.error("Country ID is missing:", country);
       return;
     }
-    if (!selectedCountries.some((c) => c.id === country.id)) {
+    if (!selectedCountries.some((c) => c.id === country.id) && selectedCountries.length < 3) {
       setSelectedCountries([...selectedCountries, country]);
     }
     setSearchTerm("");
