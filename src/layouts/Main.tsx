@@ -196,7 +196,7 @@ const Main = () => {
                 <p className="main-item hidden sm:block">{t("nav3")}</p>
               </ul>
 
-              <div className="md:flex md:flex-col-reverse">
+              <div className="md:flex flex-col">
                 {/* 🔹 Input and selected countries */}
                 <div
                   className={`search-container`}
@@ -240,7 +240,7 @@ const Main = () => {
                 {(searchTerm || isInputFocused) && (
                   <div ref={dropdownRef} className="">
                     <div
-                      className="absolute z-30 mt-4 md:mt-[110px] max-w-[92%] w-full text-black 
+                      className="absolute z-30 mt-4 md:mt-[10px] max-w-[92%] w-full text-black 
                       md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
                       md:max-h-[calc(100vh-500px)] max-h-[165px] overflow-y-auto"
                     >
