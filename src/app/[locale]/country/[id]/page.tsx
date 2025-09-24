@@ -193,36 +193,127 @@ const Country = () => {
             </p>
           </div>
         </div>
-
         {/* SIM CARDS */}
         <div
           className={`${
             plansData?.data?.data?.length == 0 && "!grid !grid-cols-1"
           } grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4 `}
         >
-          {plansData?.data?.data?.length > 0 ? (
-            plansData?.data?.data
-              ?.filter(
-                (item: any) => !(item?.b2b === 1 || item?.hide_site === true)
-              )
-              .map((item: any, idx: any) => (
-                <ESimCard
-                  tarrifName={item?.name}
-                  key={idx}
-                  flag={
-                    `${API_IMAGE}/${item?.region_group?.img}` || ASSETS.noImage
-                  }
-                  gb={item.quantity_internet}
-                  days={item.expiry_day}
-                  price={formatPrice(item.price_sell)}
-                  onSelect={() => {
-                    localStorage.setItem("obyekt", JSON.stringify(item));
-                    setSelectedPackage(item?.id);
-                  }}
-                  isSelected={selectedPackage === item?.id}
-                />
-              ))
-          ) : (
+          {plansData?.data?.data?.filter(
+            (item: any) =>
+              item.is_local === false &&
+              !(item?.b2b === 1 || item?.hide_site === true)
+          ).length > 0 && (
+            <>
+              <h2 className="col-span-full font-bold text-lg mb-2">
+                Локальные тарифы
+              </h2>
+              {plansData?.data?.data
+                .filter(
+                  (item: any) =>
+                    item.is_local === false &&
+                    !(item?.b2b === 1 || item?.hide_site === true)
+                )
+                .map((item: any, idx: any) => (
+                  <ESimCard
+                    tarrifName={item?.name}
+                    key={`local-${idx}`}
+                    flag={
+                      `${API_IMAGE}/${item?.region_group?.img}` ||
+                      ASSETS.noImage
+                    }
+                    gb={item.quantity_internet}
+                    days={item.expiry_day}
+                    price={formatPrice(item.price_sell)}
+                    onSelect={() => {
+                      localStorage.setItem("obyekt", JSON.stringify(item));
+                      setSelectedPackage(item?.id);
+                    }}
+                    isSelected={selectedPackage === item?.id}
+                  />
+                ))}
+            </>
+          )}
+          {plansData?.data?.data?.filter(
+            (item: any) =>
+              item.is_region === true &&
+              !(item?.b2b === 1 || item?.hide_site === true)
+          ).length > 0 && (
+            <>
+              <h2 className="col-span-full font-bold text-lg mb-2">
+                Региональные тарифы
+              </h2>
+              {plansData?.data?.data
+                .filter(
+                  (item: any) =>
+                    item.is_region === true &&
+                    !(item?.b2b === 1 || item?.hide_site === true)
+                )
+                .map((item: any, idx: any) => (
+                  <ESimCard
+                    tarrifName={item?.name}
+                    key={`region-${idx}`}
+                    flag={
+                      `${API_IMAGE}/${item?.region_group?.img}` ||
+                      ASSETS.noImage
+                    }
+                    gb={item.quantity_internet}
+                    days={item.expiry_day}
+                    price={formatPrice(item.price_sell)}
+                    onSelect={() => {
+                      localStorage.setItem("obyekt", JSON.stringify(item));
+                      setSelectedPackage(item?.id);
+                    }}
+                    isSelected={selectedPackage === item?.id}
+                  />
+                ))}
+            </>
+          )}
+          {/* is_global === 0 */}
+          {plansData?.data?.data?.filter(
+            (item: any) =>
+              item.is_global === 0 &&
+              !(item?.b2b === 1 || item?.hide_site === true)
+          ).length > 0 && (
+            <>
+              <h2 className="col-span-full font-bold text-lg mb-2">
+                Глобальные тарифы
+              </h2>
+              {plansData?.data?.data
+                .filter(
+                  (item: any) =>
+                    item.is_global === 0 &&
+                    !(item?.b2b === 1 || item?.hide_site === true)
+                )
+                .map((item: any, idx: any) => (
+                  <ESimCard
+                    tarrifName={item?.name}
+                    key={`global-${idx}`}
+                    flag={
+                      `${API_IMAGE}/${item?.region_group?.img}` ||
+                      ASSETS.noImage
+                    }
+                    gb={item.quantity_internet}
+                    days={item.expiry_day}
+                    price={formatPrice(item.price_sell)}
+                    onSelect={() => {
+                      localStorage.setItem("obyekt", JSON.stringify(item));
+                      setSelectedPackage(item?.id);
+                    }}
+                    isSelected={selectedPackage === item?.id}
+                  />
+                ))}
+            </>
+          )}
+
+          {/* is_local === false */}
+
+          {/* is_region === true */}
+
+          {/* Если ничего не найдено */}
+          {plansData?.data?.data?.filter(
+            (item: any) => !(item?.b2b === 1 || item?.hide_site === true)
+          ).length === 0 && (
             <p className="text-black text-center">Hech nima topilmadi !</p>
           )}
         </div>
@@ -246,7 +337,6 @@ const Country = () => {
           <ServiceCard title={t("country.sms")} available={t("country.not")} />
           <ServiceCard title={"5G"} available={t("country.yes")} />
         </div>
-
         {/* INFO + OTHERS */}
         <div className="flex flex-col md:flex-row items-stretch gap-3 sm:gap-4 pt-4">
           <div className="bg-[#272727] rounded-xl py-4 sm:py-5 px-4 sm:px-6 w-full mb-4 md:mb-0">
@@ -265,7 +355,6 @@ const Country = () => {
             />
           </div>
         </div>
-
         {/* BUY BUTTON */}
       </div>
 

@@ -210,7 +210,7 @@ const PackageCard: FC<PackageCardProps> = ({
                 className="w-8 h-8 object-cover destination-flag"
               />
               <h1 className="text-[14px] text-black font-medium truncate">
-                {t("auth.paket")} {country}
+                {country}
               </h1>
             </div>
             <h3 className="text-[14px] font-medium text-[#F06F1E]">{price}</h3>
@@ -225,14 +225,20 @@ const PackageCard: FC<PackageCardProps> = ({
             <p className="text-[#595959] text-[14px]">{t("my.tarif")}</p>
           </div>
           <div>
-            <h2 className="text-[#1C1C1C] text-[14px]">{t("auth.ism")}</h2>
+            <h2 className="text-[#1C1C1C] text-[14px]">4G/5G</h2>
             <p className="text-[#595959] text-[14px]">{t("auth.set")}</p>
           </div>
           <div>
-            <h2 className="text-[#1C1C1C] text-[14px]">
-              {t("auth.available")}
-            </h2>
-            <p className="text-[#595959] text-[14px]">{t("auth.razdacha")}</p>
+            <h2 className="text-[#1C1C1C] text-[14px]">Минуты</h2>
+            <p className="text-[#595959] text-[14px]">
+              {item?.quantity_minute || "Недоступно"}
+            </p>
+          </div>
+          <div>
+            <h2 className="text-[#1C1C1C] text-[14px]">CMC</h2>
+            <p className="text-[#595959] text-[14px]">
+              {item?.quantity_sms || "Недоступно"}
+            </p>
           </div>
         </div>
       </div>
