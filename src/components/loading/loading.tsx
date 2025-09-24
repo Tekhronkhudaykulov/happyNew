@@ -89,7 +89,7 @@ const LoadingWaiting = () => {
 
         {/* Text with animated dots */}
         <div className="text-xl font-medium text-white flex items-center">
-          Ожидается оплата
+          Мы отправили уведомление в приложении Click/Payme. Пожалуйста, оплатите счет.
           <span className="ml-2 flex w-6 justify-start">
             <span className="dot">.</span>
             <span className="dot">.</span>
