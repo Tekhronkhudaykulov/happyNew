@@ -83,6 +83,7 @@ const Country = () => {
 
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isNoteVisible, setIsNoteVisible] = useState(false);
 
   console.log(phone, code, setPhone, setCode, setIsVerifyStep, isAuthenticated);
 
@@ -185,9 +186,9 @@ const Country = () => {
             </h1>
           </div>
 
-          <div className="flex items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
+          <div onClick={() => setIsNoteVisible(!isNoteVisible)} className="flex cursor-pointer items-start md:items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
             <Info size={16} className="text-[#F06F1E] sm:size-5" />
-            <p className="font-normal text-[#1C1C1C] md:block hidden text-sm sm:text-base">
+            <p className={`font-normal text-[#1C1C1C] md:block text-[12px] sm:text-base ${isNoteVisible ? "" : "hidden"}`}>
               {regionPlans?.data?.data[0]?.[`note_${locale}`] ||
                 t("country.not-avaiable")}
             </p>
