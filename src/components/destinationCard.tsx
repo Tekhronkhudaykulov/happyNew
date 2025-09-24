@@ -111,7 +111,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
               />
             </div>
             <div>
-              <h1 className="destination-country text-black font-medium md:font-bold text-[15px] md:text-[18px]">
+              <h1 className="destination-country text-black font-medium md:font-bold md:max-w-none max-w-[100px] text-[15px] md:text-[18px]">
                 {item?.name}
               </h1>
               <Button bg="orange" title={formatPrice(item?.price_sell)} />
