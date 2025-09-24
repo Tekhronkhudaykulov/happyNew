@@ -250,7 +250,7 @@ const Main = () => {
 
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="pb-[125px]">
+                  <div ref={dropdownRef} className="md:pb-0 pb-[125px]">
                     <div
                       className="absolute z-30 mt-4  md:mt-[110px] max-w-[90%] w-full text-black 
                     md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
