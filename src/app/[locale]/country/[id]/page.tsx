@@ -165,7 +165,7 @@ const Country = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <div className="py-6 pb-[111px] container ">
+      <div className="py-6 md:pb-[175px] pb-[111px] container ">
         {/* HEADER */}
         <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
@@ -318,15 +318,15 @@ const Country = () => {
           )}
         </div>
         <div
-        className="fixed bottom-19 flex justify-center right-0.5  sm:static w-full sm:w-auto px-4 sm:px-0 z-40 sm:z-auto"
-        onClick={handleBuyClick}
-      >
-        <Button
-          classname="w-full sm:mt-6"
-          title={t("auth.buy")}
-          disabled={selectedPackage === null}
-        />
-      </div>
+          className="fixed container md:left-0 md:bottom-26 bottom-19 flex justify-center right-0.5  px-4 z-40"
+          onClick={handleBuyClick}
+        >
+          <Button
+            classname="w-full sm:mt-6"
+            title={t("auth.buy")}
+            disabled={selectedPackage === null}
+          />
+        </div>
         {/* SERVICES */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 py-4">
           <ServiceCard
