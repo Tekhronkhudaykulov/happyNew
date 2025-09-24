@@ -156,7 +156,6 @@ const Main = () => {
               </p>
             </div>
             <Image className="main-gray" src={ASSETS.grey} alt="" />
-            <Image className="main-esim" src={ASSETS.esim} alt="" />
             <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
             <div className="main-wrapper">
               <h1 className="main-title">{t("title")}</h1>
