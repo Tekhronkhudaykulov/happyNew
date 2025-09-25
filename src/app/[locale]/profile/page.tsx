@@ -235,13 +235,13 @@ const Profile = () => {
               </div>
 
               <div className="w-full md:w-2/4 flex">
-                <div className="w-full flex flex-col bg-[#ED713C] rounded-[12px] p-6 text-white">
+                <div className="w-full flex flex-col bg-[#ED713C] rounded-[12px] p-8 md:p-6 text-white">
                   <div className="flex items-center justify-between">
                     <h2 className="text-sm md:text-[14px] font-normal">
                       {t("ready.keshbek")}
                     </h2>
                     <Image
-                      className="md:w-fit md:h-fit h-8 w-24"
+                      className="md:w-fit md:h-fit h-8 w-24 md:block hidden"
                       src={ASSETS.logowhite}
                       alt=""
                     />
@@ -258,12 +258,12 @@ const Profile = () => {
               <Image
                 src={ASSETS.bgg2}
                 alt="Background 1"
-                className="absolute md:top-[103px] top-[370px] right-[15px] rounded-[12px] md:right-[18px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
+                className="absolute md:top-[103px] top-[328px] right-[15px] rounded-[12px] md:right-[18px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
               />
               <Image
                 src={ASSETS.bgg}
                 alt="Background 2"
-                className="absolute md:top-[218px] top-[435px] left-[15px] rounded-[12px] md:right-[187px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
+                className="absolute md:top-[218px] top-[398px] right-[200px] rounded-[12px] md:right-[187px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
               />
             </div>
 
