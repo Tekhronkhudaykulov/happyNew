@@ -440,7 +440,7 @@ const ConfirmPage = () => {
           </button> */}
 
           <Button
-            classname="mt-0 sm:mt-6 w-full"
+            classname="mt-[-5px] w-full"
             title={isPending ? "Loading..." : t("auth.pay")}
             disabled={
               isPending ||
