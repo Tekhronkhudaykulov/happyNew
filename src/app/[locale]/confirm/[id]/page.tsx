@@ -303,7 +303,7 @@ const ConfirmPage = () => {
                     type="text"
                     placeholder="+998 99 999 99 99"
                     className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={phone || ""}
+                    value={phone || "+998 "}
                     onChange={handlePhoneChange}
                   />
                 </div>
