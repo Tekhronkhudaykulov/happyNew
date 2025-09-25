@@ -102,8 +102,8 @@ const MyEsim = () => {
       ) : (
         <div className="min-h-screen flex flex-col">
           <Navbar />
-          <div className="py-6  container">
-            <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-[100px]">
+          <div className="py-6 md:pb-[120px] pb-[85px] container">
+            <div className="flex items-center gap-3 sm:gap-4 mb-6">
               <a
                 onClick={() => {
                   if (typeof window !== "undefined") {
@@ -127,6 +127,69 @@ const MyEsim = () => {
                       key={esim.id || index}
                       className="grid md:grid-cols-3 gap-4 grid-cols-1"
                     >
+                      <PackageCard
+                        id={esim?.id}
+                        key={esim.id || index}
+                        flag={`${API_IMAGE}/${esim.region_group?.flag}`}
+                        country={esim.region_group?.name}
+                        gb={esim.plan?.quantity_internet}
+                        days={esim.days_remaining}
+                        price={esim.total_payments_amount}
+                        createdAt={esim.created_at}
+                        iccid={esim.simcards?.[0]?.ssid}
+                        balance={esim.total_payments_amount}
+                        variant="active"
+                        handleRoute={() => {
+                          localStorage.setItem(
+                            "simkard",
+                            JSON.stringify(esim?.simcards[0])
+                          );
+
+                          router.push("/simDone");
+                        }}
+                      />
+                      <PackageCard
+                        id={esim?.id}
+                        key={esim.id || index}
+                        flag={`${API_IMAGE}/${esim.region_group?.flag}`}
+                        country={esim.region_group?.name}
+                        gb={esim.plan?.quantity_internet}
+                        days={esim.days_remaining}
+                        price={esim.total_payments_amount}
+                        createdAt={esim.created_at}
+                        iccid={esim.simcards?.[0]?.ssid}
+                        balance={esim.total_payments_amount}
+                        variant="active"
+                        handleRoute={() => {
+                          localStorage.setItem(
+                            "simkard",
+                            JSON.stringify(esim?.simcards[0])
+                          );
+
+                          router.push("/simDone");
+                        }}
+                      />
+                      <PackageCard
+                        id={esim?.id}
+                        key={esim.id || index}
+                        flag={`${API_IMAGE}/${esim.region_group?.flag}`}
+                        country={esim.region_group?.name}
+                        gb={esim.plan?.quantity_internet}
+                        days={esim.days_remaining}
+                        price={esim.total_payments_amount}
+                        createdAt={esim.created_at}
+                        iccid={esim.simcards?.[0]?.ssid}
+                        balance={esim.total_payments_amount}
+                        variant="active"
+                        handleRoute={() => {
+                          localStorage.setItem(
+                            "simkard",
+                            JSON.stringify(esim?.simcards[0])
+                          );
+
+                          router.push("/simDone");
+                        }}
+                      />
                       <PackageCard
                         id={esim?.id}
                         key={esim.id || index}

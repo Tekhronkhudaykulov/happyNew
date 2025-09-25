@@ -378,7 +378,7 @@ const ConfirmPage = () => {
                     ) ? (
                       <div
                         key={method?.id}
-                        className={`w-full h-[50px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                        className={`w-full h-[60px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
                           selectedMethod === method?.id
                             ? "border border-[#F06F1E]"
                             : ""
@@ -396,7 +396,7 @@ const ConfirmPage = () => {
                               ? ASSETS.visa
                               : ASSETS.bycard
                           }
-                          className="md:w-fit w-12"
+                          className="md:w-fit w-16"
                         />
                       </div>
                     ) : null
@@ -440,7 +440,7 @@ const ConfirmPage = () => {
           </button> */}
 
           <Button
-            classname="mt-0 sm:mt-6 w-full"
+            classname="mt-[-5px] w-full"
             title={isPending ? "Loading..." : t("auth.pay")}
             disabled={
               isPending ||

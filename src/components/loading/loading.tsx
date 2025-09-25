@@ -88,9 +88,11 @@ const LoadingWaiting = () => {
         />
 
         {/* Text with animated dots */}
-        <div className="text-xl font-medium text-white flex items-center">
-          Мы отправили уведомление в приложении Click/Payme. Пожалуйста, оплатите счет.
-          <span className="ml-2 flex w-6 justify-start">
+        <div className="md:max-w-none max-w-[90%] md:justify-normal justify-center font-medium text-white flex items-end md:items-center">
+          <p className="text-center text-lg md:text-xl">
+            Мы отправили уведомление в приложении Click/Payme. Пожалуйста, оплатите счет.
+          </p>
+          <span className="md:ml-2 ml-0 flex w-6 justify-center md:justify-start">
             <span className="dot">.</span>
             <span className="dot">.</span>
             <span className="dot">.</span>

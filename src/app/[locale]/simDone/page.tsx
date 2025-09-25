@@ -201,7 +201,7 @@ const SimReady = () => {
                   <p className="text-[#595959] text-sm sm:text-base font-normal truncate">
                     UID:
                   </p>
-                  <h3 className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate">
+                  <h3 className="text-sm md:max-w-none sm:text-base font-normal text-[#1C1C1C] truncate">
                     {object?.uid}
                   </h3>
                 </div>
@@ -284,41 +284,39 @@ const SimReady = () => {
                   {t("ready.order")}#162
                 </h3>
 
-                <div className="space-y-3">
+                <div className="space-y-3 mt-2">
                   <div>
                     <p className="text-[#595959] text-sm font-normal truncate">
                       ICCID:
                     </p>
-                    <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
+                    <h3 className="text-sm font-normal text-[#1C1C1C] max-w-[200px]">
                       {object?.ssid}
                     </h3>
                   </div>
 
-                  <div className="flex items-center justify-between">
                     <div>
                       <p className="text-[#595959] text-sm font-normal truncate">
                         UID:
                       </p>
-                      <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
+                      <h3 className="text-sm max-w-[200px] font-normal text-[#1C1C1C]">
                         {object?.uid}
                       </h3>
                     </div>
 
-                    <div>
+                     <div>
                       <p className="text-[#595959] text-sm font-normal truncate">
                         PIN:
                       </p>
-                      <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
+                      <h3 className="text-sm font-normal text-[#1C1C1C] max-w-[200px]">
                         {object?.pin}
                       </h3>
                     </div>
-                  </div>
 
                   <div>
                     <p className="text-[#595959] text-sm font-normal truncate">
                       PUK:
                     </p>
-                    <h3 className="text-sm font-normal text-[#1C1C1C] truncate">
+                    <h3 className="text-sm font-normal text-[#1C1C1C] max-w-[200px]">
                       {object?.puk}
                     </h3>
                   </div>
