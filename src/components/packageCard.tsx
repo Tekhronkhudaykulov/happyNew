@@ -175,7 +175,7 @@ const PackageCard: FC<PackageCardProps> = ({
 
         {variant === "balance" && (
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
-            <button className="flex-1 bg-[#F06F1E] text-white py-2 rounded-lg text-sm sm:text-base truncate">
+            <button className="flex-1  bg-[#F06F1E] text-white py-2 rounded-lg text-sm sm:text-base truncate">
               {t("my.ostatok")}
               {(
                 (balanceData?.balance?.[0]?.subOrderList?.[0]
@@ -186,7 +186,7 @@ const PackageCard: FC<PackageCardProps> = ({
             </button>
             <div
               onClick={() => router.push("/simDone")}
-              className="flex-1 bg-[#E4E4E4] text-[#1C1C1C] flex items-center justify-center py-2 rounded-lg text-sm sm:text-base"
+              className="flex-1 bg-[#E4E4E4] cursor-pointer text-[#1C1C1C] flex items-center justify-center py-2 rounded-lg text-sm sm:text-base"
             >
               {t("my.detail")}
             </div>
