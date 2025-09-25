@@ -54,6 +54,9 @@ const ConfirmPage = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
   const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [orderData, setOrderData] = useState(null);
+  console.log(orderData, "orderData");
+
   const [object, setObject] = useState<any>(null);
   console.log(object, "object");
 
@@ -134,7 +137,11 @@ const ConfirmPage = () => {
       return res.json();
     },
     onSuccess: (res) => {
+      console.log(res, "res");
+
       const orderId = res?.order_id ?? res?.data?.order_id;
+      setOrderData(res);
+
       if (res?.token) {
         localStorage.setItem("token", res?.token);
       }
@@ -168,6 +175,10 @@ const ConfirmPage = () => {
       toast.error("Паспорт расмини юкланг!");
       return;
     }
+    const phoneNumber = localStorage.setItem(
+      "phone",
+      phoneRef.current?.value || ""
+    );
     mutate({
       plan_id: id,
       fio,
@@ -176,6 +187,39 @@ const ConfirmPage = () => {
       passport_image: passportFile,
     });
   };
+
+  const handleAuth = () => {
+    const token = localStorage.getItem("token");
+    authMutate({
+      phone: phoneRef.current?.value || "",
+      orderId: orderData?.order_id,
+      secret: token,
+    });
+  };
+
+  const { mutate: authMutate, isPending: authPending } = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await fetch(`${API_URL}/${endpoints.auth}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(
+          `Failed to create payment: ${JSON.stringify(errorData)}`
+        );
+      }
+      return res.json();
+    },
+    onSuccess: (res) => {
+      router.push("/simDone");
+    },
+    onError: (err) => {
+      toast.error(err?.message);
+    },
+  });
 
   useOrderSocket({
     onOrderData: (data) => {
@@ -187,10 +231,7 @@ const ConfirmPage = () => {
       if (data?.status_name === "Активный") {
         localStorage.setItem("simkard", JSON.stringify(data?.simcards[0]));
         setShowSuccessModal(true);
-
-        setTimeout(() => {
-          router.push("/simDone");
-        }, 5000);
+        handleAuth();
       }
       if (data?.status_name === "Отменен") {
         setShowSuccessModal(false);
@@ -207,8 +248,6 @@ const ConfirmPage = () => {
     onConnect: (id) => console.log("Ulandi:", id),
     onDisconnect: (reason) => console.log("Uzildi:", reason),
   });
-
-  console.log(paymentData);
 
   useEffect(() => {
     if (profileData?.data) {

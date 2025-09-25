@@ -8,6 +8,7 @@ const endpoints = {
   checkBalance: (id: any) => `client/order-simcard/balance/${id}`,
   simOrder: "client/order-simcard/my-orders",
   profile: "client/me",
+  auth: "client/secret-login",
 };
 
 export default endpoints;
