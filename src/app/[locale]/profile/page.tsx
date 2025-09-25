@@ -222,7 +222,7 @@ const Profile = () => {
                     <input
                       type="tel"
                       placeholder={t("ready.phonenum")}
-                      value={modalPhone || profileData?.data?.phone || ""}
+                      value={modalPhone || `+${profileData?.data?.phone}` || "+998 "}
                       onChange={handleModalPhoneChange}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     />
