@@ -186,9 +186,16 @@ const Country = () => {
             </h1>
           </div>
 
-          <div onClick={() => setIsNoteVisible(!isNoteVisible)} className="flex cursor-pointer items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5">
+          <div
+            onClick={() => setIsNoteVisible(!isNoteVisible)}
+            className="flex cursor-pointer items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5"
+          >
             <Info size={16} className="text-[#F06F1E] sm:size-5" />
-            <p className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base ${isNoteVisible ? "" : "hidden"}`}>
+            <p
+              className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base ${
+                isNoteVisible ? "" : "hidden"
+              }`}
+            >
               {regionPlans?.data?.data[0]?.[`note_${locale}`] ||
                 t("country.not-avaiable")}
             </p>
@@ -202,8 +209,9 @@ const Country = () => {
         >
           {plansData?.data?.data?.filter(
             (item: any) =>
-              item.is_local === false &&
-              !(item?.b2b === 1 || item?.hide_site === true)
+              item.is_local === 1 ||
+              (item.is_local === true &&
+                !(item?.b2b === 1 || item?.hide_site === true))
           ).length > 0 && (
             <>
               <h2 className="col-span-full font-bold text-lg mb-2 text-black">
@@ -212,8 +220,9 @@ const Country = () => {
               {plansData?.data?.data
                 .filter(
                   (item: any) =>
-                    item.is_local === false &&
-                    !(item?.b2b === 1 || item?.hide_site === true)
+                    item.is_local === 1 ||
+                    (item.is_local === true &&
+                      !(item?.b2b === 1 || item?.hide_site === true))
                 )
                 .map((item: any, idx: any) => (
                   <ESimCard
@@ -235,10 +244,13 @@ const Country = () => {
                 ))}
             </>
           )}
+
+          {/* REGION */}
           {plansData?.data?.data?.filter(
             (item: any) =>
-              item.is_region === true &&
-              !(item?.b2b === 1 || item?.hide_site === true)
+              item.is_region === 1 ||
+              (item.is_region === true &&
+                !(item?.b2b === 1 || item?.hide_site === true))
           ).length > 0 && (
             <>
               <h2 className="col-span-full font-bold text-lg mb-2 text-black">
@@ -247,8 +259,9 @@ const Country = () => {
               {plansData?.data?.data
                 .filter(
                   (item: any) =>
-                    item.is_region === true &&
-                    !(item?.b2b === 1 || item?.hide_site === true)
+                    item.is_region === 1 ||
+                    (item.is_region === true &&
+                      !(item?.b2b === 1 || item?.hide_site === true))
                 )
                 .map((item: any, idx: any) => (
                   <ESimCard
@@ -270,11 +283,13 @@ const Country = () => {
                 ))}
             </>
           )}
-          {/* is_global === 0 */}
+
+          {/* GLOBAL */}
           {plansData?.data?.data?.filter(
             (item: any) =>
-              item.is_global === 0 &&
-              !(item?.b2b === 1 || item?.hide_site === true)
+              item.is_global === 1 ||
+              (item.is_global === true &&
+                !(item?.b2b === 1 || item?.hide_site === true))
           ).length > 0 && (
             <>
               <h2 className="col-span-full font-bold text-lg mb-2 text-black">
@@ -283,8 +298,9 @@ const Country = () => {
               {plansData?.data?.data
                 .filter(
                   (item: any) =>
-                    item.is_global === 0 &&
-                    !(item?.b2b === 1 || item?.hide_site === true)
+                    item.is_global === 1 ||
+                    (item.is_global === true &&
+                      !(item?.b2b === 1 || item?.hide_site === true))
                 )
                 .map((item: any, idx: any) => (
                   <ESimCard
