@@ -24,6 +24,7 @@ import Image from "next/image";
 import { number } from "framer-motion";
 import { toast } from "react-toastify";
 import Button from "@/components/button";
+import { setToken } from "@/config/api";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -201,8 +202,10 @@ const ConfirmPage = () => {
       }
       return res.json();
     },
-    onSuccess: (res) => {
-      router.push("/simDone");
+    onSuccess: async (res) => {
+      console.log(res, "authRes");
+      setToken(res?.data?.token);
+      await router.push("/simDone");
     },
     onError: (err) => {
       toast.error(err?.message);
@@ -215,7 +218,7 @@ const ConfirmPage = () => {
     const formatted = phoneNumber.replace(/\D/g, "");
     authMutate({
       phone: formatted,
-      order_id: orderData?.order_id,
+      order_id: String(orderData?.order_id),
       secret: token,
     });
   };
