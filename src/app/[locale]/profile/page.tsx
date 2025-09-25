@@ -256,12 +256,12 @@ const Profile = () => {
               <Image
                 src={ASSETS.bgg2}
                 alt="Background 1"
-                className="hidden md:block absolute top-[103px] rounded-[12px] right-[18px] w-[225px] h-[95px]"
+                className="absolute md:top-[103px] top-[370px] right-[15px] rounded-[12px] md:right-[18px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
               />
               <Image
                 src={ASSETS.bgg}
                 alt="Background 2"
-                className="hidden md:block absolute top-[218px] rounded-[12px] right-[187px] w-[225px] h-[95px]"
+                className="absolute md:top-[218px] top-[435px] left-[15px] rounded-[12px] md:right-[187px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
               />
             </div>
 
