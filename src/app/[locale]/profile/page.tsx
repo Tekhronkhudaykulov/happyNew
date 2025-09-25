@@ -40,6 +40,8 @@ const Profile = () => {
     queryFn: fetchPlans,
   });
 
+  console.log(profileData, "profileData");
+
   // ✨ Edit qilish uchun local state
   const [name, setName] = useState("");
 
@@ -248,7 +250,7 @@ const Profile = () => {
                     {profileData?.data?.balance} UZS
                   </h1>
                   <p className="text-xs md:text-[14px] mt-auto">
-                    {t("ready.orders")}: {profileData?.ordersCount ?? 0}
+                    {t("ready.orders")}: {profileData?.data?.total_orders ?? 0}
                   </p>
                 </div>
               </div>
