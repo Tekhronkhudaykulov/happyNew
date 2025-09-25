@@ -175,25 +175,13 @@ const ConfirmPage = () => {
       toast.error("Паспорт расмини юкланг!");
       return;
     }
-    const phoneNumber = localStorage.setItem(
-      "phone",
-      phoneRef.current?.value || ""
-    );
+
     mutate({
       plan_id: id,
       fio,
       phone,
       payment_type_id: selectedMethod,
       passport_image: passportFile,
-    });
-  };
-
-  const handleAuth = () => {
-    const token = localStorage.getItem("token");
-    authMutate({
-      phone: phoneRef.current?.value || "",
-      orderId: orderData?.order_id,
-      secret: token,
     });
   };
 
@@ -220,6 +208,17 @@ const ConfirmPage = () => {
       toast.error(err?.message);
     },
   });
+
+  const handleAuth = () => {
+    const token = localStorage.getItem("token");
+    const phoneNumber = phoneRef.current?.value || "";
+    const formatted = phoneNumber.replace(/\D/g, "");
+    authMutate({
+      phone: formatted,
+      order_id: orderData?.order_id,
+      secret: token,
+    });
+  };
 
   useOrderSocket({
     onOrderData: (data) => {
