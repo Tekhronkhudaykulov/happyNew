@@ -39,6 +39,8 @@ const SimReady = () => {
   });
   const [object, setObject] = useState<any>(null);
 
+  console.log(object, "object");
+
   useEffect(() => {
     const simKard = localStorage.getItem("simkard");
     if (simKard) {
@@ -51,12 +53,9 @@ const SimReady = () => {
   }, []);
 
   const handleActivate = () => {
-    if (!object?.qr_code) {
-      return;
+    if (object?.qr_code) {
+      window.location.href = object?.qr_code;
     }
-
-    // iPhone Safari orqali ochish uchun
-    window.location.href = object?.qr_code;
   };
 
   const handleCheckBalance = async (orderId: any) => {
