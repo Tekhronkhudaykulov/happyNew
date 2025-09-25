@@ -1,12 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import InfoItem from "@/components/infoitem";
 import Button from "@/components/button";
-import { APP_ROUTES } from "@/router/path";
 import { useTranslations } from "next-intl";
 import QrCode from "@/components/qrCode";
 import { ASSETS } from "@/assets";

@@ -11,8 +11,8 @@ import { useState, useEffect } from "react";
 import { useAuthModal } from "@/providers/AuthModalProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_ROUTES } from "@/router/path";
-import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
+import { API_URL } from "@/config";
 
 const tokenName = "token";
 
@@ -222,7 +222,9 @@ const Profile = () => {
                     <input
                       type="tel"
                       placeholder={t("ready.phonenum")}
-                      value={modalPhone || `+${profileData?.data?.phone}` || "+998 "}
+                      value={
+                        modalPhone || `+${profileData?.data?.phone}` || "+998 "
+                      }
                       onChange={handleModalPhoneChange}
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     />
@@ -236,7 +238,11 @@ const Profile = () => {
                     <h2 className="text-sm md:text-[14px] font-normal">
                       {t("ready.keshbek")}
                     </h2>
-                    <Image className="md:w-fit md:h-fit h-8 w-24" src={ASSETS.logowhite} alt="" />
+                    <Image
+                      className="md:w-fit md:h-fit h-8 w-24"
+                      src={ASSETS.logowhite}
+                      alt=""
+                    />
                   </div>
                   <h1 className="text-[30px] md:text-[35px] font-bold mt-4">
                     {profileData?.data?.balance} UZS
