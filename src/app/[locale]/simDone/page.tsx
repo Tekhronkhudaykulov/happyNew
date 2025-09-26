@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
+import { toast, ToastContainer } from "react-toastify";
 
 async function fetchCheckBalance(params: any) {
   const token = localStorage.getItem("token");
@@ -61,6 +62,30 @@ const SimReady = () => {
     setTimeout(() => {
       refetch();
     }, 0);
+  };
+
+  const handleCopyQrCode = async () => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(object.qr_code);
+        toast.success(t("ready.copied"));
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = object.qr_code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          toast.success(t("ready.copied"));
+        } catch (err) {
+          console.error("Ошибка копирования через execCommand:", err);
+        } finally {
+          document.body.removeChild(textArea);
+        }
+      }
+    } catch (err) {
+      console.error("Ошибка копирования QR-кода:", err);
+    }
   };
 
   return (
@@ -119,9 +144,13 @@ const SimReady = () => {
                     <h4 className="text-white text-sm sm:text-lg font-normal">
                       {t("ready.need")}
                     </h4>
-                    <h4 className="text-[#F06F1E] text-sm sm:text-lg font-normal">
+                    <a
+                      href="https://t.me/Happytel_support"
+                      target="_blank"
+                      className="text-[#F06F1E] text-sm sm:text-lg font-normal cursor-pointer"
+                    >
                       {t("ready.support")}
-                    </h4>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -153,11 +182,17 @@ const SimReady = () => {
                     <h4 className="text-white text-base sm:text-lg font-normal">
                       {t("ready.code")}
                     </h4>
-                    <p className="text-[#B9B9B9] text-sm md:block hidden">
+                    <p
+                      onClick={handleCopyQrCode}
+                      className="text-[#B9B9B9] cursor-pointer text-sm md:block hidden"
+                    >
                       {t("ready.copy")}
                     </p>
                   </div>
-                  <div className="mt-4 border border-[#FFFFFF6B] rounded-xl py-3 px-4 flex items-center justify-center">
+                  <div
+                    onClick={handleCopyQrCode}
+                    className="mt-4 border border-[#FFFFFF6B] rounded-xl py-3 px-4 flex items-center justify-center cursor-pointer"
+                  >
                     <p className="text-[#FFFFFF6B] text-sm font-medium text-center truncate">
                       {object?.qr_code}
                     </p>
@@ -294,23 +329,23 @@ const SimReady = () => {
                     </h3>
                   </div>
 
-                    <div>
-                      <p className="text-[#595959] text-sm font-normal truncate">
-                        UID:
-                      </p>
-                      <h3 className="text-sm max-w-[200px] font-normal text-[#1C1C1C]">
-                        {object?.uid}
-                      </h3>
-                    </div>
+                  <div>
+                    <p className="text-[#595959] text-sm font-normal truncate">
+                      UID:
+                    </p>
+                    <h3 className="text-sm max-w-[200px] font-normal text-[#1C1C1C]">
+                      {object?.uid}
+                    </h3>
+                  </div>
 
-                     <div>
-                      <p className="text-[#595959] text-sm font-normal truncate">
-                        PIN:
-                      </p>
-                      <h3 className="text-sm font-normal text-[#1C1C1C] max-w-[200px]">
-                        {object?.pin}
-                      </h3>
-                    </div>
+                  <div>
+                    <p className="text-[#595959] text-sm font-normal truncate">
+                      PIN:
+                    </p>
+                    <h3 className="text-sm font-normal text-[#1C1C1C] max-w-[200px]">
+                      {object?.pin}
+                    </h3>
+                  </div>
 
                   <div>
                     <p className="text-[#595959] text-sm font-normal truncate">
@@ -378,7 +413,7 @@ const SimReady = () => {
                       {t("ready.copy")}
                     </p>
                   </div>
-                  <div className="mt-4 border border-[#FFFFFF6B] rounded-xl py-2 px-4 flex items-center justify-center">
+                  <div onClick={handleCopyQrCode} className="mt-4 border border-[#FFFFFF6B] rounded-xl py-2 px-4 flex items-center justify-center">
                     <p className="text-[#FFFFFF6B] text-sm font-medium text-center truncate">
                       {object?.qr_code}
                     </p>

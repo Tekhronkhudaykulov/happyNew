@@ -200,6 +200,11 @@
   .main-map {
     display: block !important;
   }
+  .main-download,
+  .main-esim,
+  .main-phone {
+    display: none;
+  }
   .main-destination1,
   .main-destination2,
   .main-gray,
@@ -249,11 +254,6 @@
 
   .main-container {
     padding-bottom: 10px;
-  }
-
-  .main-download,
-  .main-esim {
-    display: none;
   }
 
   .search-container {

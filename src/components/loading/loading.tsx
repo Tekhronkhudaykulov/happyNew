@@ -92,7 +92,7 @@ const LoadingWaiting = () => {
           <p className="text-center text-lg md:text-xl">
             Мы отправили уведомление в приложении Click/Payme. Пожалуйста, оплатите счет.
           </p>
-          <span className="md:ml-2 ml-0 flex w-6 justify-center md:justify-start">
+          <span className="md:ml-2 ml-0 hidden md:flex w-6 justify-center md:justify-start">
             <span className="dot">.</span>
             <span className="dot">.</span>
             <span className="dot">.</span>
