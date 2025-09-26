@@ -260,7 +260,7 @@ const ConfirmPage = () => {
         setFio(profileData.data.full_name);
       }
     }
-  }, [profileData]);
+  }, [profileData?.data]);
 
   return (
     <>
