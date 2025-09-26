@@ -28,13 +28,18 @@ async function fetchPlans() {
 
   if (res.status === 404) {
     localStorage.removeItem("token");
-    localStorage.removeItem("simkard");
     localStorage.removeItem("obyekt");
-    window.location.href = APP_ROUTES.HOME;
-  }
+    localStorage.removeItem("simkard");
+    if (typeof window !== "undefined") {
+      window.location.href = APP_ROUTES.HOME;
+    }
 
-  if (!res.ok) throw new Error("Failed to fetch profile");
-  return res.json();
+    return { data: null } as any;
+  }
+  if (!res.ok) throw new Error("Failed to fetch eSIM data");
+  const data = await res.json();
+  console.log("eSIM data:", data);
+  return data;
 }
 
 const Profile = () => {

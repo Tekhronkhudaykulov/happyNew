@@ -32,6 +32,10 @@ async function fetchEsim() {
 
   if (res.status === 404) {
     localStorage.removeItem("token");
+    if (typeof window !== "undefined") {
+      window.location.href = APP_ROUTES.HOME;
+    }
+
     return { data: null } as any;
   }
 
