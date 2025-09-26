@@ -2,7 +2,7 @@
 
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -41,6 +41,10 @@ async function fetchProfile() {
       Authorization: token ? `Bearer ${token}` : "",
     },
   });
+
+  if (res.status === 401) {
+    toast.error("Сессия истекла, пожалуйста заполните форму");
+  }
 
   if (!res.ok) throw new Error("Failed to fetch profile");
   return res.json();
@@ -170,10 +174,6 @@ const ConfirmPage = () => {
     }
     if (!selectedMethod) {
       toast.error("Тўлов усулини танланг!");
-      return;
-    }
-    if (!passportFile) {
-      toast.error("Паспорт расмини юкланг!");
       return;
     }
 
@@ -312,7 +312,7 @@ const ConfirmPage = () => {
           <div className="flex flex-col items-stretch md:flex-row gap-[10px] md:gap-[13px]">
             <div className="block md:hidden">
               <PackageCard
-                flag={`${API_IMAGE}/${object?.region_group?.img}`}
+                flag={`${API_IMAGE}/${object?.img}`}
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}
@@ -354,18 +354,43 @@ const ConfirmPage = () => {
                     <p className="text-sm mb-2 text-[#595959]">
                       {t("auth.passport")}
                     </p>
+
                     <div className="relative">
-                      <input
-                        type="text"
-                        className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
-                        value={fileName || "Загрузить"}
-                        readOnly
-                      />
-                      <input
-                        type="file"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={handleFileUpload}
-                      />
+                      {profileData?.data?.passport_image ? (
+                        <>
+                          <div className="relative w-full">
+                            <img
+                              src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
+                              alt="passport"
+                              className="w-full max-h-40 object-contain rounded-lg border rounded-lg"
+                            />
+
+                            {/* Edit ikonka */}
+
+                            {/* Fayl yuklash input */}
+                            <input
+                              type="file"
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              onChange={handleFileUpload}
+                            />
+                          </div>
+                          <Download className="absolute bottom-0 right-2 text-white bg-black rounded-full p-1" />
+                        </>
+                      ) : (
+                        <div className="relative">
+                          <input
+                            type="text"
+                            className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
+                            value={fileName || "Загрузить"}
+                            readOnly
+                          />
+                          <input
+                            type="file"
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            onChange={handleFileUpload}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -397,7 +422,12 @@ const ConfirmPage = () => {
                                 ? ASSETS.visa
                                 : ASSETS.bycard
                             }
-                            className="md:w-fit md:h-auto h-16 w-16"
+                            className={`md:w-fit md:h-auto h-16 w-16 ${
+                              method?.name === "Click" ||
+                              method?.name === "Payme"
+                                ? "h-20 w-20"
+                                : ""
+                            }`}
                           />
                         </div>
                       ) : null
@@ -416,7 +446,7 @@ const ConfirmPage = () => {
                     !phone ||
                     phone.trim() === "" ||
                     !selectedMethod ||
-                    !passportFile
+                    (!fileName && !profileData?.data?.passport_image)
                   }
                   onclick={handlePayment}
                 />

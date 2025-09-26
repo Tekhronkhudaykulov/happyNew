@@ -9,6 +9,7 @@ const endpoints = {
   simOrder: "client/order-simcard/my-orders",
   profile: "client/me",
   auth: "client/secret-login",
+  regionGroups: "public/region-groups",
 };
 
 export default endpoints;

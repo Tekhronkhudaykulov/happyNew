@@ -94,16 +94,14 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
           <div
             onClick={() => {
               localStorage.setItem("obyekt", JSON.stringify(item));
-              router.push(`${APP_ROUTES.CONFIRM_ORDER}/${item.id}`);
+              router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
             }}
             key={index}
             className="flex items-center gap-4 bg-[#1C1C1C0D] rounded-[12px] p-[10px] pl-0 md:p-[22px] justify-center md:justify-normal cursor-pointer"
           >
             <div className="img_wrapper shrink-0">
               <Image
-                src={
-                  `${API_IMAGE}/${item?.region_group?.img}` || ASSETS.noImage
-                }
+                src={`${API_IMAGE}/${item?.img}` || ASSETS.noImage}
                 alt="flag"
                 width={50}
                 height={50}
@@ -115,7 +113,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
                 {item?.name}
               </h1>
               <div className=" text-[#ff7a00]  inline-block mt-2 text-[18px] font-bold md:text-[16px]">
-                {formatPrice(item?.price_sell)}
+                {formatPrice(item?.min_price)}
               </div>
             </div>
           </div>

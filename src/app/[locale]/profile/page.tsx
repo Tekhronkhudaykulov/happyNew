@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FooterNav } from "@/layouts/FooterNav";
 import Navbar from "@/layouts/Navbar";
-import { ArrowLeft, LogOut } from "lucide-react";
+import { ArrowLeft, Download, LogOut } from "lucide-react";
 import { ASSETS } from "@/assets";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_ROUTES } from "@/router/path";
 import endpoints from "@/services/endpoints";
 import { API_IMAGE, API_URL } from "@/config";
+import { toast } from "react-toastify";
 
 const tokenName = "token";
 
@@ -26,13 +27,14 @@ async function fetchPlans() {
     },
   });
 
-  if (res.status === 404) {
+  if (res.status === 401) {
     localStorage.removeItem("token");
     localStorage.removeItem("obyekt");
     localStorage.removeItem("simkard");
     if (typeof window !== "undefined") {
       window.location.href = APP_ROUTES.HOME;
     }
+    toast.error("Сессия истекла, пожалуйста войдите снова");
 
     return { data: null } as any;
   }
@@ -228,32 +230,42 @@ const Profile = () => {
                       className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
                     /> */}
 
-                    {profileData?.data?.passport_image ? (
-                      <div className="flex flex-col gap-2">
-                        <div className="w-[200px] h-[150px] relative">
-                          <Image
-                            src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
-                            alt="Passport"
-                            fill
-                            className="object-contain rounded-lg border"
-                            sizes="200px"
+                    {profileData?.data?.passport_image || file ? (
+                      <div className="relative w-full">
+                        {/* Agar yangi rasm tanlangan bo‘lsa shuni ko‘rsatamiz, bo‘lmasa eski serverdagi rasmni */}
+                        <img
+                          src={
+                            file
+                              ? URL.createObjectURL(file)
+                              : `${API_IMAGE}/${profileData?.data?.passport_image}`
+                          }
+                          alt="passport"
+                          className="w-full max-h-40 object-contain rounded-lg border"
+                        />
+
+                        {/* Fayl yuklash tugma (ikonka orqali) */}
+                        <label className="absolute bottom-2 right-2 cursor-pointer ">
+                          {/* <Download className="text-white bg-black rounded-full p-2 w-8 h-8" /> */}
+                          <input
+                            type="file"
+                            className="hidden"
+                            onChange={handleFileUpload}
                           />
-                        </div>
+                        </label>
                       </div>
                     ) : (
-                      // Agar passport_image yo‘q bo‘lsa — yuklash inputi
-                      <div className="relative">
-                        <input
-                          type="text"
-                          className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
-                          value={fileName || "Загрузить"}
-                          readOnly
-                        />
-                        <input
-                          type="file"
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                          onChange={handleFileUpload}
-                        />
+                      <div className="relative flex items-center justify-between w-full bg-white p-2 rounded-lg border cursor-pointer">
+                        <span className="text-[#F06F1E]">
+                          {fileName || "Загрузить"}
+                        </span>
+                        <label className="cursor-pointer">
+                          <Download className="text-[#F06F1E] w-6 h-6" />
+                          <input
+                            type="file"
+                            className="hidden"
+                            onChange={handleFileUpload}
+                          />
+                        </label>
                       </div>
                     )}
                   </div>

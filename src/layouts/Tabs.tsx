@@ -11,14 +11,14 @@ import { useQueries } from "@tanstack/react-query";
 import { buildQuery } from "@/utils/buildQuery";
 
 const tabParams: Record<DestinationType, any> = {
-  local: { is_local: 1 },
-  regional: { is_region: 1 },
-  global: { is_global: 1 },
+  local: { plan_type: "local" },
+  regional: { plan_type: "region" },
+  global: { plan_type: "global" },
 };
 
 async function fetchPlans(params: any) {
   const query = buildQuery(params);
-  const res = await fetch(`${API_URL}/${endpoints.plans}?${query}`);
+  const res = await fetch(`${API_URL}/${endpoints.regionGroups}?${query}`);
   if (!res.ok) throw new Error("Failed to fetch plans");
   return res.json();
 }
@@ -30,7 +30,7 @@ const Tabs: React.FC = () => {
   // 🔹 3 ta parallel query
   const results = useQueries({
     queries: (Object.keys(tabParams) as DestinationType[]).map((key) => ({
-      queryKey: ["plans", key],
+      queryKey: ["regionGroup", key],
       queryFn: () => fetchPlans(tabParams[key]),
     })),
   });
@@ -70,7 +70,7 @@ const Tabs: React.FC = () => {
         </div>
 
         <div className="mt-[30px] md:mt-[50px]">
-          <DestinationCard type={activeTab} data={activeData?.data?.data} />
+          <DestinationCard type={activeTab} data={activeData?.data} />
         </div>
       </div>
     </div>

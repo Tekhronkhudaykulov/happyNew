@@ -16,7 +16,8 @@ import endpoints from "@/services/endpoints";
 import { APP_ROUTES } from "@/router/path";
 import Button from "@/components/button";
 import { Loading5755 } from "@/components/loading/loading";
-import Loading from "../loading";
+
+import { toast } from "react-toastify";
 
 const tokenName = "token";
 
@@ -30,11 +31,10 @@ async function fetchEsim() {
     },
   });
 
-  if (res.status === 404) {
+  if (res.status === 401) {
     localStorage.removeItem("token");
-    if (typeof window !== "undefined") {
-      window.location.href = APP_ROUTES.HOME;
-    }
+    window.location.href = APP_ROUTES.HOME;
+    toast.error("Сессия истекла, пожалуйста войдите снова");
 
     return { data: null } as any;
   }
