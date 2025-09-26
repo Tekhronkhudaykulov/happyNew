@@ -309,7 +309,7 @@ const ConfirmPage = () => {
             </h1>
           </div>
 
-          <div className="flex flex-col md:flex-row items-stretch gap-[10px] md:gap-[13px]">
+          <div className="flex flex-col items-stretch md:flex-row gap-[10px] md:gap-[13px]">
             <div className="block md:hidden">
               <PackageCard
                 flag={`${API_IMAGE}/${object?.region_group?.img}`}
@@ -320,88 +320,105 @@ const ConfirmPage = () => {
                 variant="buy"
               />
             </div>
-            <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-8">
-              <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
-                <div className="w-full">
-                  <p className="text-sm mb-2 text-[#595959]">
-                    {t("auth.name")}
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="Ivan"
-                    className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={fio || ""}
-                    onChange={(e) => setFio(e.target.value)}
-                  />
-                </div>
-
-                <div className="w-full">
-                  <p className="text-sm mb-2 text-[#595959]">
-                    {t("auth.phone")}
-                  </p>
-                  <input
-                    ref={phoneRef}
-                    type="text"
-                    placeholder="+998 99 999 99 99"
-                    className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
-                    value={phone || "+998 "}
-                    onChange={handlePhoneChange}
-                  />
-                </div>
-
-                <div className="w-full">
-                  <p className="text-sm mb-2 text-[#595959]">
-                    {t("auth.passport")}
-                  </p>
-                  <div className="relative">
+            <div className="flex flex-col gap-3">
+              <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-6">
+                <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
+                  <div className="w-full">
+                    <p className="text-sm mb-2 text-[#595959]">
+                      {t("auth.name")}
+                    </p>
                     <input
                       type="text"
-                      className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
-                      value={fileName || "Загрузить"}
-                      readOnly
+                      placeholder="Ivan"
+                      className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
+                      value={fio || ""}
+                      onChange={(e) => setFio(e.target.value)}
                     />
+                  </div>
+
+                  <div className="w-full">
+                    <p className="text-sm mb-2 text-[#595959]">
+                      {t("auth.phone")}
+                    </p>
                     <input
-                      type="file"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      onChange={handleFileUpload}
+                      ref={phoneRef}
+                      type="text"
+                      placeholder="+998 99 999 99 99"
+                      className="w-full bg-white p-2 text-black rounded-lg focus:outline-none focus:ring-0 focus:border-transparent"
+                      value={phone || "+998 "}
+                      onChange={handlePhoneChange}
                     />
+                  </div>
+
+                  <div className="w-full">
+                    <p className="text-sm mb-2 text-[#595959]">
+                      {t("auth.passport")}
+                    </p>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        className="w-full bg-white p-2 text-[#F06F1E] rounded-lg"
+                        value={fileName || "Загрузить"}
+                        readOnly
+                      />
+                      <input
+                        type="file"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        onChange={handleFileUpload}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
+                    {paymentData?.data?.map((method: any) =>
+                      ["click", "payme", "visa", "octo_uzs"].includes(
+                        method?.key
+                      ) ? (
+                        <div
+                          key={method?.id}
+                          className={`w-full h-[60px] md:h-[85px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                            selectedMethod === method?.id
+                              ? "border border-[#F06F1E]"
+                              : "border border-transparent"
+                          }`}
+                          onClick={() => setSelectedMethod(method?.id)}
+                        >
+                          <Image
+                            alt=""
+                            src={
+                              method?.name === "Click"
+                                ? ASSETS.click
+                                : method?.name === "Payme"
+                                ? ASSETS.payme
+                                : method?.name === "Visa"
+                                ? ASSETS.visa
+                                : ASSETS.bycard
+                            }
+                            className="md:w-fit md:h-auto h-16 w-16"
+                          />
+                        </div>
+                      ) : null
+                    )}
                   </div>
                 </div>
               </div>
-
-              <div>
-                <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
-                  {paymentData?.data?.map((method: any) =>
-                    ["click", "payme", "visa", "octo_uzs"].includes(
-                      method?.key
-                    ) ? (
-                      <div
-                        key={method?.id}
-                        className={`w-full h-[60px] md:h-[97px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                          selectedMethod === method?.id
-                            ? "border border-[#F06F1E]"
-                            : ""
-                        }`}
-                        onClick={() => setSelectedMethod(method?.id)}
-                      >
-                        <Image
-                          alt=""
-                          src={
-                            method?.name === "Click"
-                              ? ASSETS.click
-                              : method?.name === "Payme"
-                              ? ASSETS.payme
-                              : method?.name === "Visa"
-                              ? ASSETS.visa
-                              : ASSETS.bycard
-                          }
-                          className="md:w-fit w-16"
-                        />
-                      </div>
-                    ) : null
-                  )}
-                </div>
+              <div className="lg:pb-0 pb-[75px]">
+                <Button
+                classname="mt-[-5px] w-full"
+                title={isPending ? "Loading..." : t("auth.pay")}
+                disabled={
+                  isPending ||
+                  !fio ||
+                  fio.trim() === "" ||
+                  !phone ||
+                  phone.trim() === "" ||
+                  !selectedMethod ||
+                  !passportFile
+                }
+              />
               </div>
             </div>
 
@@ -419,11 +436,7 @@ const ConfirmPage = () => {
           </div>
         </div>
 
-        <div
-          className="container md:pb-0 pb-[85px] mt-auto"
-          onClick={handlePayment}
-        >
-          {/* <button
+        {/* <button
             disabled={
               isPending ||
               !fio ||
@@ -438,21 +451,6 @@ const ConfirmPage = () => {
           >
             {isPending ? "Loading..." : t("auth.pay")}
           </button> */}
-
-          <Button
-            classname="mt-[-5px] w-full"
-            title={isPending ? "Loading..." : t("auth.pay")}
-            disabled={
-              isPending ||
-              !fio ||
-              fio.trim() === "" ||
-              !phone ||
-              phone.trim() === "" ||
-              !selectedMethod ||
-              !passportFile
-            }
-          />
-        </div>
 
         <div className="">
           <FooterNav />

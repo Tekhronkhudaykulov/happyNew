@@ -172,7 +172,7 @@ const Main = () => {
       <div className="main relative bg-[#FFFFFF8F]">
         <Image className="main-map" src={ASSETS.bgmap} alt="" />
         <div className="main-container">
-          <div className="container relative md:flex-row flex-col gap-[15px] flex md:gap-[100px]">
+          <div className="container relative lg:flex-row flex-col gap-[15px] flex lg:gap-[100px]">
             <div className="main-download mt-[50px] w-[150px] h-[150px] rounded-full border border-[#F06F1E] flex items-center justify-center">
               <p className="text-[#F06F1E] text-center">
                 {p("download.title")}
@@ -196,7 +196,7 @@ const Main = () => {
                 <p className="main-item hidden sm:block">{t("nav3")}</p>
               </ul>
 
-              <div className="md:flex flex-col">
+              <div className="lg:flex flex-col">
                 {/* 🔹 Input and selected countries */}
                 <div
                   className={`search-container`}
@@ -240,9 +240,9 @@ const Main = () => {
                 {(searchTerm || isInputFocused) && (
                   <div ref={dropdownRef} className="">
                     <div
-                      className="absolute z-30 mt-4 md:mt-[10px] max-w-[92%] w-full text-black 
-                      md:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
-                      md:max-h-[calc(100vh-500px)] max-h-[165px] overflow-y-auto"
+                      className="absolute z-30 mt-4 lg:mt-[10px] max-w-[92%] w-full text-black 
+                      lg:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
+                      lg:max-h-[calc(100vh-500px)] max-h-[165px] overflow-y-auto"
                     >
                       {regionsData?.data?.length > 0 ? (
                         regionsData?.data
@@ -318,7 +318,7 @@ const Main = () => {
                           </div>
                           <div>
                             <p
-                              className={`font-normal text-[#FFFFFF] md:text-[18px] text-[14px] ${
+                              className={`font-normal text-[#FFFFFF] lg:text-[18px] text-[14px] ${
                                 item.name.length > 10 ? " max-w-[150px]" : ""
                               }`}
                             >

@@ -162,7 +162,7 @@
     "code": "Android code:",
     "copy": "Copy and paste into settings",
     "order": "Order",
-    "info": "SIM data:",
+    "info": "eSIM info:",
     "dispethcer": "Support service",
     "phone": "Phone number:",
     "bot": "Telegram bot:",
@@ -173,7 +173,8 @@
     "keshbek": "Cashback",
     "orders": "Number of purchases",
     "logout": "Log out",
-    "go": "Go"
+    "go": "Go",
+    "copied": "Copied"
   },
   "login": {
     "title": "Добро пожаловать!",

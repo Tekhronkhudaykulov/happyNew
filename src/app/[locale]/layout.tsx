@@ -7,8 +7,8 @@ import { Suspense } from "react";
 import { Loading5755 } from "@/components/loading/loading";
 import { AuthModalProvider } from "@/providers/AuthModalProvider";
 import { AutoScrollToTop } from "@/components/scrollToTop";
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ToastProvider } from "@/providers/ToastProvider";
 
 export default async function LocaleLayout({
@@ -28,9 +28,28 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ReactQueryProvider>
             <AuthModalProvider>
-              <AutoScrollToTop/>
+              <AutoScrollToTop />
               <Suspense fallback={<Loading5755 />}>
                 <ToastProvider />
+                <ToastContainer
+                  position="top-right"
+                  autoClose={2000}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss={false}
+                  draggable={false}
+                  pauseOnHover={false}
+                  theme="colored"
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "500",
+                    borderRadius: "8px",
+                    padding: "8px",
+                    maxWidth: "90%",
+                    margin: "0 auto",
+                  }}
+                />
                 {children}
               </Suspense>
             </AuthModalProvider>
