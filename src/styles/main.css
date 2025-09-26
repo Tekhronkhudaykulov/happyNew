@@ -217,6 +217,14 @@
     height: 55px;
   }
 
+  .main-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .main-title {
     font-size: 42px;
     line-height: 48px;
@@ -290,8 +298,11 @@
     text-align: left;
   }
 
+  .main-wrapper {
+    display: block;
+  }
+
   .search-container {
-    max-width: 100%;
     padding: 4px;
     margin: 0;
     margin-top: 20px;
