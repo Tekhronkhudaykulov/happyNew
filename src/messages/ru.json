@@ -146,7 +146,7 @@
   },
 
   "ready": {
-    "title": "Ваша SIM-карта готова!",
+    "title": "Ваша eSIM готова!",
     "instruction": "Инструкции по активации:",
     "iphone": "Для iPhone/iPad:",
     "android": "Для Android:",
@@ -178,7 +178,7 @@
     "keshbek": "Кэшбэк",
     "orders": "Кол-во покупок",
     "logout": "Выйти",
-    "go": "Активировать",
+    "go": "Активировать E-sim",
     "copied": "Скопировано"
   },
   "login": {

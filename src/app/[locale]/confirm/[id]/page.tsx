@@ -407,18 +407,19 @@ const ConfirmPage = () => {
               </div>
               <div className="lg:pb-0 pb-[75px]">
                 <Button
-                classname="mt-[-5px] w-full"
-                title={isPending ? "Loading..." : t("auth.pay")}
-                disabled={
-                  isPending ||
-                  !fio ||
-                  fio.trim() === "" ||
-                  !phone ||
-                  phone.trim() === "" ||
-                  !selectedMethod ||
-                  !passportFile
-                }
-              />
+                  classname="mt-[-5px] w-full"
+                  title={isPending ? "Loading..." : t("auth.pay")}
+                  disabled={
+                    isPending ||
+                    !fio ||
+                    fio.trim() === "" ||
+                    !phone ||
+                    phone.trim() === "" ||
+                    !selectedMethod ||
+                    !passportFile
+                  }
+                  onclick={handlePayment}
+                />
               </div>
             </div>
 

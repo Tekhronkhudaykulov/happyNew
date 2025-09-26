@@ -24,6 +24,7 @@ type PackageCardProps = {
   onCheckBalance?: () => void;
   handleRoute?: any;
   item?: any;
+  loading?: boolean;
 };
 
 async function fetchCheckBalance(params: any) {
@@ -50,6 +51,7 @@ const PackageCard: FC<PackageCardProps> = ({
   handleRoute, // Default to "active"
   id,
   item,
+  loading = false,
 }) => {
   const t = useTranslations("");
   const router = useRouter();
@@ -59,7 +61,7 @@ const PackageCard: FC<PackageCardProps> = ({
 
   const {
     data: balanceData,
-
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["checkBalance", id],
@@ -170,13 +172,14 @@ const PackageCard: FC<PackageCardProps> = ({
         {variant === "balance" && (
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
             <button className="flex-1  bg-[#F06F1E] text-white py-2 rounded-lg text-sm sm:text-base truncate cursor-pointer">
-              {t("my.ostatok")}
-              {(
-                (balanceData?.balance?.[0]?.subOrderList?.[0]
-                  ?.remainingTraffic || balance) /
-                (1024 * 1024)
-              ).toFixed(2)}
-              MB
+              {isLoading ? "Loading..." : t("my.ostatok")}
+              {balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
+                ? (
+                    balanceData?.balance[0]?.subOrderList[0]?.remainingTraffic /
+                    1024
+                  ) // ✅ KB → MB
+                    .toFixed(2) + " MB"
+                : t("my.check")}
             </button>
             <div
               onClick={() => router.push("/simDone")}

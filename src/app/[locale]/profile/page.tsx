@@ -12,7 +12,7 @@ import { useAuthModal } from "@/providers/AuthModalProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_ROUTES } from "@/router/path";
 import endpoints from "@/services/endpoints";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 
 const tokenName = "token";
 
@@ -26,6 +26,13 @@ async function fetchPlans() {
     },
   });
 
+  if (res.status === 404) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("simkard");
+    localStorage.removeItem("obyekt");
+    window.location.href = APP_ROUTES.HOME;
+  }
+
   if (!res.ok) throw new Error("Failed to fetch profile");
   return res.json();
 }
@@ -35,10 +42,25 @@ const Profile = () => {
   const router = useRouter();
   const { openAuthModal } = useAuthModal();
 
-  const { data: profileData, isLoading } = useQuery({
+  // const {
+  //   data: profileData,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["profile"],
+  //   queryFn: fetchPlans,
+  // });
+
+  const {
+    data: profileData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["profile"],
     queryFn: fetchPlans,
   });
+
+  console.log(error, "errpr");
 
   console.log(profileData, "profileData");
 
@@ -177,6 +199,20 @@ const Profile = () => {
 
                   <div>
                     <label className="text-sm font-medium mb-1 block text-black">
+                      {t("ready.phonenum")}
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder={t("ready.phonenum")}
+                      value={
+                        modalPhone || `+${profileData?.data?.phone}` || "+998 "
+                      }
+                      onChange={handleModalPhoneChange}
+                      className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-1 block text-black">
                       {t("ready.passport")}
                     </label>
                     {/* <input
@@ -188,16 +224,16 @@ const Profile = () => {
                     /> */}
 
                     {profileData?.data?.passport_image ? (
-                      // Agar passport_image mavjud bo‘lsa rasmni chiqarish
                       <div className="flex flex-col gap-2">
-                        {/* <Image
-                          src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
-                          alt="Passport"
-                          className="w-[200px] h-auto rounded-lg border"
-                        /> */}
-                        {/* <p className="text-sm text-gray-600">
-                          {profileData?.data?.passport_image.split("/").pop()}
-                        </p> */}
+                        <div className="w-[200px] h-[150px] relative">
+                          <Image
+                            src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
+                            alt="Passport"
+                            fill
+                            className="object-contain rounded-lg border"
+                            sizes="200px"
+                          />
+                        </div>
                       </div>
                     ) : (
                       // Agar passport_image yo‘q bo‘lsa — yuklash inputi
@@ -215,21 +251,6 @@ const Profile = () => {
                         />
                       </div>
                     )}
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium mb-1 block text-black">
-                      {t("ready.phonenum")}
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder={t("ready.phonenum")}
-                      value={
-                        modalPhone || `+${profileData?.data?.phone}` || "+998 "
-                      }
-                      onChange={handleModalPhoneChange}
-                      className="w-full p-3 rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-transparent text-black"
-                    />
                   </div>
                 </div>
               </div>

@@ -30,6 +30,11 @@ async function fetchEsim() {
     },
   });
 
+  if (res.status === 404) {
+    localStorage.removeItem("token");
+    return { data: null } as any;
+  }
+
   if (!res.ok) throw new Error("Failed to fetch eSIM data");
   const data = await res.json();
   console.log("eSIM data:", data);
@@ -123,27 +128,27 @@ const MyEsim = () => {
               <div className="grid md:grid-cols-3 gap-4 grid-cols-1">
                 {visibleEsims?.length > 0 ? (
                   visibleEsims?.map((esim: any, index: number) => (
-                      <PackageCard
-                        id={esim?.id}
-                        key={esim.id || index}
-                        flag={`${API_IMAGE}/${esim.region_group?.flag}`}
-                        country={esim.region_group?.name}
-                        gb={esim.plan?.quantity_internet}
-                        days={esim.days_remaining}
-                        price={esim.total_payments_amount}
-                        createdAt={esim.created_at}
-                        iccid={esim.simcards?.[0]?.ssid}
-                        balance={esim.total_payments_amount}
-                        variant="active"
-                        handleRoute={() => {
-                          localStorage.setItem(
-                            "simkard",
-                            JSON.stringify(esim?.simcards[0])
-                          );
+                    <PackageCard
+                      id={esim?.id}
+                      key={esim.id || index}
+                      flag={`${API_IMAGE}/${esim.region_group?.flag}`}
+                      country={esim.region_group?.name}
+                      gb={esim.plan?.quantity_internet}
+                      days={esim.days_remaining}
+                      price={esim.total_payments_amount}
+                      createdAt={esim.created_at}
+                      iccid={esim.simcards?.[0]?.ssid}
+                      balance={esim.total_payments_amount}
+                      variant="active"
+                      handleRoute={() => {
+                        localStorage.setItem(
+                          "simkard",
+                          JSON.stringify(esim?.simcards[0])
+                        );
 
-                          router.push("/simDone");
-                        }}
-                      />
+                        router.push("/simDone");
+                      }}
+                    />
                   ))
                 ) : (
                   <div className="flex flex-col items-center justify-center w-full gap-2">

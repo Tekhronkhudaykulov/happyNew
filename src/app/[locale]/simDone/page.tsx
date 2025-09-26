@@ -14,6 +14,7 @@ import { API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 import { toast, ToastContainer } from "react-toastify";
+import { Copy } from "lucide-react";
 
 async function fetchCheckBalance(params: any) {
   const token = localStorage.getItem("token");
@@ -53,7 +54,12 @@ const SimReady = () => {
 
   const handleActivate = () => {
     if (object?.qr_code) {
-      window.location.href = object?.qr_code;
+      const lpaPart = object.qr_code;
+      console.log(lpaPart, "lpaPart");
+
+      if (lpaPart) {
+        window.location.href = `https://esimsetup.apple.com/esim_qrcode_provisioning?carddata=${lpaPart}`;
+      }
     }
   };
 
@@ -138,7 +144,17 @@ const SimReady = () => {
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-[50px] gap-4">
                   <h4 className="text-white text-base sm:text-lg font-normal">
-                    {t("ready.isvalid")} 17.11.2025 19:19
+                    {t("ready.isvalid")}{" "}
+                    {(object?.valid_time &&
+                      new Date(object?.valid_time).toLocaleString("uz-UZ", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      })) ||
+                      "---"}
                   </h4>
                   <div className="flex items-center gap-1 sm:gap-2">
                     <h4 className="text-white text-sm sm:text-lg font-normal">
@@ -169,19 +185,20 @@ const SimReady = () => {
                   <div className="mt-4 border border-white rounded-xl py-3 px-4 flex items-center justify-between">
                     <p
                       onClick={handleActivate}
-                      className="text-white mr-[5px] text-sm sm:text-base font-medium"
+                      className="text-white mr-[5px]  text-[11px]  font-medium  cursor-pointer"
                     >
                       {t("ready.go")}
                     </p>
-                    <ArrowRight size={20} className="text-white" />
+                    <ArrowRight size={10} className="text-white" />
                   </div>
                 </div>
 
                 <div className="w-full">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-white text-base sm:text-lg font-normal">
+                    <p className="text-white text-[16px] sm:text-lg font-normal">
                       {t("ready.code")}
-                    </h4>
+                    </p>
+                    {/* <Copy onClick={handleCopyQrCode} color="white" /> */}
                     <p
                       onClick={handleCopyQrCode}
                       className="text-[#B9B9B9] cursor-pointer text-sm md:block hidden"
@@ -267,12 +284,12 @@ const SimReady = () => {
                 balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
                   ? (
                       balanceData?.balance[0]?.subOrderList[0]
-                        ?.remainingTraffic /
-                      (1024 * 1024)
-                    )?.toFixed(2) + " MB"
+                        ?.remainingTraffic / 1024
+                    ) // ✅ KB → MB
+                      .toFixed(2) + " MB"
                   : t("my.check")
               }
-              classname="w-full"
+              className="w-full"
             />
 
             <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[16px] pt-[8px] pb-[20px] rounded-xl">
@@ -286,10 +303,10 @@ const SimReady = () => {
                     {t("ready.phonenum")}
                   </p>
                   <a
-                    href="tel:+998999999999"
+                    href="tel:+998956802020"
                     className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
                   >
-                    +998 99 999 99 99
+                    +99895 680 20 20
                   </a>
                 </div>
 
@@ -315,9 +332,9 @@ const SimReady = () => {
           <div className="w-full flex flex-col gap-[8px]">
             <div className="bg-[#1C1C1C0D] px-6 pt-[8px] pb-[20px] rounded-xl flex items-center justify-between">
               <div>
-                <h3 className="text-[#1C1C1C] font-medium text-lg">
+                {/* <h3 className="text-[#1C1C1C] font-medium text-lg">
                   {t("ready.order")}#162
-                </h3>
+                </h3> */}
 
                 <div className="space-y-3 mt-2">
                   <div>
@@ -373,9 +390,9 @@ const SimReady = () => {
                 balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
                   ? (
                       balanceData?.balance[0]?.subOrderList[0]
-                        ?.remainingTraffic /
-                      (1024 * 1024)
-                    )?.toFixed(2) + " MB"
+                        ?.remainingTraffic / 1024
+                    ) // ✅ KB → MB
+                      .toFixed(2) + " MB"
                   : t("my.check")
               }
               classname="w-full"
@@ -409,11 +426,15 @@ const SimReady = () => {
                     <h4 className="text-white text-base font-normal">
                       {t("ready.code")}
                     </h4>
+                    <Copy onClick={handleCopyQrCode} color="white" />
                     <p className="text-[#B9B9B9] text-sm md:block hidden">
                       {t("ready.copy")}
                     </p>
                   </div>
-                  <div onClick={handleCopyQrCode} className="mt-4 border border-[#FFFFFF6B] rounded-xl py-2 px-4 flex items-center justify-center">
+                  <div
+                    onClick={handleCopyQrCode}
+                    className="mt-4 border border-[#FFFFFF6B] rounded-xl py-2 px-4 flex items-center justify-center"
+                  >
                     <p className="text-[#FFFFFF6B] text-sm font-medium text-center truncate">
                       {object?.qr_code}
                     </p>
@@ -447,15 +468,29 @@ const SimReady = () => {
 
                 <div className="flex flex-col items-start justify-between mt-[20px] gap-4">
                   <h4 className="text-white text-base font-normal">
-                    {t("ready.isvalid")} 17.11.2025 19:19
+                    {t("ready.isvalid")}{" "}
+                    {object?.valid_time &&
+                      new Date(object?.valid_time).toLocaleString("uz-UZ", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      })}
                   </h4>
+
                   <div className="flex items-center gap-1 sm:gap-2">
                     <h4 className="text-white text-sm font-normal">
                       {t("ready.need")}
                     </h4>
-                    <h4 className="text-[#F06F1E] text-sm font-normal">
+                    <a
+                      href="https://t.me/Happytel_support"
+                      target="_blank"
+                      className="text-[#F06F1E] text-sm sm:text-lg font-normal cursor-pointer"
+                    >
                       {t("ready.support")}
-                    </h4>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -473,10 +508,10 @@ const SimReady = () => {
                   {t("ready.phonenum")}
                 </p>
                 <a
-                  href="tel:+998999999999"
+                  href="tel:+998956802020"
                   className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
                 >
-                  +998 99 999 99 99
+                  +99895 680 20 20
                 </a>
               </div>
 
@@ -485,7 +520,7 @@ const SimReady = () => {
                   {t("ready.bot")}
                 </p>
                 <a
-                  href="https://t.me/happytel"
+                  href="https://t.me/happyteluz_bot"
                   className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
                 >
                   @happytel
