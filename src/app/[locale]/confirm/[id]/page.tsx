@@ -41,9 +41,9 @@ async function fetchProfile() {
     },
   });
 
-  if (res.status === 401) {
-    toast.error("Сессия истекла, пожалуйста заполните форму");
-  }
+  // if (res.status === 401) {
+  //   toast.error("Сессия истекла, пожалуйста заполните форму");
+  // }
 
   if (!res.ok) throw new Error("Failed to fetch profile");
   return res.json();
