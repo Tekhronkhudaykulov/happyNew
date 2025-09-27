@@ -88,7 +88,7 @@ const PackageCard: FC<PackageCardProps> = ({
             <Image
               src={flag}
               alt={`${country} flag`}
-              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag rounded-full object-cover"
+              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag !rounded-full object-cover"
               height={32}
               width={32}
             />

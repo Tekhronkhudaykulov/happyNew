@@ -312,7 +312,7 @@ const ConfirmPage = () => {
           <div className="flex flex-col items-stretch md:flex-row gap-[10px] md:gap-[13px]">
             <div className="block md:hidden">
               <PackageCard
-                flag={`${API_IMAGE}/${object?.img}`}
+                flag={`${API_IMAGE}/${object?.region_group?.img}`}
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}
