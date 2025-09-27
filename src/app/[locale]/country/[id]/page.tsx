@@ -22,7 +22,7 @@ import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 import formatPrice from "@/utils/formatPrice";
 import { APP_ROUTES } from "@/router/path";
-import { Loading5755 } from "@/components/loading/loading";
+import { Loading5756 } from "@/components/loading/loading";
 
 async function fetchPlans(params: any) {
   const query = buildQuery(params);
@@ -163,7 +163,7 @@ const Country = () => {
   return (
     <>
       {isLoading ? (
-        <Loading5755 />
+        <Loading5756 />
       ) : (
         <div className="min-h-screen flex flex-col">
           <Navbar />
@@ -186,21 +186,6 @@ const Country = () => {
                 <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold">
                   {object?.name}
                 </h1>
-              </div>
-
-              <div
-                onClick={() => setIsNoteVisible(!isNoteVisible)}
-                className="md:hidden flex cursor-pointer items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5"
-              >
-                <Info size={16} className="text-[#F06F1E] sm:size-5" />
-                <p
-                  className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base ${
-                    isNoteVisible ? "" : "hidden"
-                  }`}
-                >
-                  {regionPlans?.data?.data[0]?.[`note_${locale}`] ||
-                    t("country.not-avaiable")}
-                </p>
               </div>
             </div>
             {/* SIM CARDS */}
@@ -343,7 +328,7 @@ const Country = () => {
               <Button
                 classname="w-full sm:mt-6"
                 title={t("auth.buy")}
-                disabled={selectedPackage === null}
+                none={selectedPackage === null}
               />
             </div>
             {/* SERVICES */}
@@ -389,13 +374,11 @@ const Country = () => {
 
             <div
               onClick={() => setIsNoteVisible(!isNoteVisible)}
-              className="hidden mt-4 md:flex cursor-pointer items-center border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5"
+              className="md:mt-4  flex cursor-pointer items-start border border-[#F06F1E] gap-2 sm:gap-3 bg-[#F4F4F4] rounded-md md:rounded-xl py-2 sm:py-4 px-3 sm:px-5"
             >
-              <Info size={16} className="text-[#F06F1E] sm:size-5" />
+              <Info size={24} className="text-[#F06F1E] w-12" />
               <p
-                className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base ${
-                  isNoteVisible ? "" : "hidden"
-                }`}
+                className={`font-normal text-[#1C1C1C] md:block text-[10px] sm:text-base`}
               >
                 {regionPlans?.data?.data[0]?.[`note_${locale}`] ||
                   t("country.not-avaiable")}

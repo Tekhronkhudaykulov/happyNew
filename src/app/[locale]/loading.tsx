@@ -1,9 +1,9 @@
-import { Loading5755 } from "@/components/loading/loading";
+import { Loading5756 } from "@/components/loading/loading";
 
 export default function Loading() {
   return (
     <div>
-      <Loading5755 />
+      <Loading5756 />
     </div>
   );
 }

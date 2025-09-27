@@ -28,7 +28,7 @@ export default function ESimCard({
   return (
     <div
       className={`rounded-xl p-3 sm:p-4 md:p-[14px] cursor-pointer ${
-        isSelected ? "bg-[#F06F1E1C] border border-[#F06F1E]" : "bg-[#1C1C1C0D]"
+        isSelected ? "bg-[#F06F1E1C] border border-[#F06F1E]" : "bg-[#1C1C1C0D] border border-transparent"
       }`}
       onClick={onSelect}
     >

@@ -10,6 +10,7 @@ import Otzives from "@/layouts/Otzives";
 import FAQs from "@/layouts/FAQs";
 import Footer from "@/layouts/Footer";
 import { FooterNav } from "@/layouts/FooterNav";
+import Phone from "@/layouts/Phone";
 
 const Home = () => {
   return (
@@ -21,10 +22,11 @@ const Home = () => {
       <Tabs />
       <Hero />
       <WHYus />
-      <Otzives />
+      <Otzives /> 
+      <Phone />
       <FAQs />
       <Footer />
-      <FooterNav/>
+      <FooterNav />
     </div>
   );
 };

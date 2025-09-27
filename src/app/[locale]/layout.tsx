@@ -4,7 +4,7 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import "@/app/[locale]/globals.css";
 import "@/index.css";
 import { Suspense } from "react";
-import { Loading5755 } from "@/components/loading/loading";
+import { Loading5756 } from "@/components/loading/loading";
 import { AuthModalProvider } from "@/providers/AuthModalProvider";
 import { AutoScrollToTop } from "@/components/scrollToTop";
 import { ToastContainer } from "react-toastify";
@@ -29,7 +29,7 @@ export default async function LocaleLayout({
           <ReactQueryProvider>
             <AuthModalProvider>
               <AutoScrollToTop />
-              <Suspense fallback={<Loading5755 />}>
+              <Suspense fallback={<Loading5756 />}>
                 <ToastProvider />
                 <ToastContainer
                   position="top-right"

@@ -186,5 +186,19 @@
   },
   "download": {
     "title": "Download app"
+  },
+  "phone": {
+    "title": "How to Check if My Device Supports eSIM Technology?",
+    "text1": "Dial *#06#",
+    "text2": "If it is present in the list",
+    "sub1": "If you have a 3G/LTE connection and another mobile operator has it",
+    "sub2": "If you have a 3G/LTE connection and another mobile operator has it"
+  },
+  "loading": "Loading",
+  "save": "Save",
+  "payment": {
+    "click": "We have sent a notification to the Click app. Please pay the bill",
+    "payme": "We have sent a notification to the Payme app. Please pay the bill",
+    "other": "We have sent a notification to the app. Please pay the bill"
   }
 }

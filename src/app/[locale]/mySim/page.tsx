@@ -15,7 +15,7 @@ import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { APP_ROUTES } from "@/router/path";
 import Button from "@/components/button";
-import { Loading5755 } from "@/components/loading/loading";
+import { Loading5756 } from "@/components/loading/loading";
 
 import { toast } from "react-toastify";
 
@@ -107,7 +107,7 @@ const MyEsim = () => {
   return (
     <>
       {isLoading ? (
-        <Loading5755 />
+        <Loading5756 />
       ) : (
         <div className="min-h-screen flex flex-col">
           <Navbar />
@@ -155,7 +155,7 @@ const MyEsim = () => {
                     />
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                  <div className="flex md:mt-0 mt-24 flex-col md:items-start md:justify-normal items-center justify-center w-full gap-2">
                     <p className="text-black text-left">{t("my.no")}</p>
                     <div className="w-fit">
                       <Button

@@ -188,7 +188,7 @@ const Profile = () => {
               </h1>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-2">
+            <div className="flex flex-col md:flex-row gap-2 items-start">
               <div className="w-full rounded-[12px] p-4 md:p-6 bg-[#1C1C1C0D]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -296,12 +296,12 @@ const Profile = () => {
               <Image
                 src={ASSETS.bgg2}
                 alt="Background 1"
-                className="absolute md:top-[103px] top-[328px] right-[15px] rounded-[12px] md:right-[18px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
+                className="absolute md:block hidden top-[103.5px] rounded-[12px] right-[19px] w-[225px] h-[95px]"
               />
               <Image
                 src={ASSETS.bgg}
                 alt="Background 2"
-                className="absolute md:top-[218px] top-[398px] right-[200px] rounded-[12px] md:right-[187px] h-[75px] w-[175px]  md:w-[225px] md:h-[95px]"
+                className="absolute md:block hidden top-[213px] rounded-[12px] right-[188px] w-[225px] h-[95px]"
               />
             </div>
 
@@ -324,7 +324,7 @@ const Profile = () => {
                   onClick={handleSave}
                   className="w-full p-3 bg-[#ED713C] text-white rounded-lg"
                 >
-                  {isPending ? "Loading..." : "Сохранить"}
+                  {isPending ? `${t("loading")}...` : t("save")}
                 </button>
               </div>
             )}

@@ -11,8 +11,8 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const locale = useLocale(); // hozirgi tilni olish
-  const pathname = usePathname(); // joriy path olish
+  const locale = useLocale();
+  const pathname = usePathname();
 
   const languages = [
     { code: "ru", label: "Ру" },
@@ -36,8 +36,9 @@ const Navbar = () => {
           </Link>
 
           <div className="relative">
-            <div
-              onClick={() => setIsOpen(!isOpen)}
+            <button
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
               className="flex items-center gap-3 bg-[#FFFFFF38] rounded-[12px] px-4 py-2 cursor-pointer"
             >
               <h3 className="text-[16px] text-[#FFFFFF] font-medium">
@@ -48,7 +49,7 @@ const Navbar = () => {
                   isOpen ? "rotate-180" : ""
                 }`}
               />
-            </div>
+            </button>
 
             <AnimatePresence>
               {isOpen && (
@@ -68,7 +69,7 @@ const Navbar = () => {
                           /^\/(ru|en)/,
                           ""
                         )}`}
-                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
+                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
                         onClick={() => setIsOpen(false)}
                       >
                         {lang.label}

@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import "./loading.css";
+import { useEffect, useState } from "react";
 import { ASSETS } from "../../assets";
 import Image from "next/image";
 import "ldrs/ring";
 import { lineWobble } from "ldrs";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const Loading5755 = ({ value }: { value?: number }) => {
   const [percentage, setPercentage] = useState(1);
@@ -38,6 +39,7 @@ const Loading5755 = ({ value }: { value?: number }) => {
 
 const Loading5756 = () => {
   const [percentage, setPercentage] = useState(1);
+  const t = useTranslations();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -52,11 +54,21 @@ const Loading5756 = () => {
         <div className="logo">
           <Image src={ASSETS.logowhite} alt="HappyTel Logo" />
         </div>
-        <div className="progress-line">
-          <div
-            className="progress-dot"
-            style={{ left: `${percentage}%` }}
-          ></div>
+        <div className="progress-container">
+          <div className="progress-background">
+            <div
+              className="progress-filled"
+              style={{ width: `${percentage}%` }}
+            ></div>
+            <div
+              className="progress-current"
+              style={{ left: `${percentage}%` }}
+            ></div>
+          </div>
+          <div className="progress-bar"></div>
+        </div>
+        <div className="loading-text">
+          {t("loading")} {percentage}%
         </div>
       </div>
     </div>
@@ -76,7 +88,21 @@ const Loading5757 = () => {
   );
 };
 
-const LoadingWaiting = () => {
+const LoadingWaiting = ({
+  selectedMethod,
+}: {
+  selectedMethod: number | null;
+}) => {
+  const t = useTranslations();
+
+  let paymentMethodText = "payment.other";
+
+  if (selectedMethod === 2) {
+    paymentMethodText = "payment.click";
+  } else if (selectedMethod === 3) {
+    paymentMethodText = "payment.payme";
+  }
+
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-900">
       <div className="flex flex-col items-center gap-6">
@@ -90,7 +116,7 @@ const LoadingWaiting = () => {
         {/* Text with animated dots */}
         <div className="md:max-w-none max-w-[90%] md:justify-normal justify-center font-medium text-white flex items-end md:items-center">
           <p className="text-center text-lg md:text-xl">
-            Мы отправили уведомление в приложении Click/Payme. Пожалуйста, оплатите счет.
+            {t(paymentMethodText)}
           </p>
           <span className="md:ml-2 ml-0 hidden md:flex w-6 justify-center md:justify-start">
             <span className="dot">.</span>
