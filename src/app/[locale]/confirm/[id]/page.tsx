@@ -13,7 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import {
-  Loading5755,
+  Loading5756,
   LoadingWaiting,
   PaymentError,
   PaymentSuccess,
@@ -21,7 +21,6 @@ import {
 import { socket } from "@/socket/socketClient";
 import { useOrderSocket } from "@/socket/useSocketEvents";
 import Image from "next/image";
-import { number } from "framer-motion";
 import { toast } from "react-toastify";
 import Button from "@/components/button";
 import { setToken } from "@/config/api";
@@ -157,6 +156,7 @@ const ConfirmPage = () => {
           token,
         });
       }
+      setShowOrderModal(true); 
     },
     onError: (err) => {
       toast.error(err?.message);
@@ -266,13 +266,13 @@ const ConfirmPage = () => {
     <>
       {isPending && (
         <div className="loading-overlay">
-          <Loading5755 />
+          <Loading5756 />
         </div>
       )}
 
       {showOrderModal && (
         <div className="loading-overlay">
-          <LoadingWaiting />
+          <LoadingWaiting selectedMethod={selectedMethod} />
         </div>
       )}
 
@@ -362,7 +362,7 @@ const ConfirmPage = () => {
                             <img
                               src={`${API_IMAGE}/${profileData?.data?.passport_image}`}
                               alt="passport"
-                              className="w-full max-h-40 object-contain rounded-lg border rounded-lg"
+                              className="w-full max-h-40 object-contain border rounded-lg"
                             />
 
                             {/* Edit ikonka */}
@@ -438,7 +438,7 @@ const ConfirmPage = () => {
               <div className="lg:pb-0 pb-[75px]">
                 <Button
                   classname="mt-[-5px] w-full"
-                  title={isPending ? "Loading..." : t("auth.pay")}
+                  title={isPending ? `${t("loading")}...` : t("auth.pay")}
                   disabled={
                     isPending ||
                     !fio ||

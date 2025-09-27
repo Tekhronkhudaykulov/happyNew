@@ -72,7 +72,7 @@ const PackageCard: FC<PackageCardProps> = ({
   console.log(balanceData);
 
   const handleCheckBalance = async () => {
-    await refetch(); // ✅ tugma bosilganda fetch ishlaydi
+    await refetch(); 
     setVariant("balance");
   };
 
@@ -158,7 +158,7 @@ const PackageCard: FC<PackageCardProps> = ({
               className="flex-1 bg-[#F06F1E20] cursor-pointer text-[#F06F1E] py-2 rounded-lg text-sm sm:text-base"
               onClick={handleCheckBalance} // Use local handler
             >
-              {t("my.check")}
+             {isLoading ? `${t("loading")}...` : t("my.check")}
             </button>
             <div
               onClick={handleRoute}
@@ -172,7 +172,7 @@ const PackageCard: FC<PackageCardProps> = ({
         {variant === "balance" && (
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-auto">
             <button className="flex-1  bg-[#F06F1E] text-white py-2 rounded-lg text-sm sm:text-base truncate cursor-pointer">
-              {isLoading ? "Loading..." : t("my.ostatok")}
+              {isLoading ? `${t("loading")}...` : t("my.ostatok")}
               {balanceData?.balance?.[0]?.subOrderList?.[0]?.remainingTraffic
                 ? (
                     balanceData?.balance[0]?.subOrderList[0]?.remainingTraffic /

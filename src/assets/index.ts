@@ -35,6 +35,8 @@ import bggsmth from "./bgg.png";
 import grey from "./Subtract.png";
 import bycard from "./bycard.svg";
 import noImage from "./noImage.jpg";
+import phonee1 from './phonee1.png'
+import phonee2 from './phonee2.png'
 
 export const ASSETS = {
   facebook,
@@ -74,4 +76,6 @@ export const ASSETS = {
   bycard,
   tell,
   noImage,
+  phonee1,
+  phonee2
 };

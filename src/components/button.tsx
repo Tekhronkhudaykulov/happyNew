@@ -11,6 +11,7 @@ interface ButtonProps {
   color?: ButtonVariant;
   classname?: string;
   disabled?: boolean;
+  none?: boolean;
   onclick?: (e: any) => void;
 }
 
@@ -25,6 +26,7 @@ export default function Button({
   navigate,
   bg = "usual",
   classname,
+  none = false,
   disabled = false,
   onclick,
 }: ButtonProps) {
@@ -32,6 +34,9 @@ export default function Button({
 
   const handleClick = () => {
     if (disabled) {
+      return;
+    }
+    if (none) {
       return;
     }
     if (navigate) {
@@ -48,6 +53,10 @@ export default function Button({
         disabled
           ? "opacity-50 cursor-not-allowed"
           : "hover:opacity-90 active:opacity-80"
+      } ${
+        none
+          ? "hidden"
+          : ""
       } focus:outline-none focus:ring-2 focus:ring-${
         bg === "usual" ? "orange" : bg
       }-500`}
