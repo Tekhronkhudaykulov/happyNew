@@ -206,7 +206,7 @@ const Profile = () => {
 
                   <div>
                     <label className="text-sm font-medium mb-1 block text-black">
-                      {t("ready.phonenum")}
+                      {t("ready.phonenum")}*
                     </label>
                     <input
                       type="tel"
@@ -220,7 +220,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1 block text-black">
-                      {t("ready.passport")}
+                      {t("ready.passport")}*
                     </label>
                     {/* <input
                       type="text"

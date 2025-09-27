@@ -88,7 +88,7 @@ const PackageCard: FC<PackageCardProps> = ({
             <Image
               src={flag}
               alt={`${country} flag`}
-              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag !rounded-full object-cover"
+              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag rounded-full object-cover"
               height={32}
               width={32}
             />
@@ -147,7 +147,7 @@ const PackageCard: FC<PackageCardProps> = ({
               {t("auth.price")}
             </h2>
             <h3 className="text-base sm:text-lg font-medium text-[#1C1C1C]">
-              {price}
+              {t("from")}  {price}
             </h3>
           </div>
         )}
@@ -204,13 +204,13 @@ const PackageCard: FC<PackageCardProps> = ({
                 height={32}
                 src={flag}
                 alt={`${country} flag`}
-                className="w-8 h-8 object-cover destination-flag"
+                className="w-8 h-8 object-cover rounded-full destination-flag"
               />
               <h1 className="text-[14px] text-black font-medium truncate">
                 {country}
               </h1>
             </div>
-            <h3 className="text-[14px] font-medium text-[#F06F1E]">{price}</h3>
+            <h3 className="text-[14px] font-medium text-[#F06F1E]">{t("from")}  {price}</h3>
           </div>
         </div>
 

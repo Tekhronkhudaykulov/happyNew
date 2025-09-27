@@ -3,9 +3,9 @@ export default function formatPrice(
   locale: string = "uz-UZ",
   currency: string = "UZS"
 ) {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
+  const formattedNumber = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(value);
+  return `${formattedNumber} ${currency}`;
 }

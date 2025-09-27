@@ -316,7 +316,7 @@ const ConfirmPage = () => {
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}
-                price={formatPrice(object?.price_sell)}
+                price={`${formatPrice(object?.price_sell)}`}
                 variant="buy"
               />
             </div>
@@ -338,7 +338,7 @@ const ConfirmPage = () => {
 
                   <div className="w-full">
                     <p className="text-sm mb-2 text-[#595959]">
-                      {t("auth.phone")}
+                      {t("auth.phone")}*
                     </p>
                     <input
                       ref={phoneRef}
@@ -352,7 +352,7 @@ const ConfirmPage = () => {
 
                   <div className="w-full">
                     <p className="text-sm mb-2 text-[#595959]">
-                      {t("auth.passport")}
+                      {t("auth.passport")}*
                     </p>
 
                     <div className="relative">
@@ -396,7 +396,7 @@ const ConfirmPage = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
+                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}*</p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
                     {paymentData?.data?.map((method: any) =>
                       ["click", "payme", "visa", "octo_uzs"].includes(
@@ -425,7 +425,7 @@ const ConfirmPage = () => {
                             className={`md:w-fit md:h-auto h-16 w-16 ${
                               method?.name === "Click" ||
                               method?.name === "Payme"
-                                ? "h-20 w-20"
+                                ? "h-30 w-30"
                                 : ""
                             }`}
                           />

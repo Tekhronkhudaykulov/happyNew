@@ -200,5 +200,6 @@
     "click": "We have sent a notification to the Click app. Please pay the bill",
     "payme": "We have sent a notification to the Payme app. Please pay the bill",
     "other": "We have sent a notification to the app. Please pay the bill"
-  }
+  },
+  "from": "from"
 }
