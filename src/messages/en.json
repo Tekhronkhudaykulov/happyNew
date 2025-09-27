@@ -189,7 +189,7 @@
   },
   "phone": {
     "title": "How to Check if My Device Supports eSIM Technology?",
-    "text1": "Dial *#06#",
+    "text1": "Phone",
     "text2": "If it is present in the list",
     "sub1": "If you have a 3G/LTE connection and another mobile operator has it",
     "sub2": "If you have a 3G/LTE connection and another mobile operator has it"
