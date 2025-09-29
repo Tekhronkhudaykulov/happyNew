@@ -422,7 +422,7 @@ const ConfirmPage = () => {
                                 ? ASSETS.visa
                                 : ASSETS.bycard
                             }
-                            className={`md:w-fit md:h-auto h-16 w-16 ${
+                            className={`md:w-24 md:h-auto h-14 w-[120px] object-contain ${
                               method?.name === "Click" ||
                               method?.name === "Payme"
                                 ? "h-30 w-30"
