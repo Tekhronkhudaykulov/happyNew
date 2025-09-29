@@ -19,7 +19,6 @@ import mdi from "./mdi.svg";
 import click from "./click.svg";
 import payme from "./payme.svg";
 import visa from "./visa.svg";
-import card from "./card.svg";
 import bgg from "./bgg.svg";
 import bgg2 from "./bgg2.svg";
 import qr from "./svg.svg";
@@ -33,7 +32,7 @@ import download from "./download.svg";
 import esim from "./sim.svg";
 import bggsmth from "./bgg.png";
 import grey from "./Subtract.png";
-import bycard from "./bycard.svg";
+import bycard from "./bycard.png";
 import noImage from "./noImage.jpg";
 import phonee1 from './phonee1.png'
 import phonee2 from './phonee2.png'
@@ -57,7 +56,6 @@ export const ASSETS = {
   smphone,
   mdi,
   click,
-  card,
   payme,
   visa,
   bgg,
