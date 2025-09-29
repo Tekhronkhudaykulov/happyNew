@@ -320,7 +320,7 @@ const ConfirmPage = () => {
                 variant="buy"
               />
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 w-full">
               <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
                   <div className="w-full">
