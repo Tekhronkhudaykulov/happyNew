@@ -184,7 +184,7 @@ const Main = () => {
               <h1 className="main-title">{t("title")}</h1>
               <div>
                 <a
-                  href="tel:*#06#"
+                  href="#phone"
                   className="text-[#F06F1E] text-[20px] underline"
                 >
                   Проверить поддержку ESIM

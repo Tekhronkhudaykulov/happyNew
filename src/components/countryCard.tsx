@@ -55,7 +55,7 @@ export default function ESimCard({
           </p>
         </p>
         <div>
-          <p className="text-[#F06F1E] font-bold">{price}</p>
+          <p className="text-[#F06F1E] font-bold">{t("from")}  {price}</p>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ const Phone: React.FC = () => {
   const t = useTranslations("");
 
   return (
-    <div className="md:my-[100px] my-[50px]">
+    <div id="phone" className="md:my-[100px] my-[50px]">
       <div className="container mx-auto px-4">
         <h1 className="max-w-[670px] text-center md:text-start text-[25px] leading-[35px] font-medium md:text-[40px] md:leading-[45px] tracking-[-0.06em] text-[#1C1C1C] shadow-[inset_0_0.77px_0.77px_0px_#FFFFFF]">
           {t("phone.title")}
@@ -23,7 +23,9 @@ const Phone: React.FC = () => {
             />
 
             <h3 className="md:text-[20px] text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
-              {t("phone.text1")}
+              {t("phone.text1")} <a className="md:text-[22px] text-[18px]" href="tel:*#06#">
+              *#06#
+              </a>
             </h3>
             <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">
               {t("phone.sub1")}
@@ -40,9 +42,6 @@ const Phone: React.FC = () => {
             <h3 className="md:text-[20px] text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
               {t("phone.text2")}
             </h3>
-            <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">
-              {t("phone.sub2")}
-            </p>
           </div>
         </div>
       </div>

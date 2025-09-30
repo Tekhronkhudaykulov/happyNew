@@ -316,11 +316,11 @@ const ConfirmPage = () => {
                 country={object?.name}
                 gb={object?.quantity_internet}
                 days={object?.expiry_day}
-                price={formatPrice(object?.price_sell)}
+                price={`${formatPrice(object?.price_sell)}`}
                 variant="buy"
               />
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 w-full">
               <div className="bg-[#1C1C1C0D] w-full rounded-[12px] p-4 md:p-6 flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col sm:flex-row gap-[10px] md:gap-[20px]">
                   <div className="w-full">
@@ -338,7 +338,7 @@ const ConfirmPage = () => {
 
                   <div className="w-full">
                     <p className="text-sm mb-2 text-[#595959]">
-                      {t("auth.phone")}
+                      {t("auth.phone")}*
                     </p>
                     <input
                       ref={phoneRef}
@@ -352,7 +352,7 @@ const ConfirmPage = () => {
 
                   <div className="w-full">
                     <p className="text-sm mb-2 text-[#595959]">
-                      {t("auth.passport")}
+                      {t("auth.passport")}*
                     </p>
 
                     <div className="relative">
@@ -396,7 +396,7 @@ const ConfirmPage = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}</p>
+                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}*</p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
                     {paymentData?.data?.map((method: any) =>
                       ["click", "payme", "visa", "octo_uzs"].includes(
@@ -422,10 +422,10 @@ const ConfirmPage = () => {
                                 ? ASSETS.visa
                                 : ASSETS.bycard
                             }
-                            className={`md:w-fit md:h-auto h-16 w-16 ${
+                            className={`md:w-24 md:h-auto h-14 w-[120px] object-contain ${
                               method?.name === "Click" ||
                               method?.name === "Payme"
-                                ? "h-20 w-20"
+                                ? "h-30 w-30"
                                 : ""
                             }`}
                           />
