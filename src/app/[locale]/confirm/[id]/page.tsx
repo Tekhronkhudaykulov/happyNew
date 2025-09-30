@@ -41,9 +41,9 @@ async function fetchProfile() {
     },
   });
 
-  if (res.status === 401) {
-    toast.error("Сессия истекла, пожалуйста заполните форму");
-  }
+  // if (res.status === 401) {
+  //   toast.error("Сессия истекла, пожалуйста заполните форму");
+  // }
 
   if (!res.ok) throw new Error("Failed to fetch profile");
   return res.json();
@@ -156,7 +156,7 @@ const ConfirmPage = () => {
           token,
         });
       }
-      setShowOrderModal(true); 
+      setShowOrderModal(true);
     },
     onError: (err) => {
       toast.error(err?.message);
@@ -229,11 +229,11 @@ const ConfirmPage = () => {
         setShowOrderModal(true);
       }
     },
-    onOrderUpdated: (data) => {
+    onOrderUpdated: async (data) => {
       if (data?.status_name === "Активный") {
         localStorage.setItem("simkard", JSON.stringify(data?.simcards[0]));
-        setShowSuccessModal(true);
-        handleAuth();
+        await setShowSuccessModal(true);
+        await handleAuth();
       }
       if (data?.status_name === "Отменен") {
         setShowSuccessModal(false);
