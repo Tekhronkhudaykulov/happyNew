@@ -57,12 +57,16 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+  const [selectedMethodName, setSelectedMethodName] = useState<any | null>(
+    null
+  );
+
+  console.log(selectedMethodName, "selectedMethodName");
+
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [orderData, setOrderData] = useState(null);
-  console.log(orderData, "orderData");
 
   const [object, setObject] = useState<any>(null);
-  console.log(object, "object");
 
   const [phone, setPhone] = useState<string>();
   const [fio, setFio] = useState<string>();
@@ -141,7 +145,14 @@ const ConfirmPage = () => {
       return res.json();
     },
     onSuccess: (res) => {
-      console.log(res, "res");
+      if (
+        selectedMethodName?.key === "octo_uzs" ||
+        selectedMethodName?.key === "visa"
+      ) {
+        if (res?.payment_details) {
+          window.location.href = res?.payment_details?.payment_url;
+        }
+      }
 
       const orderId = res?.order_id ?? res?.data?.order_id;
       setOrderData(res);
@@ -156,6 +167,7 @@ const ConfirmPage = () => {
           token,
         });
       }
+
       setShowOrderModal(true);
     },
     onError: (err) => {
@@ -396,7 +408,9 @@ const ConfirmPage = () => {
                 </div>
 
                 <div>
-                  <p className="text-sm mb-2 text-[#595959]">{t("auth.pay")}*</p>
+                  <p className="text-sm mb-2 text-[#595959]">
+                    {t("auth.pay")}*
+                  </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
                     {paymentData?.data?.map((method: any) =>
                       ["click", "payme", "visa", "octo_uzs"].includes(
@@ -409,7 +423,10 @@ const ConfirmPage = () => {
                               ? "border border-[#F06F1E]"
                               : "border border-transparent"
                           }`}
-                          onClick={() => setSelectedMethod(method?.id)}
+                          onClick={() => {
+                            setSelectedMethodName(method);
+                            setSelectedMethod(method?.id);
+                          }}
                         >
                           <Image
                             alt=""
