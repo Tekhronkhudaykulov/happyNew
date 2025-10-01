@@ -10,7 +10,7 @@ const Hero = () => {
 
   return (
     <div className="my-[40px] md:my-[100px]">
-      <div className="container relative">
+      <div className="container">
         <div className="md:flex items-center justify-between">
           <h1 className="text-[#1C1C1C] text-start md:text-[40px] text-[22px] font-medium max-w-[490px]">
             {t("hero.title")}
@@ -20,14 +20,9 @@ const Hero = () => {
           </p>
         </div>
 
-        <div className="md:flex hidden gap-[12px] mt-[20px]">
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <Image
-              className="absolute top-[120px] left-[175px] w-[250px] position-img"
-              src={ASSETS.card1}
-              alt=""
-            />
-            <div className="marings">
+        <div className="md:grid grid-cols-2 hidden gap-[12px] mt-[20px]">
+          <div className="bg-[#282728] rounded-[12px] p-[20px] flex items-center">
+            <div className="">
               <h2 className="text-[#FFFFFF] text-[24px] font-medium">
                 {t("hero.card1_title")}
               </h2>
@@ -35,10 +30,15 @@ const Hero = () => {
                 {t("hero.card1_text")}
               </p>
             </div>
+            <Image
+              className="top-[120px] left-[175px] w-[250px] position-img"
+              src={ASSETS.card1}
+              alt=""
+            />
           </div>
 
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <div className="marings">
+          <div className="bg-[#282728] rounded-[12px] p-[20px] flex items-center">
+            <div className="">
               <h2 className="text-[#FFFFFF] text-[24px] font-medium">
                 {t("hero.card2_title")}
               </h2>
@@ -48,14 +48,14 @@ const Hero = () => {
             </div>
 
             <Image
-              className="absolute top-[170px] left-[450px] w-[250px] position-img"
+              className="top-[170px] left-[450px] w-[250px] position-img"
               src={ASSETS.card2}
               alt=""
             />
           </div>
 
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <div className="marings">
+          <div className="bg-[#282728] rounded-[12px] p-[20px] flex items-center">
+            <div className="">
               <h2 className="text-[#FFFFFF] text-[24px] font-medium">
                 {t("hero.card3_title")}
               </h2>
@@ -65,21 +65,14 @@ const Hero = () => {
             </div>
 
             <Image
-              className="absolute top-[125px] right-[50px] position-img w-[150px]"
+              className="top-[125px] right-[50px] position-img w-[150px]"
               src={ASSETS.card3}
               alt=""
             />
           </div>
-        </div>
 
-        <div className="md:flex hidden gap-[12px] mt-[20px]">
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <Image
-              className="absolute top-[450px] w-[150px] left-[205px] position-img"
-              src={ASSETS.card4}
-              alt=""
-            />
-            <div className="marings">
+          <div className="bg-[#282728] rounded-[12px] p-[20px] flex items-center">
+            <div className="">
               <h2 className="text-[#FFFFFF] text-[24px] font-medium">
                 {t("hero.card4_title")}
               </h2>
@@ -87,41 +80,13 @@ const Hero = () => {
                 {t("hero.card4_text")}
               </p>
             </div>
-          </div>
-
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <div className="marings">
-              <h2 className="text-[#FFFFFF] text-[24px] font-medium">
-                {t("hero.card5_title")}
-              </h2>
-              <p className="text-[#595959] text-[16px]  font-medium max-w-[480px]">
-                {t("hero.card5_text")}
-              </p>
-            </div>
 
             <Image
-              className="absolute top-[450px] w-[250px] right-[150px] position-img"
-              src={ASSETS.card1}
+              className="top-[450px] w-[150px] left-[205px] position-img"
+              src={ASSETS.card4}
               alt=""
             />
-          </div>
-
-          <div className="bg-[#282728] rounded-[12px] heights p-[20px] w-[40%] flex flex-col">
-            <div className="marings">
-              <h2 className="text-[#FFFFFF] text-[24px] font-medium">
-                {t("hero.card6_title")}
-              </h2>
-              <p className="text-[#595959] text-[16px]  font-medium max-w-[480px]">
-                {t("hero.card6_text")}
-              </p>
-            </div>
-
-            <Image
-              className="absolute top-[490px] w-[250px] left-[450px] position-img"
-              src={ASSETS.card2}
-              alt=""
-            />
-          </div>
+        </div>
         </div>
 
         {/* PHONE */}
