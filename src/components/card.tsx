@@ -18,7 +18,7 @@ export default function Card({ title, subtitle, img }: CardProps) {
         <p className="text-[#595959] font-normal text-[16px]">{subtitle}</p>
       </div>
       <div className="flex items-center justify-center mt-auto">
-        <Image src={img} alt="" className="w-[150px] h-[150px]"/>
+        <Image src={img} alt="" className="w-[151px] h-[151px]"/>
       </div>
     </div>
   );
