@@ -147,7 +147,7 @@ const PackageCard: FC<PackageCardProps> = ({
               {t("auth.price")}
             </h2>
             <h3 className="text-base sm:text-lg font-medium text-[#1C1C1C]">
-              {t("from")}  {price}
+              {price}
             </h3>
           </div>
         )}
@@ -210,7 +210,7 @@ const PackageCard: FC<PackageCardProps> = ({
                 {country}
               </h1>
             </div>
-            <h3 className="text-[14px] font-medium text-[#F06F1E]">{t("from")}  {price}</h3>
+            <h3 className="text-[14px] font-medium text-[#F06F1E]">{price}</h3>
           </div>
         </div>
 
