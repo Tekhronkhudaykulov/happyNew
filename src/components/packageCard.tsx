@@ -25,6 +25,8 @@ type PackageCardProps = {
   handleRoute?: any;
   item?: any;
   loading?: boolean;
+  set4g?: boolean;
+  set5g?: boolean;
 };
 
 async function fetchCheckBalance(params: any) {
@@ -51,6 +53,8 @@ const PackageCard: FC<PackageCardProps> = ({
   handleRoute, // Default to "active"
   id,
   item,
+  set4g,
+  set5g,
   loading = false,
 }) => {
   const t = useTranslations("");
@@ -72,7 +76,7 @@ const PackageCard: FC<PackageCardProps> = ({
   console.log(balanceData);
 
   const handleCheckBalance = async () => {
-    await refetch(); 
+    await refetch();
     setVariant("balance");
   };
 
@@ -105,7 +109,10 @@ const PackageCard: FC<PackageCardProps> = ({
                 label={t("my.tarif")}
                 value={`${gb || 0}GB - ${days}${t("country.days")}`}
               />
-              <Row label={t("auth.set")} value={t("4G/5G")} />
+              <Row
+                label={t("auth.set")}
+                value={t(`${set4g ? "4G " : ""}/ ${set5g ? "5G" : ""}`)}
+              />
               {/* <Row label={t("auth.razdacha")} value={t("auth.available")} /> */}
               <Row
                 label="Минуты"
@@ -158,7 +165,7 @@ const PackageCard: FC<PackageCardProps> = ({
               className="flex-1 bg-[#F06F1E20] cursor-pointer text-[#F06F1E] py-2 rounded-lg text-sm sm:text-base"
               onClick={handleCheckBalance} // Use local handler
             >
-             {isLoading ? `${t("loading")}...` : t("my.check")}
+              {isLoading ? `${t("loading")}...` : t("my.check")}
             </button>
             <div
               onClick={handleRoute}

@@ -274,6 +274,8 @@ const ConfirmPage = () => {
     }
   }, [profileData?.data]);
 
+  console.log(object, "object");
+
   return (
     <>
       {isPending && (
@@ -479,6 +481,8 @@ const ConfirmPage = () => {
                 days={object?.expiry_day}
                 price={formatPrice(object?.price_sell)}
                 variant="buy"
+                set4g={object?.tariff_4g}
+                set5g={object?.tariff_5g}
               />
             </div>
           </div>
