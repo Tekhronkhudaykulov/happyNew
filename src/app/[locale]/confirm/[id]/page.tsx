@@ -57,6 +57,7 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+
   const [selectedMethodName, setSelectedMethodName] = useState<any | null>(
     null
   );
@@ -125,7 +126,9 @@ const ConfirmPage = () => {
       formData.append("plan_id", data.plan_id);
       formData.append("fio", data.fio);
       formData.append("phone", data.phone);
-      formData.append("payment_type_id", data.payment_type_id);
+      // formData.append("payment_type_id", data.payment_type_id);
+      formData.append("payment_type", data.payment_type);
+
       if (data.passport) formData.append("passport", data.passport);
       if (data.passport_image)
         formData.append("passport_image", data.passport_image);
@@ -193,7 +196,8 @@ const ConfirmPage = () => {
       plan_id: id,
       fio,
       phone,
-      payment_type_id: selectedMethod,
+      // payment_type_id: selectedMethod,
+      payment_type: selectedMethodName?.key,
       passport_image: passportFile,
     });
   };
