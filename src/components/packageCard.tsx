@@ -91,8 +91,7 @@ const PackageCard: FC<PackageCardProps> = ({
         } flex-col min-w-[300px] w-full max-w-[400px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <Image
                 src={flag}
                 alt={`${country} flag`}
@@ -104,13 +103,6 @@ const PackageCard: FC<PackageCardProps> = ({
                 {country}
               </h1>
             </div>
-            <a 
-              className="text-[14px] font-bold text-[#F06F1E] cursor-pointer"
-              onClick={onShowAvailable}
-            >
-              {t("main.available")}
-            </a>
-          </div>
         </div>
 
         <div className="my-1">
@@ -216,8 +208,8 @@ const PackageCard: FC<PackageCardProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center w-full justify-between pb-[15px] border-[#E4E4E4] border-b">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-4">
                 <Image
                   width={32}
                   height={32}
@@ -233,13 +225,6 @@ const PackageCard: FC<PackageCardProps> = ({
                 {price}
               </h3>
             </div>
-
-            <a 
-              className="text-[14px] font-bold text-[#F06F1E] cursor-pointer"
-              onClick={onShowAvailable}
-            >
-              {t("main.available")}
-            </a>
           </div>
         </div>
 

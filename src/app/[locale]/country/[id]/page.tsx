@@ -35,6 +35,19 @@ const Country = () => {
   const t = useTranslations("");
   const params = useParams();
   const locale = useLocale();
+  const [showAvailableModal, setShowAvailableModal] = useState(false);
+  
+  useEffect(() => {
+    if (showAvailableModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showAvailableModal]);
 
   const id = params.id?.toString().split("-") || [];
   const selectedRegion = localStorage.getItem("selectedTab") || "local";
@@ -64,6 +77,7 @@ const Country = () => {
     (item: any) => item.is_region === true
   );
 
+
   // 2. Qo‘shimcha so‘rov
   const { data: regionPlans } = useQuery({
     queryKey: ["plans-region", id],
@@ -74,6 +88,7 @@ const Country = () => {
       }),
     enabled: !!hasRegion, // ✅ faqat ichida is_region true bo‘lsa ishlaydi
   });
+
 
   // const countryId = id ? parseInt(id, 10) : null;
   // const country = localDestinations.find((item) => item.id === countryId);
@@ -167,8 +182,64 @@ const Country = () => {
       : null;
   const object = selectedObject ? JSON.parse(selectedObject) : null;
 
+
   return (
     <>
+    {showAvailableModal && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75"
+          onClick={() => setShowAvailableModal(false)}
+        >
+          <div
+            className="bg-white rounded-lg px-4 py-6 shadow-2xl w-[90%] max-w-[700px] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center mb-8">
+              <h3 className="sm:text-[20px] text-base font-semibold text-center text-black">
+                {t("main.available")}:
+              </h3>
+              <div className="bg-gray-600 opacity-90 absolute top-7.5 right-5 w-10 h-10 rounded-full md:flex hidden items-center justify-center">
+                <button
+                  onClick={() => setShowAvailableModal(false)}
+                  className="text-white text-xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="bg-gray-600 opacity-90 w-8 h-8 rounded-full md:hidden flex items-center justify-center ml-auto">
+                <button
+                  onClick={() => setShowAvailableModal(false)}
+                  className="text-white text-lg font-bold"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[235px]  md:max-h-[155px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
+              {regionPlans?.data?.data[0]?.regions.map((region: any) => (
+                <div
+                  key={region.id}
+                  className="flex items-center gap-2 py-3 px-4 border border-gray-200 rounded-lg max-w-[100%]"
+                >
+                  <Image
+                    src={`${API_IMAGE}${region.img}`}
+                    alt={region.name}
+                    width={35}
+                    height={35}
+                    className="mb-1 rounded"
+                  />
+                  <p className="sm:text-[16px] text-sm text-gray-700 truncate">
+                    {region.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {isLoading ? (
         <Loading5756 />
       ) : (
@@ -234,6 +305,7 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
+                        onShowAvailable={() => setShowAvailableModal(true)}
                       />
                     ))}
                 </>
@@ -273,6 +345,7 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
+                        onShowAvailable={() => setShowAvailableModal(true)}
                       />
                     ))}
                 </>
@@ -312,6 +385,7 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
+                        onShowAvailable={() => setShowAvailableModal(true)}
                       />
                     ))}
                 </>

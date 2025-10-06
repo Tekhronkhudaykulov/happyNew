@@ -12,6 +12,7 @@ interface Card {
   isSelected: boolean;
   onSelect: () => void;
   tarrifName: string;
+  onShowAvailable?: () => void;
 }
 
 export default function ESimCard({
@@ -22,13 +23,16 @@ export default function ESimCard({
   isSelected,
   onSelect,
   tarrifName,
+  onShowAvailable,
 }: Card) {
   const t = useTranslations(""); // ✅ namespace "main"
   console.log(flag, "flag");
   return (
     <div
       className={`rounded-xl p-3 sm:p-4 md:p-[14px] cursor-pointer ${
-        isSelected ? "bg-[#F06F1E1C] border border-[#F06F1E]" : "bg-[#1C1C1C0D] border border-transparent"
+        isSelected
+          ? "bg-[#F06F1E1C] border border-[#F06F1E]"
+          : "bg-[#1C1C1C0D] border border-transparent"
       }`}
       onClick={onSelect}
     >
@@ -58,6 +62,19 @@ export default function ESimCard({
           <p className="text-[#F06F1E] font-bold">{price}</p>
         </div>
       </div>
+      {onShowAvailable && (
+        <div className="mt-3 flex items-center justify-center">
+          <a
+            className="text-[14px] mt-2 text-center font-bold text-[#F06F1E] cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShowAvailable();
+            }}
+          >
+            {t("main.available")}
+          </a>
+        </div>
+      )}
     </div>
   );
 }
