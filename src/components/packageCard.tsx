@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { API_URL } from "@/config";
+import { API_IMAGE, API_URL } from "@/config";
 import endpoints from "@/services/endpoints";
 import { useQuery } from "@tanstack/react-query";
 
@@ -27,6 +27,8 @@ type PackageCardProps = {
   loading?: boolean;
   set4g?: boolean;
   set5g?: boolean;
+  regions?: any[];
+  onShowAvailable?: () => void;
 };
 
 async function fetchCheckBalance(params: any) {
@@ -56,6 +58,7 @@ const PackageCard: FC<PackageCardProps> = ({
   set4g,
   set5g,
   loading = false,
+  onShowAvailable,
 }) => {
   const t = useTranslations("");
   const router = useRouter();
@@ -88,17 +91,25 @@ const PackageCard: FC<PackageCardProps> = ({
         } flex-col min-w-[300px] w-full max-w-[400px] rounded-[12px] pt-4 px-3 sm:px-5 pb-6`}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Image
-              src={flag}
-              alt={`${country} flag`}
-              className="w-6 h-6 sm:w-8 sm:h-8  destination-flag rounded-full object-cover"
-              height={32}
-              width={32}
-            />
-            <h1 className="text-base sm:text-lg text-black font-medium line-clamp-2 sm:line-clamp-3">
-              {country}
-            </h1>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <Image
+                src={flag}
+                alt={`${country} flag`}
+                className="w-6 h-6 sm:w-8 sm:h-8  destination-flag rounded-full object-cover"
+                height={32}
+                width={32}
+              />
+              <h1 className="text-base sm:text-[16px] text-black font-medium line-clamp-2 sm:line-clamp-3">
+                {country}
+              </h1>
+            </div>
+            <a 
+              className="text-[14px] font-bold text-[#F06F1E] cursor-pointer"
+              onClick={onShowAvailable}
+            >
+              {t("main.available")}
+            </a>
           </div>
         </div>
 
@@ -205,19 +216,30 @@ const PackageCard: FC<PackageCardProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center w-full justify-between pb-[15px] border-[#E4E4E4] border-b">
-            <div className="flex items-center gap-4">
-              <Image
-                width={32}
-                height={32}
-                src={flag}
-                alt={`${country} flag`}
-                className="w-8 h-8 object-cover rounded-full destination-flag"
-              />
-              <h1 className="text-[14px] text-black font-medium truncate">
-                {country}
-              </h1>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <Image
+                  width={32}
+                  height={32}
+                  src={flag}
+                  alt={`${country} flag`}
+                  className="w-7 h-7 object-cover rounded-full destination-flag"
+                />
+                <h1 className="text-[14px] text-black font-medium truncate">
+                  {country}
+                </h1>
+              </div>
+              <h3 className="text-[14px] font-medium text-[#F06F1E]">
+                {price}
+              </h3>
             </div>
-            <h3 className="text-[14px] font-medium text-[#F06F1E]">{price}</h3>
+
+            <a 
+              className="text-[14px] font-bold text-[#F06F1E] cursor-pointer"
+              onClick={onShowAvailable}
+            >
+              {t("main.available")}
+            </a>
           </div>
         </div>
 

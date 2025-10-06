@@ -7,7 +7,8 @@
     "placeholder": "Выберите одну или несколько стран",
     "no_results": "Нет такой страны",
     "placeholder-sm": "Поиск",
-    "heaidngg": "Выгодный мобильный интернет"
+    "heaidngg": "Выгодный мобильный интернет",
+    "available": "Доступные страны"
   },
   "destination": {
     "title": "Тарифы"
@@ -135,7 +136,8 @@
     "price": "Цена",
     "available": "Доступeн",
     "ism": "Название",
-    "placeholder_passport": "Загрузить"
+    "placeholder_passport": "Загрузить",
+    "back": "Назад"
   },
 
   "my": {
