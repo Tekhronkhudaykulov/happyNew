@@ -49,19 +49,27 @@ const Country = () => {
   }, [showAvailableModal]);
 
   const id = params.id?.toString().split("-") || [];
+  const selectedRegion = localStorage.getItem("selectedTab") || "local";
 
-  console.log(id, "id");
+  console.log(selectedRegion, "selectedRegion");
 
   // const ids = params.ids?.toString().split("-") || [];
 
   const router = useRouter();
 
   const { data: plansData, isLoading } = useQuery({
-    queryKey: ["plans", id],
-    queryFn: () =>
-      fetchPlans({
-        region_ids: id,
-      }),
+    queryKey: ["plans", id, selectedRegion],
+    queryFn: () => {
+      if (selectedRegion === "local") {
+        return fetchPlans({
+          region_ids: id,
+        });
+      } else {
+        return fetchPlans({
+          region_group_id: id,
+        });
+      }
+    },
   });
 
   const hasRegion = plansData?.data?.data?.some(
@@ -171,7 +179,6 @@ const Country = () => {
       ? window.localStorage.getItem("selectedObject")
       : null;
   const object = selectedObject ? JSON.parse(selectedObject) : null;
-  console.log(object, "object");
 
   return (
     <>

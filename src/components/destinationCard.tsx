@@ -94,7 +94,6 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
           <div
             onClick={() => {
               localStorage.setItem("selectedObject", JSON.stringify(item));
-
               router.push(`${APP_ROUTES.COUNTRY}/${item?.regions[0]?.id}`);
             }}
             key={index}
