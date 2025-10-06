@@ -57,6 +57,7 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
+  const [showAvailableModal, setShowAvailableModal] = useState(false);
 
   const [selectedMethodName, setSelectedMethodName] = useState<any | null>(
     null
@@ -278,7 +279,19 @@ const ConfirmPage = () => {
     }
   }, [profileData?.data]);
 
-  console.log(object, "object");
+  useEffect(() => {
+    if (showAvailableModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showAvailableModal]);
+
+  console.log(object?.regions, "object");
 
   return (
     <>
@@ -303,6 +316,61 @@ const ConfirmPage = () => {
       {showCancelModal && (
         <div className="loading-overlay">
           <PaymentError />
+        </div>
+      )}
+
+      {showAvailableModal && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60"
+          onClick={() => setShowAvailableModal(false)}
+        >
+          <div
+            className="bg-white rounded-lg px-4 py-6 shadow-2xl w-[90%] max-w-[700px] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center mb-8">
+              <h3 className="sm:text-[20px] text-base font-semibold text-center text-black">
+                {t("main.available")}:
+              </h3>
+              <div className="bg-gray-600 opacity-90 absolute top-10 right-5 w-10 h-10 rounded-full md:flex hidden items-center justify-center">
+                <button
+                  onClick={() => setShowAvailableModal(false)}
+                  className="text-white text-xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="bg-gray-600 opacity-90 w-8 h-8 rounded-full md:hidden flex items-center justify-center ml-auto">
+                <button
+                  onClick={() => setShowAvailableModal(false)}
+                  className="text-white text-lg font-bold"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
+              {object?.regions?.map((region: any) => (
+                <div
+                  key={region.id}
+                  className="flex items-center gap-2 py-3 px-4 border border-gray-200 rounded-lg"
+                >
+                  <Image
+                    src={`${API_IMAGE}${region.img}`}
+                    alt={region.name}
+                    width={35}
+                    height={35}
+                    className="mb-1 rounded"
+                  />
+                  <p className="sm:text-[16px] text-sm text-gray-700">
+                    {region.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
@@ -336,6 +404,7 @@ const ConfirmPage = () => {
                 days={object?.expiry_day}
                 price={`${formatPrice(object?.price_sell)}`}
                 variant="buy"
+                onShowAvailable={() => setShowAvailableModal(true)}
               />
             </div>
             <div className="flex flex-col gap-3 w-full">
@@ -487,6 +556,7 @@ const ConfirmPage = () => {
                 variant="buy"
                 set4g={object?.tariff_4g}
                 set5g={object?.tariff_5g}
+                onShowAvailable={() => setShowAvailableModal(true)}
               />
             </div>
           </div>

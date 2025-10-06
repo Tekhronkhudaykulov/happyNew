@@ -7,7 +7,8 @@
     "placeholder": "Select one or more countries",
     "no_results": "No such country",
     "placeholder-sm": "Search",
-    "heaidngg": "Affordable mobile internet"
+    "heaidngg": "Affordable mobile internet",
+    "available": "Available countries"
   },
   "destination": {
     "title": "Tarifs"
