@@ -42,6 +42,7 @@ const Tabs: React.FC = () => {
 
   const handleTabClick = (tab: DestinationType) => {
     setActiveTab(tab);
+    localStorage.setItem("selectedTab", tab);
   };
 
   return (
