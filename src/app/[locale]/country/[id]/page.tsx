@@ -36,6 +36,7 @@ const Country = () => {
   const params = useParams();
   const locale = useLocale();
   const [showAvailableModal, setShowAvailableModal] = useState(false);
+  
   useEffect(() => {
     if (showAvailableModal) {
       document.body.style.overflow = "hidden";
@@ -87,6 +88,7 @@ const Country = () => {
       }),
     enabled: !!hasRegion, // ✅ faqat ichida is_region true bo‘lsa ishlaydi
   });
+
 
   // const countryId = id ? parseInt(id, 10) : null;
   // const country = localDestinations.find((item) => item.id === countryId);
@@ -180,6 +182,7 @@ const Country = () => {
       : null;
   const object = selectedObject ? JSON.parse(selectedObject) : null;
 
+
   return (
     <>
     {showAvailableModal && (
@@ -195,7 +198,7 @@ const Country = () => {
               <h3 className="sm:text-[20px] text-base font-semibold text-center text-black">
                 {t("main.available")}:
               </h3>
-              <div className="bg-gray-600 opacity-90 absolute top-10 right-5 w-10 h-10 rounded-full md:flex hidden items-center justify-center">
+              <div className="bg-gray-600 opacity-90 absolute top-7.5 right-5 w-10 h-10 rounded-full md:flex hidden items-center justify-center">
                 <button
                   onClick={() => setShowAvailableModal(false)}
                   className="text-white text-xl font-bold"
@@ -214,11 +217,11 @@ const Country = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[150px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
-              {object?.regions?.map((region: any) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[235px]  md:max-h-[155px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
+              {regionPlans?.data?.data[0]?.regions.map((region: any) => (
                 <div
                   key={region.id}
-                  className="flex items-center gap-2 py-3 px-4 border border-gray-200 rounded-lg"
+                  className="flex items-center gap-2 py-3 px-4 border border-gray-200 rounded-lg max-w-[100%]"
                 >
                   <Image
                     src={`${API_IMAGE}${region.img}`}
@@ -227,7 +230,7 @@ const Country = () => {
                     height={35}
                     className="mb-1 rounded"
                   />
-                  <p className="sm:text-[16px] text-sm text-gray-700">
+                  <p className="sm:text-[16px] text-sm text-gray-700 truncate">
                     {region.name}
                   </p>
                 </div>
@@ -342,6 +345,7 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
+                        onShowAvailable={() => setShowAvailableModal(true)}
                       />
                     ))}
                 </>
@@ -381,6 +385,7 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
+                        onShowAvailable={() => setShowAvailableModal(true)}
                       />
                     ))}
                 </>

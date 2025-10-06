@@ -62,14 +62,19 @@ export default function ESimCard({
           <p className="text-[#F06F1E] font-bold">{price}</p>
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-center">
-        <a
-          className="text-[14px] mt-2 text-center font-bold text-[#F06F1E] cursor-pointer"
-          onClick={onShowAvailable}
-        >
-          {t("main.available")}
-        </a>
-      </div>
+      {onShowAvailable && (
+        <div className="mt-3 flex items-center justify-center">
+          <a
+            className="text-[14px] mt-2 text-center font-bold text-[#F06F1E] cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShowAvailable();
+            }}
+          >
+            {t("main.available")}
+          </a>
+        </div>
+      )}
     </div>
   );
 }
