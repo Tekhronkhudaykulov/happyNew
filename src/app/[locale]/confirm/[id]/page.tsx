@@ -321,7 +321,7 @@ const ConfirmPage = () => {
 
       {showAvailableModal && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75"
           onClick={() => setShowAvailableModal(false)}
         >
           <div
