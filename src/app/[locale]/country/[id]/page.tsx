@@ -36,7 +36,7 @@ const Country = () => {
   const params = useParams();
   const locale = useLocale();
   const [showAvailableModal, setShowAvailableModal] = useState(false);
-  
+
   useEffect(() => {
     if (showAvailableModal) {
       document.body.style.overflow = "hidden";
@@ -51,8 +51,6 @@ const Country = () => {
 
   const id = params.id?.toString().split("-") || [];
   const selectedRegion = localStorage.getItem("selectedTab") || "local";
-
-  console.log(selectedRegion, "selectedRegion");
 
   // const ids = params.ids?.toString().split("-") || [];
 
@@ -77,7 +75,6 @@ const Country = () => {
     (item: any) => item.is_region === true
   );
 
-
   // 2. Qo‘shimcha so‘rov
   const { data: regionPlans } = useQuery({
     queryKey: ["plans-region", id],
@@ -88,7 +85,6 @@ const Country = () => {
       }),
     enabled: !!hasRegion, // ✅ faqat ichida is_region true bo‘lsa ishlaydi
   });
-
 
   // const countryId = id ? parseInt(id, 10) : null;
   // const country = localDestinations.find((item) => item.id === countryId);
@@ -183,10 +179,9 @@ const Country = () => {
       : null;
   const object = selectedObject ? JSON.parse(selectedObject) : null;
 
-
   return (
     <>
-    {showAvailableModal && selectedItem?.regions && (
+      {showAvailableModal && selectedItem?.regions && (
         <div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75"
           onClick={() => setShowAvailableModal(false)}
@@ -349,10 +344,10 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
-                         onShowAvailable={() => {
+                        onShowAvailable={() => {
                           setSelectedItem(item);
                           setShowAvailableModal(true);
-                        }}  
+                        }}
                       />
                     ))}
                 </>
@@ -392,10 +387,10 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
-                         onShowAvailable={() => {
+                        onShowAvailable={() => {
                           setSelectedItem(item);
                           setShowAvailableModal(true);
-                        }}  
+                        }}
                       />
                     ))}
                 </>

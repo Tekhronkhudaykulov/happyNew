@@ -99,7 +99,10 @@ const Main = () => {
       console.error("Country ID is missing:", country);
       return;
     }
-    if (!selectedCountries.some((c) => c.id === country.id) && selectedCountries.length < 3) {
+    if (
+      !selectedCountries.some((c) => c.id === country.id) &&
+      selectedCountries.length < 3
+    ) {
       setSelectedCountries([...selectedCountries, country]);
     }
     setSearchTerm("");
@@ -198,9 +201,7 @@ const Main = () => {
 
               <div className="lg:flex flex-col">
                 {/* 🔹 Input and selected countries */}
-                <div
-                  className={`search-container`}
-                >
+                <div className={`search-container`}>
                   <div className="flex items-center pl-2 gap-2 w-full">
                     {selectedCountries.map((country) => (
                       <span
@@ -302,6 +303,7 @@ const Main = () => {
                             "selectedObject",
                             JSON.stringify(item)
                           );
+                          localStorage.setItem("selectedTab", "local");
                           router.push(`${APP_ROUTES.COUNTRY}/${item.id}`);
                         }}
                       >

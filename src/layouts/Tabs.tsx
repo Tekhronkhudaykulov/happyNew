@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DestinationCard from "../components/destinationCard";
 import type { DestinationType } from "../components/destinationCard";
 import { tabConfig } from "../data/TabData";
@@ -24,6 +24,9 @@ async function fetchPlans(params: any) {
 }
 
 const Tabs: React.FC = () => {
+  useEffect(() => {
+    localStorage.setItem("selectedTab", "local");
+  }, []);
   const [activeTab, setActiveTab] = useState<DestinationType>("local");
   const t = useTranslations("");
 
