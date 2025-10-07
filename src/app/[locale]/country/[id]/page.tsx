@@ -95,6 +95,7 @@ const Country = () => {
   // const data = getCOUNTRIESdata();
 
   const [selectedPackage, setSelectedPackage] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [phone, setPhone] = useState("+998");
@@ -185,7 +186,7 @@ const Country = () => {
 
   return (
     <>
-    {showAvailableModal && (
+    {showAvailableModal && selectedItem?.regions && (
         <div
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75"
           onClick={() => setShowAvailableModal(false)}
@@ -218,7 +219,7 @@ const Country = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[235px]  md:max-h-[155px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
-              {regionPlans?.data?.data[0]?.regions.map((region: any) => (
+              {selectedItem?.regions.map((region: any) => (
                 <div
                   key={region.id}
                   className="flex items-center gap-2 py-3 px-4 border border-gray-200 rounded-lg max-w-[100%]"
@@ -305,7 +306,10 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
-                        onShowAvailable={() => setShowAvailableModal(true)}
+                        onShowAvailable={() => {
+                          setSelectedItem(item);
+                          setShowAvailableModal(true);
+                        }}
                       />
                     ))}
                 </>
@@ -345,7 +349,10 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
-                        onShowAvailable={() => setShowAvailableModal(true)}
+                         onShowAvailable={() => {
+                          setSelectedItem(item);
+                          setShowAvailableModal(true);
+                        }}  
                       />
                     ))}
                 </>
@@ -385,7 +392,10 @@ const Country = () => {
                           setSelectedPackage(item?.id);
                         }}
                         isSelected={selectedPackage === item?.id}
-                        onShowAvailable={() => setShowAvailableModal(true)}
+                         onShowAvailable={() => {
+                          setSelectedItem(item);
+                          setShowAvailableModal(true);
+                        }}  
                       />
                     ))}
                 </>
