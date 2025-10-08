@@ -49,6 +49,35 @@ async function fetchProfile() {
   return res.json();
 }
 
+const mockPaymentData = {
+  data: [
+    {
+      id: 1,
+      name: "Click",
+      key: "click",
+      image: ASSETS.click,
+    },
+    {
+      id: 2,
+      name: "Payme",
+      key: "payme",
+      image: ASSETS.payme,
+    },
+    {
+      id: 3,
+      name: "Visa + Mastercard",
+      key: "visa",
+      image: ASSETS.visa,
+    },
+    {
+      id: 4,
+      name: "Uzcard + Humo",
+      key: "uzcard",
+      image: ASSETS.bycard,
+    },
+  ],
+};
+
 const ConfirmPage = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -149,7 +178,7 @@ const ConfirmPage = () => {
     },
     onSuccess: (res) => {
       if (
-        selectedMethodName?.key === "octo_uzs" ||
+        selectedMethodName?.key === "uzcard" ||
         selectedMethodName?.key === "visa"
       ) {
         if (res?.payment_details) {
@@ -418,43 +447,30 @@ const ConfirmPage = () => {
                     {t("auth.pay")}*
                   </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-2 md:mt-3">
-                    {paymentData?.data?.map((method: any) =>
-                      ["click", "payme", "visa", "octo_uzs"].includes(
-                        method?.key
-                      ) ? (
-                        <div
-                          key={method?.id}
-                          className={`w-full h-[60px] md:h-[85px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
-                            selectedMethod === method?.id
-                              ? "border border-[#F06F1E]"
-                              : "border border-transparent"
+                    {mockPaymentData?.data?.map((item: any) => (
+                      <div
+                        key={item?.id}
+                        className={`w-full h-[60px] md:h-[85px] flex items-center justify-center bg-white rounded-[12px] cursor-pointer ${
+                          selectedMethod === item?.id
+                            ? "border border-[#F06F1E]"
+                            : "border border-transparent"
+                        }`}
+                        onClick={() => {
+                          setSelectedMethodName(item);
+                          setSelectedMethod(item?.id);
+                        }}
+                      >
+                        <Image
+                          alt=""
+                          src={item?.image}
+                          className={`md:w-24 md:h-auto h-14 w-[120px] object-contain ${
+                            item?.name === "click" || item?.name === "payme"
+                              ? "h-30 w-30"
+                              : ""
                           }`}
-                          onClick={() => {
-                            setSelectedMethodName(method);
-                            setSelectedMethod(method?.id);
-                          }}
-                        >
-                          <Image
-                            alt=""
-                            src={
-                              method?.name === "Click"
-                                ? ASSETS.click
-                                : method?.name === "Payme"
-                                ? ASSETS.payme
-                                : method?.name === "Visa"
-                                ? ASSETS.visa
-                                : ASSETS.bycard
-                            }
-                            className={`md:w-24 md:h-auto h-14 w-[120px] object-contain ${
-                              method?.name === "Click" ||
-                              method?.name === "Payme"
-                                ? "h-30 w-30"
-                                : ""
-                            }`}
-                          />
-                        </div>
-                      ) : null
-                    )}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
