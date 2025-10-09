@@ -16,10 +16,20 @@ const tabParams: Record<DestinationType, any> = {
   global: { plan_type: "global" },
 };
 
-async function fetchPlans(params: any) {
+async function fetchPlans(type: DestinationType, params: any) {
   const query = buildQuery(params);
-  const res = await fetch(`${API_URL}/${endpoints.regionGroups}?${query}`);
-  if (!res.ok) throw new Error("Failed to fetch plans");
+  let url = "";
+
+  if (type === "local") {
+    // 🟢 local uchun alohida API
+    url = `${API_URL}/${endpoints.regions}`;
+  } else {
+    // 🔵 qolganlari uchun umumiy API
+    url = `${API_URL}/${endpoints.regionGroups}?${query}`;
+  }
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch ${type} plans`);
   return res.json();
 }
 
@@ -31,10 +41,11 @@ const Tabs: React.FC = () => {
   const t = useTranslations("");
 
   // 🔹 3 ta parallel query
+
   const results = useQueries({
     queries: (Object.keys(tabParams) as DestinationType[]).map((key) => ({
       queryKey: ["regionGroup", key],
-      queryFn: () => fetchPlans(tabParams[key]),
+      queryFn: () => fetchPlans(key, tabParams[key]),
     })),
   });
 
