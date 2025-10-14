@@ -144,6 +144,7 @@ const MyEsim = () => {
                       balance={esim.total_payments_amount}
                       variant="active"
                       handleRoute={() => {
+                        localStorage.setItem("esm", JSON.stringify(esim));
                         localStorage.setItem(
                           "simkard",
                           JSON.stringify(esim?.simcards[0])

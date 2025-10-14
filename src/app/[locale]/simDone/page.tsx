@@ -31,6 +31,9 @@ const SimReady = () => {
   const t = useTranslations();
 
   const [id, setId] = useState();
+  const [idEsm, setEsmId] = useState<any>();
+
+  console.log(idEsm, " id");
 
   const { data: balanceData, refetch } = useQuery({
     queryKey: ["checkBalance", id],
@@ -43,9 +46,12 @@ const SimReady = () => {
 
   useEffect(() => {
     const simKard = localStorage.getItem("simkard");
+    const esimId = localStorage.getItem("esm");
+
     if (simKard) {
       try {
         setObject(JSON.parse(simKard));
+        setEsmId(JSON.parse(esimId));
       } catch (err) {
         console.error("JSON parse error:", err);
       }
@@ -210,7 +216,7 @@ const SimReady = () => {
           <div className="w-full lg:w-1/3 flex flex-col gap-[8px]">
             <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[18px] pt-[8px] pb-[20px] rounded-xl">
               <h3 className="text-[#1C1C1C] font-medium text-lg sm:text-xl lg:text-2xl">
-                {/* {t("ready.order")}#162 */}
+                {t("ready.order")} #{idEsm?.id}
               </h3>
 
               <div className="my-4 flex justify-center">
@@ -321,7 +327,7 @@ const SimReady = () => {
                 {/* <h3 className="text-[#1C1C1C] font-medium text-lg">
                   {t("ready.order")}#162
                 </h3> */}
-
+                {t("ready.order")} #{idEsm?.id}
                 <div className="space-y-3 mt-2">
                   <div>
                     <p className="text-[#595959] text-sm font-normal truncate">
