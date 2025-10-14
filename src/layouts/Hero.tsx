@@ -11,13 +11,10 @@ const Hero = () => {
   return (
     <div className="my-[40px] md:my-[100px]">
       <div className="container">
-        <div className="md:flex items-center justify-between">
-          <h1 className="text-[#1C1C1C] text-start md:text-[40px] text-[22px] font-medium max-w-[490px]">
+        <div className="flex items-center justify-center">
+          <h1 className="text-[#1C1C1C] text-center md:text-[40px] text-[22px] font-medium max-w-[490px]">
             {t("hero.title")}
           </h1>
-          <p className="max-w-[375px] text-start md:text-[16px] text-[14px] mt-4 md:mt-0 text-[#595959A3]">
-            {t("hero.subtitle")}
-          </p>
         </div>
 
         <div className="md:grid grid-cols-2 hidden gap-[12px] mt-[20px]">
@@ -86,7 +83,7 @@ const Hero = () => {
               src={ASSETS.card4}
               alt=""
             />
-        </div>
+          </div>
         </div>
 
         {/* PHONE */}

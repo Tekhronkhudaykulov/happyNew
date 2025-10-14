@@ -77,8 +77,6 @@ const MyEsim = () => {
     enabled: isAuthenticated,
   });
 
-  console.log(esims, "esims");
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -102,7 +100,7 @@ const MyEsim = () => {
   const limit = isDesktop ? 6 : 4;
   const shouldLimit = esims?.length > limit && !showAll;
   const visibleEsims = shouldLimit ? esims.slice(0, limit) : esims;
-  console.log(esims);
+  console.log(visibleEsims, "sims");
 
   return (
     <>
@@ -135,12 +133,13 @@ const MyEsim = () => {
                     <PackageCard
                       id={esim?.id}
                       key={esim.id || index}
-                      flag={`${API_IMAGE}/${esim.region_group?.flag}`}
+                      flag={`${API_IMAGE}/${esim.region_group?.img}`}
                       country={esim.region_group?.name}
                       gb={esim.plan?.quantity_internet}
-                      days={esim.days_remaining}
+                      days={esim.plan?.expiry_day}
                       price={esim.total_payments_amount}
-                      createdAt={esim.created_at}
+                      createdAt={esim.date_start}
+                      endAt={esim.date_finish}
                       iccid={esim.simcards?.[0]?.ssid}
                       balance={esim.total_payments_amount}
                       variant="active"

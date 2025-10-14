@@ -36,6 +36,10 @@ import bycard from "./bycard.png";
 import noImage from "./noImage.jpg";
 import phonee1 from './phonee1.png'
 import phonee2 from './phonee2.png'
+import footer1 from './footer1.svg'
+import footer2 from './footer2.svg'
+import footer3 from './footer3.svg'
+import footer4 from './footer4.svg'
 
 export const ASSETS = {
   facebook,
@@ -75,5 +79,9 @@ export const ASSETS = {
   tell,
   noImage,
   phonee1,
-  phonee2
+  phonee2,
+  footer1,
+  footer2,
+  footer3,
+  footer4
 };

@@ -112,9 +112,9 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ type, data }) => {
               <h1 className=" text-black md:max-w-none max-w-[100px] font-medium md:font-bold  text-[15px] md:text-[18px]">
                 {item?.name}
               </h1>
-              <div className=" text-[#ff7a00]  inline-block mt-2 text-[14px] font-bold md:text-[16px]">
-                {formatPrice(item?.min_price)}
-              </div>
+              <p className=" text-[#ff7a00]  inline-block mt-2 text-[14px] font-bold md:text-[16px]">
+                {`${formatPrice(item?.min_price)} ${t("from")}`} 
+              </p> 
             </div>
           </div>
         ))}

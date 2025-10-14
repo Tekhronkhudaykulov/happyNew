@@ -154,7 +154,7 @@ export const tabConfig: Record<
   DestinationType,
   { label: string; data: Destination[] }
 > = {
-  local: { label: "Локальные", data: localDestinations as Destination[] },
-  regional: { label: "Региональные", data: regionalDestinations },
-  global: { label: "Глобальные", data: globalDestinations },
+  local: { label: "local", data: localDestinations as Destination[] },
+  regional: { label: "regional", data: regionalDestinations },
+  global: { label: "global", data: globalDestinations },
 };

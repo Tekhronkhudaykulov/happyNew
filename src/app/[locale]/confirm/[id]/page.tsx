@@ -338,7 +338,7 @@ const ConfirmPage = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <div className="py-6 md:pb-4 pb-[15px] container relative ">
+        <div className="py-6 md:pb-[100px] pb-[15px] container relative ">
           <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-8">
             <a
               onClick={() => {

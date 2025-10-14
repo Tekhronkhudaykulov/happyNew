@@ -143,19 +143,6 @@ const SimReady = () => {
                 />
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-[50px] gap-4">
-                  <h4 className="text-white text-base sm:text-lg font-normal">
-                    {t("ready.isvalid")}{" "}
-                    {(object?.valid_time &&
-                      new Date(object?.valid_time).toLocaleString("uz-UZ", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                      })) ||
-                      "---"}
-                  </h4>
                   <div className="flex items-center gap-1 sm:gap-2">
                     <h4 className="text-white text-sm sm:text-lg font-normal">
                       {t("ready.need")}
@@ -289,7 +276,6 @@ const SimReady = () => {
                       .toFixed(2) + " MB"
                   : t("my.check")
               }
-              className="w-full"
             />
 
             <div className="bg-[#1C1C1C0D] px-6 sm:px-8 sm:pt-[16px] pt-[8px] pb-[20px] rounded-xl">
@@ -304,7 +290,7 @@ const SimReady = () => {
                   </p>
                   <a
                     href="tel:+998956802020"
-                    className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
+                    className="text-sm sm:text-base font-normal bg-[#000000c8] text-white p-2 py-1 rounded-md hover:bg-[#3a3a3a] transition-colors duration-200"
                   >
                     +99895 680 20 20
                   </a>
@@ -316,7 +302,7 @@ const SimReady = () => {
                   </p>
                   <a
                     href="https://t.me/happytel"
-                    className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
+                    className="text-sm sm:text-base font-normal bg-[#000000c8] text-white p-2 py-1 rounded-md hover:bg-[#3a3a3a] transition-colors duration-200"
                   >
                     @happytel
                   </a>
@@ -412,12 +398,11 @@ const SimReady = () => {
                   </h4>
                   <div
                     onClick={handleActivate}
-                    className="mt-[15px] bg-[#F06F1E14] rounded-xl py-2 px-4 flex items-center justify-between"
+                    className="mt-[15px] bg-[#f26a16ea] rounded-xl py-2 px-4 flex items-center justify-between"
                   >
-                    <p className="text-[#F06F1E] mr-[5px] text-[14px] font-medium">
+                    <p className="text-[#ffffffb5] mr-[5px] text-[13px] font-medium">
                       {t("ready.go")}
                     </p>
-                    <ArrowRight size={20} className="text-[#F06F1E]" />
                   </div>
                 </div>
 
@@ -467,19 +452,6 @@ const SimReady = () => {
                 />
 
                 <div className="flex flex-col items-start justify-between mt-[20px] gap-4">
-                  <h4 className="text-white text-base font-normal">
-                    {t("ready.isvalid")}{" "}
-                    {object?.valid_time &&
-                      new Date(object?.valid_time).toLocaleString("uz-UZ", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                      })}
-                  </h4>
-
                   <div className="flex items-center gap-1 sm:gap-2">
                     <h4 className="text-white text-sm font-normal">
                       {t("ready.need")}
@@ -509,7 +481,7 @@ const SimReady = () => {
                 </p>
                 <a
                   href="tel:+998956802020"
-                  className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
+                  className="text-sm sm:text-base font-normal bg-[#000000c8] text-white p-2 py-1 rounded-md hover:bg-[#3a3a3a] transition-colors duration-200 truncate"
                 >
                   +99895 680 20 20
                 </a>
@@ -521,7 +493,7 @@ const SimReady = () => {
                 </p>
                 <a
                   href="https://t.me/happyteluz_bot"
-                  className="text-sm sm:text-base font-normal text-[#1C1C1C] truncate"
+                  className="text-sm sm:text-base font-normal bg-[#000000c8] text-white p-2 py-1 rounded-md hover:bg-[#3a3a3a] transition-colors duration-200 truncate"
                 >
                   @happytel
                 </a>

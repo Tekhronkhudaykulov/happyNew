@@ -78,7 +78,7 @@ const Tabs: React.FC = () => {
                     : "bg-transparent text-[#1C1C1C]"
                 }`}
               >
-                {tab.label}
+                {t(tab.label)}
               </button>
             ))}
           </div>
