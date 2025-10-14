@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { ASSETS } from "../assets";
 import Image from "next/image";
 import "../styles/main.css";
+import { Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   const t = useTranslations("");
@@ -11,11 +12,14 @@ const Footer = () => {
   return (
     <footer className="mt-[30px] pb-[88px]  md:mt-[50px] bg-[#272727] text-[#FFFFFF]">
       <div className="container py-[33px] border-[#00000030] border-t-1  md:flex hidden flex-col gap-[70px]">
-        <div className="flex items-end justify-between">
-          <h1 className="max-w-[285px] font-normal md:text-[22px]/[26px]">
-            {t("footer.subtitle")}
-          </h1>
-
+        <div className="flex  justify-between">
+          <div>
+            <Image
+              className="w-[120px] h-[50px]"
+              src={ASSETS.logowhite}
+              alt=""
+            />
+          </div>
           <div>
             <div className="flex items-center gap-[25px] justify-end">
               <Image src={ASSETS.facebook} alt="" />
@@ -39,25 +43,26 @@ const Footer = () => {
         </div>
 
         <div className="flex items-end justify-between">
-          <div>
-            <h1 className="max-w-[500px] font-medium text-[55px]/[60px]">
-              {t("footer.title")}
-            </h1>
+          <div className="flex flex-col gap-[10px]">
+            <a href="tel:+99895 680 20 20" className="flex items-center gap-2">
+              <Phone width={20} color={"#ffffff80"}/>
+              <p className="text-[#FFFFFF] font-normal text-[16px]">
+                +99895 680 20 20
+              </p>
+            </a>
 
-            <Image
-              className="mt-[65px] w-[120px]"
-              src={ASSETS.logowhite}
-              alt=""
-            />
+            <a href="tel:+99895 680 20 20" className="flex items-center gap-2">
+              <MapPin width={20} color={"#ffffff80"}/>
+              <p className="text-[#FFFFFF] font-normal text-[16px] max-w-[300px]">
+                {t("footer.loc")}
+              </p>
+            </a>
           </div>
 
-          <div className="flex items-center gap-[100px]">
+          <div className="flex gap-[100px]">
             <div className="flex flex-col gap-[25px]">
               <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
                 {t("footer.nav1")}
-              </a>
-              <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
-                {t("footer.nav2")}
               </a>
               <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
                 {t("footer.nav3")}
@@ -66,13 +71,7 @@ const Footer = () => {
 
             <div className="flex flex-col gap-[25px]">
               <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
-                {t("footer.nav4")}
-              </a>
-              <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
                 {t("footer.nav5")}
-              </a>
-              <a href="#" className="text-[#FFFFFF] font-normal text-[16px]">
-                {t("footer.nav6")}
               </a>
             </div>
           </div>

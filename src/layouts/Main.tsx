@@ -182,7 +182,6 @@ const Main = () => {
               </p>
             </div>
             <Image className="main-gray" src={ASSETS.grey} alt="" />
-            <h3 className="main-headingg text-white">{t("heaidngg")}</h3>
             <div className="main-wrapper mb-[50px]">
               <h1 className="main-title">{t("title")}</h1>
               <div>
@@ -190,7 +189,7 @@ const Main = () => {
                   href="#phone"
                   className="text-[#F06F1E] text-[20px] underline"
                 >
-                  Проверить поддержку ESIM
+                  {t("support")}
                 </a>
               </div>
               <ul className="main-list">
@@ -239,7 +238,7 @@ const Main = () => {
                 </div>
                 {/* 🔹 Dropdown */}
                 {(searchTerm || isInputFocused) && (
-                  <div ref={dropdownRef} className="">
+                  <div ref={dropdownRef} className="pb-[150px] sm:pb-0">
                     <div
                       className="absolute z-30 mt-4 lg:mt-[10px] max-w-[92%] w-full text-black 
                       lg:max-w-[500px] bg-[#FFFFFF] rounded-lg mb-4
@@ -289,7 +288,7 @@ const Main = () => {
                     </div>
                   </div>
                 )}
-                {!searchTerm && defaultCountries?.length > 0 && (
+                {/* {!searchTerm && defaultCountries?.length > 0 && (
                   <div
                     ref={sliderRef}
                     className="keen-slider mt-8 !w-[500px] grid grid-cols-2 overflow-hidden"
@@ -331,7 +330,7 @@ const Main = () => {
                       </div>
                     ))}
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 

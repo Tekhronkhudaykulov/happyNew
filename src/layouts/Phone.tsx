@@ -23,8 +23,12 @@ const Phone: React.FC = () => {
             />
 
             <h3 className="md:text-[20px] text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
-              {t("phone.text1")} <a className="md:text-[22px] text-[18px]" href="tel:*#06#">
-              *#06#
+              {t("phone.text1")}{" "}
+              <a
+                className="md:text-[22px] text-[18px] inline-block bg-[#1C1C1C] text-white p-2 py-0.5 rounded-md hover:bg-[#3a3a3a] transition-colors duration-200"
+                href="tel:*#06#"
+              >
+                *#06#
               </a>
             </h3>
             <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">

@@ -22,9 +22,9 @@ const Home = () => {
       <Tabs />
       <Hero />
       <WHYus />
-      <Otzives /> 
+      {/* <Otzives />  */}
       <Phone />
-      <FAQs />
+      {/* <FAQs /> */}
       <Footer />
       <FooterNav />
     </div>

@@ -18,6 +18,7 @@ type PackageCardProps = {
   days: number;
   price?: string | number;
   createdAt?: string;
+  endAt?: string;
   iccid?: string;
   balance?: number;
   variant?: "buy" | "active" | "balance";
@@ -59,6 +60,7 @@ const PackageCard: FC<PackageCardProps> = ({
   set5g,
   loading = false,
   onShowAvailable,
+  endAt
 }) => {
   const t = useTranslations("");
   const router = useRouter();
@@ -103,6 +105,10 @@ const PackageCard: FC<PackageCardProps> = ({
                 {country}
               </h1>
             </div>
+
+           { id && (
+             <h1 className="text-base sm:text-[16px] text-black font-medium line-clamp-2 sm:line-clamp-3">ID: {id}</h1>
+           ) }
         </div>
 
         <div className="my-1">
@@ -114,7 +120,7 @@ const PackageCard: FC<PackageCardProps> = ({
               />
               <Row
                 label={t("auth.set")}
-                value={t(`${set4g ? "4G " : ""}/ ${set5g ? "5G" : ""}`)}
+                value={t(`${set4g ? "4G " : ""} ${set5g ? "/ 5G" : ""}`)}
               />
               {/* <Row label={t("auth.razdacha")} value={t("auth.available")} /> */}
               <Row
@@ -134,6 +140,7 @@ const PackageCard: FC<PackageCardProps> = ({
                 value={`${days} ${t("country.days")}`}
               />
               <Row label={t("my.created")} value={createdAt} />
+              <Row label={t("my.end")} value={endAt} />
               <Row label="ICCID" value={iccid} />
             </>
           )}
