@@ -40,6 +40,10 @@ import footer1 from './footer1.svg'
 import footer2 from './footer2.svg'
 import footer3 from './footer3.svg'
 import footer4 from './footer4.svg'
+import payment1 from './payment1.png'
+import payment2 from './payment2.png'
+import payment3 from './payment3.svg'
+import payment4 from './payment4.svg'
 
 export const ASSETS = {
   facebook,
@@ -83,5 +87,9 @@ export const ASSETS = {
   footer1,
   footer2,
   footer3,
-  footer4
+  footer4,
+  payment1,
+  payment2,
+  payment3,
+  payment4
 };

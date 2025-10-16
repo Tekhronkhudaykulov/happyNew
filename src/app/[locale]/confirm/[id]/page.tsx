@@ -182,7 +182,7 @@ const ConfirmPage = () => {
         selectedMethodName?.key === "visa"
       ) {
         if (res?.payment_details) {
-          window.location.href = res?.payment_details?.payment_url;
+           window.open(res.payment_details.payment_url, "_blank");
         }
       }
 
@@ -220,7 +220,7 @@ const ConfirmPage = () => {
       toast.error("Тўлов усулини танланг!");
       return;
     }
-
+    
     mutate({
       plan_id: id,
       fio,
@@ -475,9 +475,10 @@ const ConfirmPage = () => {
                 </div>
               </div>
               <div className="lg:pb-0 pb-[75px]">
-                <Button
+             <Button
                   classname="mt-[-5px] w-full"
                   title={isPending ? `${t("loading")}...` : t("auth.pay")}
+                  onclick={handlePayment}
                   disabled={
                     isPending ||
                     !fio ||
@@ -487,7 +488,7 @@ const ConfirmPage = () => {
                     !selectedMethod ||
                     (!fileName && !profileData?.data?.passport_image)
                   }
-                  onclick={handlePayment}
+                 
                 />
               </div>
             </div>

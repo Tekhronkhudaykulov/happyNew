@@ -97,9 +97,10 @@ const LoadingWaiting = ({
 
   let paymentMethodText = "payment.other";
 
-  if (selectedMethod === 2) {
+  console.log(selectedMethod, "selectedMethod");
+  if (selectedMethod === 1) {
     paymentMethodText = "payment.click";
-  } else if (selectedMethod === 3) {
+  } else if (selectedMethod === 2) {
     paymentMethodText = "payment.payme";
   }
 
