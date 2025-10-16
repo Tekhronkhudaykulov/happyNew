@@ -104,6 +104,7 @@ const ConfirmPage = () => {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [agreeToPolicy, setAgreeToPolicy] = useState(false);
 
   const phoneRef = useRef<HTMLInputElement>(null);
 
@@ -182,7 +183,7 @@ const ConfirmPage = () => {
         selectedMethodName?.key === "visa"
       ) {
         if (res?.payment_details) {
-           window.open(res.payment_details.payment_url, "_blank");
+          window.open(res.payment_details.payment_url, "_blank");
         }
       }
 
@@ -220,7 +221,7 @@ const ConfirmPage = () => {
       toast.error("Тўлов усулини танланг!");
       return;
     }
-    
+
     mutate({
       plan_id: id,
       fio,
@@ -473,9 +474,28 @@ const ConfirmPage = () => {
                     ))}
                   </div>
                 </div>
+                <div className="flex items-center justify-center gap-3 mt-6">
+                  <input
+                    type="checkbox"
+                    checked={agreeToPolicy}
+                    onChange={(e) => setAgreeToPolicy(e.target.checked)}
+                    className="w-6 h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E]  cursor-pointer"
+                  />
+                  <p className="text-sm font-medium text-[#1C1C1C]">
+                    {t("auth.agree_to")}{" "}
+                    <a
+                      href="/documents/file.docx"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#F06F1E] font-semibold underline"
+                    >
+                      {t("auth.privacy_policy")}
+                    </a>
+                  </p>
+                </div>
               </div>
               <div className="lg:pb-0 pb-[75px]">
-             <Button
+                <Button
                   classname="mt-[-5px] w-full"
                   title={isPending ? `${t("loading")}...` : t("auth.pay")}
                   onclick={handlePayment}
@@ -486,9 +506,9 @@ const ConfirmPage = () => {
                     !phone ||
                     phone.trim() === "" ||
                     !selectedMethod ||
-                    (!fileName && !profileData?.data?.passport_image)
+                    (!fileName && !profileData?.data?.passport_image) ||
+                    !agreeToPolicy
                   }
-                 
                 />
               </div>
             </div>
