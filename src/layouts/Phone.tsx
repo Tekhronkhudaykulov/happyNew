@@ -43,9 +43,12 @@ const Phone: React.FC = () => {
               alt=""
             />
 
-            <h3 className="md:text-[20px] text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
+            <h3 className="md:text-[20px] md:max-w-[400px] max-w-[300px] truncate text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
               {t("phone.text2")}
             </h3>
+             <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">
+              {t("phone.text2")}
+            </p>
           </div>
         </div>
       </div>
