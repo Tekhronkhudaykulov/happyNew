@@ -422,16 +422,19 @@ const Country = () => {
               <ServiceCard
                 title={t("country.internet")}
                 available={t("country.yes")}
+                image={ASSETS.internet}
               />
               <ServiceCard
                 title={t("country.calls")}
                 available={t("country.not")}
+                image={ASSETS.calls}
               />
               <ServiceCard
                 title={t("country.sms")}
                 available={t("country.not")}
+                image={ASSETS.sms}
               />
-              <ServiceCard title={"5G"} available={t("country.yes")} />
+              <ServiceCard title={"5G"} available={t("country.yes")}  image={ASSETS.fiveg} />
             </div>
             {/* INFO + OTHERS */}
             <div className="flex flex-col md:flex-row items-stretch gap-3 sm:gap-4 pt-4">

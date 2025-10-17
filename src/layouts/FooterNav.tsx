@@ -17,9 +17,6 @@ export const FooterNav = ({ openAuthModal }: FooterNavProps) => {
   const { openAuthModal: contextOpenAuthModal } = useAuthModal();
 
   const normalizedPath = pathname.replace(/^\/(ru|en)(\/|$)/, "/");
-  console.log("pathname:", pathname);
-  console.log("normalizedPath:", normalizedPath);
-  console.log("APP_ROUTES.HOME:", APP_ROUTES.HOME);
 
   const isActiveHome = normalizedPath === APP_ROUTES.HOME;
   const isActiveMySims =

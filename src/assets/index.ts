@@ -44,8 +44,16 @@ import payment1 from './payment1.png'
 import payment2 from './payment2.png'
 import payment3 from './payment3.svg'
 import payment4 from './payment4.svg'
+import internet from './internet.svg'
+import calls from './calls.svg'
+import sms from './sms.svg'
+import fiveg from './5g.svg'
 
 export const ASSETS = {
+  internet,
+  calls,
+  sms,
+  fiveg,
   facebook,
   instagram,
   linkendin,

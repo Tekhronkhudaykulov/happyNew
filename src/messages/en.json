@@ -136,7 +136,10 @@
     "available": "Available",
     "ism": "Name",
     "placeholder_passport": "Upload",
-    "back": "Back"
+    "back": "Back",
+    "agree_to": "I accept all terms of",
+    "privacy_policy": "privacy policy",
+    "offerta": "public offer"
   },
   "my": {
     "title": "My eSIMs",
@@ -209,5 +212,6 @@
   "from": "from",
   "local": "Local",
   "regional": "Regional",
-  "global": "Global"
+  "global": "Global",
+  "and": "and"
 }

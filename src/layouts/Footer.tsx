@@ -5,6 +5,7 @@ import { ASSETS } from "../assets";
 import Image from "next/image";
 import "../styles/main.css";
 import { Phone, MapPin } from "lucide-react";
+import { APP_ROUTES } from "@/router/path";
 
 const Footer = () => {
   const t = useTranslations("");
@@ -121,7 +122,7 @@ const Footer = () => {
                 {t("footer.nav3")}
               </a>
               <a
-                href="/documents/file.docx"
+                href={APP_ROUTES.CONFIDENTIAL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#FFFFFF] font-normal text-[16px] text-end"
@@ -164,7 +165,7 @@ const Footer = () => {
               {t("footer.nav3")}
             </a>
             <a
-              href="/documents/file.docx"
+              href={APP_ROUTES.CONFIDENTIAL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FFFFFF] font-normal text-[13px]"
