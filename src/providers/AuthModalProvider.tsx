@@ -26,8 +26,6 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
   const [modalPhone, setModalPhone] = useState<string>("");
 
   const cleanedPhone = modalPhone.replace(/\s/g, "");
-  console.log(cleanedPhone, "modalphone");
-
   const [code, setCode] = useState<string>("");
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [phone, setPhone] = useState<any>();

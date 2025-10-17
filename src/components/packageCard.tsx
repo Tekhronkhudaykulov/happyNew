@@ -77,8 +77,7 @@ const PackageCard: FC<PackageCardProps> = ({
     queryFn: () => fetchCheckBalance(id),
     enabled: false,
   });
-
-  console.log(balanceData);
+    
 
   const handleCheckBalance = async () => {
     await refetch();

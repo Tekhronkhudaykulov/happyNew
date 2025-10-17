@@ -24,6 +24,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Button from "@/components/button";
 import { setToken } from "@/config/api";
+import { APP_ROUTES } from "@/router/path";
 
 async function fetchPayments() {
   const res = await fetch(`${API_URL}/${endpoints.payment}`);
@@ -308,8 +309,6 @@ const ConfirmPage = () => {
     }
   }, [profileData?.data]);
 
-  console.log(object?.regions, "object");
-
   return (
     <>
       {isPending && (
@@ -474,24 +473,37 @@ const ConfirmPage = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-3 mt-6">
+                <div className="flex  sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <input
                     type="checkbox"
                     checked={agreeToPolicy}
                     onChange={(e) => setAgreeToPolicy(e.target.checked)}
-                    className="w-6 h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E]  cursor-pointer"
+                    className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
                   />
-                  <p className="text-sm font-medium text-[#1C1C1C]">
-                    {t("auth.agree_to")}{" "}
+                  <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
+                    <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                      {t("auth.agree_to")}{" "}
+                      <a
+                        href={APP_ROUTES.CONFIDENTIAL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#F06F1E] font-semibold underline"
+                      >
+                        {t("auth.privacy_policy")}
+                      </a>
+                    </p>
+                    <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                      {t("and")}
+                    </p>
                     <a
-                      href="/documents/file.docx"
+                      href={APP_ROUTES.OFFER}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#F06F1E] font-semibold underline"
+                      className="text-[#F06F1E] font-semibold underline text-xs sm:text-sm"
                     >
-                      {t("auth.privacy_policy")}
+                      {t("auth.offerta")}
                     </a>
-                  </p>
+                  </div>
                 </div>
               </div>
               <div className="lg:pb-0 pb-[75px]">

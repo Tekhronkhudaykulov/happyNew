@@ -7,4 +7,6 @@ export const APP_ROUTES = {
   MY_SIMS: "/mySim",
   SIM_IS_READY: "/simready",
   PROFILE: "/profile",
+  CONFIDENTIAL: "/confidential",
+  OFFER: "/offerta"
 };

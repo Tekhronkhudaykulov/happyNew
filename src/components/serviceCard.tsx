@@ -1,18 +1,20 @@
 import Image from "next/image";
-import { ASSETS } from "../assets";
+
 
 interface Card {
   title: string;
   available: string;
+  image: string;
 }
 
-export default function ServiceCard({ title, available }: Card) {
+export default function ServiceCard({ title, available, image }: Card) {
+  console.log()
   return (
     <div className="bg-[#1C1C1C0D] flex items-center gap-2 md:gap-[10px] rounded-[12px] py-2 md:py-[5px] px-3 md:px-[15px]">
       <Image
-        src={ASSETS.mdi}
+        src={image}
         alt=""
-        className="w-12 h-12 md:w-auto md:h-auto"
+        className={`${image?.src?.includes("calls")? "md:h-12 md:w-10 w-7" : "w-6 h-6 md:w-8 md:h-8"} `}
       />
 
       <div className="flex flex-col gap-1 md:gap-[5px]">
