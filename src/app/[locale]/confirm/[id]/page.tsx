@@ -87,21 +87,12 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
-
-  const [selectedMethodName, setSelectedMethodName] = useState<any | null>(
-    null
-  );
-
-  console.log(selectedMethodName, "selectedMethodName");
-
+  const [selectedMethodName, setSelectedMethodName] = useState<any | null>(null);
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [orderData, setOrderData] = useState(null);
-
   const [object, setObject] = useState<any>(null);
-
   const [phone, setPhone] = useState<string>();
   const [fio, setFio] = useState<string>();
-
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -118,7 +109,7 @@ const ConfirmPage = () => {
     const file = event.target.files?.[0];
     if (file) {
       setFileName(file.name);
-      setPassportFile(file); // ✅ Файлни сақланг
+      setPassportFile(file);
     }
   };
 
@@ -157,7 +148,6 @@ const ConfirmPage = () => {
       formData.append("plan_id", data.plan_id);
       formData.append("fio", data.fio);
       formData.append("phone", data.phone);
-      // formData.append("payment_type_id", data.payment_type_id);
       formData.append("payment_type", data.payment_type);
 
       if (data.passport) formData.append("passport", data.passport);
@@ -166,8 +156,7 @@ const ConfirmPage = () => {
 
       const res = await fetch(`${API_URL}/${endpoints.orderCreate}`, {
         method: "POST",
-        // headers: { "Content-Type": "application/json" }, // ❌ Учиринг!
-        body: formData, // ✅ FormData юборинг
+        body: formData,
       });
 
       if (!res.ok) {
@@ -184,7 +173,7 @@ const ConfirmPage = () => {
         selectedMethodName?.key === "visa"
       ) {
         if (res?.payment_details) {
-          window.open(res.payment_details.payment_url, "_blank");
+          window.location.href = res.payment_details.payment_url; // Redirect in same tab
         }
       }
 
@@ -227,7 +216,6 @@ const ConfirmPage = () => {
       plan_id: id,
       fio,
       phone,
-      // payment_type_id: selectedMethod,
       payment_type: selectedMethodName?.key,
       passport_image: passportFile,
     });
@@ -338,7 +326,7 @@ const ConfirmPage = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <div className="py-6 md:pb-[100px] pb-[15px] container relative ">
+        <div className="py-6 md:pb-[100px] pb-[15px] container relative">
           <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-8">
             <a
               onClick={() => {
@@ -411,10 +399,6 @@ const ConfirmPage = () => {
                               alt="passport"
                               className="w-full max-h-40 object-contain border rounded-lg"
                             />
-
-                            {/* Edit ikonka */}
-
-                            {/* Fayl yuklash input */}
                             <input
                               type="file"
                               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -473,7 +457,7 @@ const ConfirmPage = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex  sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
                   <input
                     type="checkbox"
                     checked={agreeToPolicy}
@@ -493,7 +477,7 @@ const ConfirmPage = () => {
                       </a>
                     </p>
                     <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                      {t("and")}
+                      {t("auth.and")}
                     </p>
                     <a
                       href={APP_ROUTES.OFFER}
@@ -540,22 +524,6 @@ const ConfirmPage = () => {
             </div>
           </div>
         </div>
-
-        {/* <button
-            disabled={
-              isPending ||
-              !fio ||
-              fio.trim() === "" ||
-              !phone ||
-              phone.trim() === "" ||
-              !selectedMethod ||
-              !passportFile
-            }
-            onClick={handlePayment}
-            className="w-full bg-[#F06F1E] text-white mb-8 rounded-lg py-2"
-          >
-            {isPending ? "Loading..." : t("auth.pay")}
-          </button> */}
 
         <div className="">
           <FooterNav />
