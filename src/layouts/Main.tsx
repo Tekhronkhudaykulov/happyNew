@@ -99,21 +99,57 @@ const Main = () => {
       console.error("Country ID is missing:", country);
       return;
     }
+
     if (
       !selectedCountries.some((c) => c.id === country.id) &&
       selectedCountries.length < 3
     ) {
-      setSelectedCountries([...selectedCountries, country]);
+      const updatedCountries = [...selectedCountries, country];
+      setSelectedCountries(updatedCountries);
+
+      localStorage.setItem("selectedObject", JSON.stringify(country));
+
+      updatedCountries.forEach((c, index) => {
+        localStorage.setItem(`name${index + 1}`, JSON.stringify(c));
+      });
+
+      for (let i = updatedCountries.length + 1; i <= 3; i++) {
+        localStorage.removeItem(`name${i}`);
+      }
     }
+
     setSearchTerm("");
     setIsInputFocused(false);
-    localStorage.setItem("selectedObject", JSON.stringify(country));
-    // Resume slider autoplay
     slider?.next();
   };
 
   const handleRemove = (country: any) => {
-    setSelectedCountries(selectedCountries.filter((c) => c.id !== country.id));
+    const updatedCountries = selectedCountries.filter(
+      (c) => c.id !== country.id
+    );
+    setSelectedCountries(updatedCountries);
+
+    localStorage.removeItem("name1");
+    localStorage.removeItem("name2");
+    localStorage.removeItem("name3");
+    updatedCountries.forEach((c, index) => {
+      localStorage.setItem(`name${index + 1}`, JSON.stringify(c));
+    });
+
+    const currentSelectedObject = JSON.parse(
+      localStorage.getItem("selectedObject") || "{}"
+    );
+    if (
+      currentSelectedObject.id === country.id &&
+      updatedCountries.length > 0
+    ) {
+      localStorage.setItem(
+        "selectedObject",
+        JSON.stringify(updatedCountries[updatedCountries.length - 1])
+      );
+    } else if (updatedCountries.length === 0) {
+      localStorage.removeItem("selectedObject");
+    }
   };
 
   const handleSearchClick = () => {
