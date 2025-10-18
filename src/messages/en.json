@@ -1,6 +1,6 @@
 {
   "main": {
-    "title": "eSIM Cards for Travel and Business",
+    "title": "Happytel - your reliable internet abroad!",
     "nav1": "24/7 Support",
     "nav2": "One-Click Installation",
     "nav3": "Money-Back Guarantee",
@@ -12,50 +12,50 @@
     "available": "Available Countries"
   },
   "destination": {
-    "title": "Plans"
+    "title": "Tariffs"
   },
   "payment": {
-    "click": "We have sent a notification to the Click app. Please pay the bill",
-    "payme": "We have sent a notification to the Payme app. Please pay the bill",
-    "other": "We have sent a notification to the app. Please pay the bill"
+    "click": "We have sent a notification in the Click app. Please pay the invoice",
+    "payme": "We have sent a notification in the Payme app. Please pay the invoice",
+    "other": "We have sent a notification in the app. Please pay the invoice"
   },
   "hero": {
-    "title": "Happytel Advantages",
+    "title": "Advantages of Happytel",
     "subtitle": "Share wireless mobile internet with eSIM to other mobile devices easily and quickly",
     "card1_title": "Fast Connection",
-    "card1_text": "Activation in 2 minutes via QR code. No office visits or waiting — connection is available immediately",
+    "card1_text": "Activation in 2 minutes",
     "card2_title": "Multiple Numbers in One Device",
-    "card2_text": "Personal, work, and travel plans — all in one smartphone. Easily switch in a couple of clicks",
+    "card2_text": "Personal, work, and travel plans — all in one smartphone. Easily switch with a couple of clicks",
     "card3_title": "24/7 Live Technical Support",
-    "card3_text": "Don’t waste your nerves dealing with various bots or AI. Trust professionals, our team will resolve any connectivity issues instantly!",
-    "card4_title": "Security and Reliability",
-    "card4_text": "eSIM cannot be lost or damaged. If you lose your phone, the number can be easily transferred to another device",
-    "card5_title": "Affordable Plans and Fair Pricing",
-    "card5_text": "Large data packages at affordable prices. No hidden fees, overpayments, or imposed services",
-    "card6_title": "Eco-Friendly",
-    "card6_text": "No plastic SIM cards — less waste and care for the environment"
+    "card3_text": "Don't waste your nerves dealing with various bots or AI. Trust the professionals, our team will resolve any connectivity issues instantly!",
+    "card4_title": "Safety and Reliability",
+    "card4_text": "eSIM cannot be lost or damaged. If you lose your phone, the number can easily be transferred to another device",
+    "card5_title": "Affordable Tariffs and Fair Pricing",
+    "card5_text": "Large data packages at an affordable cost. No hidden fees, overpayments, or imposed services",
+    "card6_title": "Eco-Friendliness",
+    "card6_text": "No plastic SIM cards — fewer wastes and care for the environment"
   },
   "otzives": {
-    "title": "Our Customers' Reviews",
+    "title": "Reviews from Our Customers",
     "writer": "Igor V.",
     "comment": "The best app!",
-    "description": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
+    "description": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
     "showAll": "View All"
   },
   "why": {
     "title": "Reliable Internet Connection",
     "subtitle": "Share wireless mobile internet with eSIM to other mobile devices easily and quickly",
-    "why1": "Countries we partner with",
-    "why2": "Affordable plans",
+    "why1": "Countries we collaborate with",
+    "why2": "Affordable tariffs",
     "why3": "Use our services",
-    "card1_title": "Affordable Plans and Fair Pricing",
-    "card1_subtitle": "Large data packages at affordable prices. No hidden fees, overpayments, or imposed services",
-    "card2_title": "Eco-Friendly",
-    "card2_subtitle": "No plastic SIM cards — less waste and care for the environment",
+    "card1_title": "Affordable Tariffs and Fair Pricing",
+    "card1_subtitle": "Large data packages at an affordable cost. No hidden fees, overpayments, or imposed services",
+    "card2_title": "Eco-Friendliness",
+    "card2_subtitle": "No plastic SIM cards — fewer wastes and care for the environment",
     "card3_title": "Hotspot Mode",
     "card3_subtitle": "Share mobile internet with other devices",
     "card4_title": "One-Click Installation",
-    "card4_subtitle": "Set up eSIM in minutes with a single click"
+    "card4_subtitle": "Set up eSIM in a few minutes, just press the button"
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -65,11 +65,11 @@
     "title3": "If it’s listed?",
     "title4": "Smart network switching?",
     "title5": "One eSIM for over 200 destinations?",
-    "answer1": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
-    "answer2": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
-    "answer3": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
-    "answer4": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
-    "answer5": "If one of the available mobile operators has 5G, the eSIM will automatically switch to it! Globi partners with over 800 operators worldwide"
+    "answer1": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
+    "answer2": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
+    "answer3": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
+    "answer4": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide",
+    "answer5": "If one of the available mobile operators has 5G, eSIM will automatically switch to it! Globi partners with over 800 operators worldwide"
   },
   "footer": {
     "subtitle": "Reliable eSIM mobile internet you can count on",
@@ -81,10 +81,10 @@
     "nav3": "Public Offer",
     "nav4": "About the Company",
     "nav5": "Privacy Policy",
-    "nav6": "Return Policy",
+    "nav6": "Refund Policy",
     "made": "Developed by",
     "itdodas": "ITdodasi",
-    "loc": "Tashkent City, Yakkasaray District, Abdulla Kahhar Street 4"
+    "loc": "Tashkent city, Yakkasaray district, Abdulla Kakhkhara street 4"
   },
   "footernav": {
     "main": "Home",
@@ -101,17 +101,17 @@
     "sms": "SMS",
     "how-works": "How Happy tel eSIM packages work",
     "comp": "Compatibility:",
-    "comp-title": "Works only on eSIM-compatible devices without locks — check your phone’s compatibility before purchasing",
-    "onlyint": "Internet only:",
-    "onlyint-title": "Most packages do not include calls or SMS",
+    "comp-title": "Works only on eSIM-supported devices without restrictions — check your phone’s compatibility before purchasing",
+    "onlyint": "Internet Only:",
+    "onlyint-title": "Most packages do not include calls and SMS",
     "active": "Activation:",
-    "active-title": "Choose one of three ways:",
+    "active-title": "Choose one of three methods:",
     "active-title1": "Scan QR code",
     "active-title2": "Install via the 'Quick Setup' button",
     "active-title3": "Manual installation through phone settings",
     "date": "Validity:",
     "date-title": "Use the package within 3 months from the purchase date",
-    "choice": "Options:",
+    "choice": "Choice:",
     "choice-title": "Local (one country), regional (multiple countries), global (many countries)",
     "others": "Other packages for this destination",
     "auth": "Log in to purchase"
@@ -129,7 +129,7 @@
     "download": "Upload",
     "pay": "Pay",
     "paket": "Package:",
-    "tarif": "Plan",
+    "tarif": "Tariff",
     "set": "Network",
     "razdacha": "Internet",
     "price": "Price",
@@ -144,15 +144,15 @@
   },
   "my": {
     "title": "My eSIMs",
-    "tarif": "Plan",
+    "tarif": "Tariff",
     "date": "Number of days",
     "created": "Created",
-    "ostatok": "Balance:",
+    "ostatok": "Remaining:",
     "check": "Check balance",
     "detail": "Details",
     "no": "You haven’t purchased an eSIM yet",
     "buy": "Purchase an eSIM",
-    "end": "Will end"
+    "end": "Expires"
   },
   "ready": {
     "title": "Your eSIM is ready!",
@@ -168,7 +168,7 @@
     "active-second-title1": "• Add Plan → QR Code",
     "active-second-title2": "• Scan the code above",
     "active-third-title": "• Cellular settings",
-    "active-third-title1": "• Add Plan",
+    "active-third-title1": "• Add tariff plan",
     "active-third-title2": "• Enter details manually",
     "need": "Need help?",
     "support": "Contact support!",
@@ -203,8 +203,8 @@
   },
   "phone": {
     "title": "How to check if my device supports eSIM technology?",
-    "text1": "Enter",
-    "text2": "If it’s listed",
+    "text1": "Dial",
+    "text2": "If the list includes an EID number, your device supports eSIM technology",
     "sub1": "If you have a 3G/LTE connection and another mobile operator has",
     "sub2": "If you have a 3G/LTE connection and another mobile operator has"
   },

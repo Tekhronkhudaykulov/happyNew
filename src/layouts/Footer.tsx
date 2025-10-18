@@ -24,9 +24,27 @@ const Footer = () => {
             </div>
             <div>
               <div className="flex items-center justify-end gap-[25px]">
-              <Image src={ASSETS.instagram} alt="" className="w-10"/>
-              <Image src={ASSETS.facebook} alt="" className="w-10"/>
-              <Image src={ASSETS.telegram} alt="" className="w-10"/>
+                <a
+                  target="_blank"
+                  className="cursor-pointer"
+                  href="https://www.instagram.com/happytel.uz?igsh=MThhNzVmMXI2Z29tbA=="
+                >
+                  <Image src={ASSETS.instagram} alt="" className="w-10" />
+                </a>
+                <a
+                  target="_blank"
+                  href="https://m.facebook.com/@happytel.uz/?wtsid=rdr_04kOHJKn17HG3Ml5A&hr=1"
+                  className="cursor-pointer"
+                >
+                  <Image src={ASSETS.facebook} alt="" className="w-10" />
+                </a>
+                <a
+                  target="_blank"
+                  href="https://t.me/Happytel_uz"
+                  className="cursor-pointer"
+                >
+                  <Image src={ASSETS.telegram} alt="" className="w-10" />
+                </a>
               </div>
               <p className="text-[#FFFFFF] text-[16px] font-normal mt-4">
                 {t("footer.rights")}
@@ -74,20 +92,13 @@ const Footer = () => {
 
             <div className="flex flex-col gap-[25px] mb-[22px]">
               <a
-                href="#"
-                className="text-[#FFFFFF] font-normal text-[16px] text-end"
-              >
-                {t("footer.nav1")}
-              </a>
-              <a
-                href="#"
+                href={APP_ROUTES.OFFER}
                 className="text-[#FFFFFF] font-normal text-[16px] text-end"
               >
                 {t("footer.nav3")}
               </a>
               <a
                 href={APP_ROUTES.CONFIDENTIAL}
-                target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#FFFFFF] font-normal text-[16px] text-end"
               >
@@ -119,18 +130,14 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col gap-[20px]">
-            <a href="#" className="text-[#FFFFFF] font-normal text-[13px]">
-              {t("footer.nav1")}
-            </a>
             <a
-              href="#"
+              href={APP_ROUTES.OFFER}
               className="text-[#FFFFFF] font-normal text-[13px]  w-full"
             >
               {t("footer.nav3")}
             </a>
             <a
               href={APP_ROUTES.CONFIDENTIAL}
-              target="_blank"
               rel="noopener noreferrer"
               className="text-[#FFFFFF] font-normal text-[13px]"
             >
@@ -144,9 +151,23 @@ const Footer = () => {
 
           <div className="flex items-center gap-[20px]">
             <div className="flex items-center gap-[25px]">
-            <Image src={ASSETS.instagram} alt="" className="w-8"/>
-              <Image src={ASSETS.facebook} alt="" className="w-8"/>
-              <Image src={ASSETS.telegram} alt="" className="w-8"/>
+              <a
+                className="cursor-pointer"
+                target="_blank"
+                href="https://www.instagram.com/happytel.uz?igsh=MThhNzVmMXI2Z29tbA=="
+              >
+                <Image src={ASSETS.instagram} alt="" className="w-8" />
+              </a>
+              <a
+                target="_blank"
+                href="https://m.facebook.com/@happytel.uz/?wtsid=rdr_04kOHJKn17HG3Ml5A&hr=1"
+                className="cursor-pointer"
+              >
+                <Image src={ASSETS.facebook} alt="" className="w-8" />
+              </a>
+              <a href="https://t.me/Happytel_uz" className="cursor-pointer" target="_blank">
+                <Image src={ASSETS.telegram} alt="" className="w-8" />
+              </a>
             </div>
           </div>
         </div>

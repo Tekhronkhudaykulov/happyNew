@@ -31,9 +31,6 @@ const Phone: React.FC = () => {
                 *#06#
               </a>
             </h3>
-            <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">
-              {t("phone.sub1")}
-            </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
@@ -43,12 +40,9 @@ const Phone: React.FC = () => {
               alt=""
             />
 
-            <h3 className="md:text-[20px] md:max-w-[400px] max-w-[300px] truncate text-[16px] leading-[25px] md:leading-[40px] text-[#1C1C1C]">
+            <h3 className="md:text-[18px] md:max-w-[600px] max-w-[300px] text-[15px] leading-[20px] md:leading-[30px] text-[#1C1C1C]">
               {t("phone.text2")}
             </h3>
-             <p className="mt-[15px] max-w-[310px] text-[14px] leading-[16.96px] text-[#1C1C1C54] md:max-w-[350px] md:text-base">
-              {t("phone.text2")}
-            </p>
           </div>
         </div>
       </div>
