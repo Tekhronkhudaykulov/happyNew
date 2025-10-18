@@ -1,6 +1,6 @@
-import facebook from "./facebook.svg";
-import instagram from "./instagram.svg";
-import linkendin from "./linkendin.svg";
+import facebook from "./facebook.png";
+import instagram from "./instagram.webp";
+import telegram from "./telegram.png";
 import logo from "./logo.svg";
 import portrait from "./portrait.svg";
 import card1 from "./card1.png";
@@ -56,7 +56,7 @@ export const ASSETS = {
   fiveg,
   facebook,
   instagram,
-  linkendin,
+  telegram,
   logo,
   portrait,
   card1,

@@ -139,7 +139,8 @@
     "back": "Back",
     "agree_to": "I accept all terms of",
     "privacy_policy": "privacy policy",
-    "offerta": "public offer"
+    "offerta": "public offer",
+    "and": "and"
   },
   "my": {
     "title": "My eSIMs",
@@ -178,7 +179,7 @@
     "info": "eSIM details:",
     "dispethcer": "Support service",
     "phone": "Phone number:",
-    "bot": "Telegram bot:",
+    "bot": "Telegram support:",
     "personal": "Personal information",
     "name": "Name",
     "phonenum": "Phone number",

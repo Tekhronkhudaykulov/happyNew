@@ -20,10 +20,10 @@ const Home = () => {
         <Main />
       </div>
       <Tabs />
+      <Phone />
       <Hero />
       <WHYus />
       {/* <Otzives />  */}
-      <Phone />
       {/* <FAQs /> */}
       <Footer />
       <FooterNav />

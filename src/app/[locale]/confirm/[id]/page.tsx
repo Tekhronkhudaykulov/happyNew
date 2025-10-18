@@ -469,7 +469,6 @@ const ConfirmPage = () => {
                       {t("auth.agree_to")}{" "}
                       <a
                         href={APP_ROUTES.CONFIDENTIAL}
-                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#F06F1E] font-semibold underline"
                       >
@@ -481,7 +480,6 @@ const ConfirmPage = () => {
                     </p>
                     <a
                       href={APP_ROUTES.OFFER}
-                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#F06F1E] font-semibold underline text-xs sm:text-sm"
                     >
