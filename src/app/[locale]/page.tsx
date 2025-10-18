@@ -22,7 +22,7 @@ const Home = () => {
       <Tabs />
       <Phone />
       <Hero />
-      <WHYus />
+      {/* <WHYus /> */}
       {/* <Otzives />  */}
       {/* <FAQs /> */}
       <Footer />
