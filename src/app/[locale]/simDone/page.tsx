@@ -178,7 +178,7 @@ const SimReady = () => {
                   <div className="mt-4 border border-white rounded-xl py-3 px-4 flex items-center justify-between">
                     <p
                       onClick={handleActivate}
-                      className="text-white mr-[5px]  text-[11px]  font-medium  cursor-pointer"
+                      className="text-white mr-[5px]  text-[13px]  font-medium  cursor-pointer"
                     >
                       {t("ready.go")}
                     </p>
