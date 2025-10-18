@@ -179,6 +179,22 @@ const Country = () => {
       : null;
   const object = selectedObject ? JSON.parse(selectedObject) : null;
 
+  const getCountryNames = () => {
+    const names: string[] = [];
+    for (let i = 1; i <= 3; i++) {
+      const country = localStorage.getItem(`name${i}`);
+      if (country) {
+        const parsed = JSON.parse(country);
+        if (parsed?.name) {
+          names.push(parsed.name);
+        }
+      }
+    }
+    return names.join(", ");
+  };
+
+  const countryNames = getCountryNames();
+
   return (
     <>
       {showAvailableModal && selectedItem?.regions && (
@@ -257,8 +273,8 @@ const Country = () => {
                 >
                   <ArrowLeft size={16} className="text-[#1C1C1C] sm:size-5" />
                 </a>
-                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold">
-                  {object?.name}
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[35px] text-[#1C1C1C] font-semibold ml-4">
+                  {countryNames || t("main.no_results")}
                 </h1>
               </div>
             </div>
@@ -434,7 +450,11 @@ const Country = () => {
                 available={t("country.not")}
                 image={ASSETS.sms}
               />
-              <ServiceCard title={"5G"} available={t("country.yes")}  image={ASSETS.fiveg} />
+              <ServiceCard
+                title={"5G"}
+                available={t("country.yes")}
+                image={ASSETS.fiveg}
+              />
             </div>
             {/* INFO + OTHERS */}
             <div className="flex flex-col md:flex-row items-stretch gap-3 sm:gap-4 pt-4">
