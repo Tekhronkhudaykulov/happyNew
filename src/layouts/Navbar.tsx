@@ -29,7 +29,7 @@ const Navbar = () => {
             <Image
               src={ASSETS.logowhite}
               alt="logo"
-              className="sm:w-[160px] w-[120px] h-auto"
+              className="sm:w-[160px] w-[120px] h-auto cursor-pointer "
             />
           </Link>
 
