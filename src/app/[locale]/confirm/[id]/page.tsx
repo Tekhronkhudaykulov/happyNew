@@ -201,8 +201,6 @@ const ConfirmPage = () => {
     },
   });
 
-  console.log(AgreeToKeshback, "fhjdfh");
-
   const handlePayment = () => {
     if (!fio || fio.trim() === "") {
       toast.error("Исмни киритинг!");
@@ -470,7 +468,7 @@ const ConfirmPage = () => {
                       type="checkbox"
                       checked={agreeToPolicy}
                       onChange={(e) => setAgreeToPolicy(e.target.checked)}
-                      className="w-4 h-4 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
+                      className="w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 bg-white text-[#F06F1E] cursor-pointer"
                     />
                     <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
                       <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
@@ -496,18 +494,36 @@ const ConfirmPage = () => {
                     </div>
                   </div>
 
-                  {profileData && (
+                  {profileData?.data?.balance > 0.00 && (
                     <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-4">
-                      <input
-                        type="checkbox"
-                        checked={AgreeToKeshback}
-                        onChange={(e) => setAgreeToKeshback(e.target.checked)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
-                      />
-                      <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
-                        <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                          {t("auth.use")}
-                        </p>
+                      <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                        {t("auth.use")}
+                      </p>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <label className="flex items-center gap-1 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="keshback"
+                            checked={AgreeToKeshback === true}
+                            onChange={() => setAgreeToKeshback(true)}
+                            className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-[#595959] bg-white text-[#F06F1E]"
+                          />
+                          <span className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                            {t("yes")}
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-1 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="keshback"
+                            checked={AgreeToKeshback === false}
+                            onChange={() => setAgreeToKeshback(false)}
+                            className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 bg-white text-[#F06F1E]"
+                          />
+                          <span className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                          {t("no")}
+                          </span>
+                        </label>
                       </div>
                     </div>
                   )}
