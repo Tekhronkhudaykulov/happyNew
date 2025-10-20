@@ -201,6 +201,8 @@ const ConfirmPage = () => {
     },
   });
 
+  console.log(AgreeToKeshback, "fhjdfh");
+
   const handlePayment = () => {
     if (!fio || fio.trim() === "") {
       toast.error("Исмни киритинг!");
@@ -221,6 +223,7 @@ const ConfirmPage = () => {
       phone,
       payment_type: selectedMethodName?.key,
       passport_image: passportFile,
+      use_cashback: AgreeToKeshback,
     });
   };
 
@@ -493,19 +496,21 @@ const ConfirmPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-4">
-                  <input
-                    type="checkbox"
-                    checked={AgreeToKeshback}
-                    onChange={(e) => setAgreeToKeshback(e.target.checked)}
-                    className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
-                  />
-                   <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
-                   <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                      {t("auth.use")}
-                    </p>
-                   </div>
-                  </div>
+                  {profileData && (
+                    <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-4">
+                      <input
+                        type="checkbox"
+                        checked={AgreeToKeshback}
+                        onChange={(e) => setAgreeToKeshback(e.target.checked)}
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
+                      />
+                      <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
+                        <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                          {t("auth.use")}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="lg:pb-0 pb-[75px]">
