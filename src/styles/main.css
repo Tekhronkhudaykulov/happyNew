@@ -287,9 +287,9 @@
   .main-map {
     position: absolute !important;
     z-index: 0;
-    top: 22%;
+    top: 33%;
     left: 50%;
-    height: 300px;
+    height: 250px;
   }
 
   .main-title {

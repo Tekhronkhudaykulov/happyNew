@@ -87,7 +87,9 @@ const ConfirmPage = () => {
 
   const [fileName, setFileName] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<number | null>(null);
-  const [selectedMethodName, setSelectedMethodName] = useState<any | null>(null);
+  const [selectedMethodName, setSelectedMethodName] = useState<any | null>(
+    null
+  );
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [orderData, setOrderData] = useState(null);
   const [object, setObject] = useState<any>(null);
@@ -97,6 +99,7 @@ const ConfirmPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [agreeToPolicy, setAgreeToPolicy] = useState(false);
+  const [AgreeToKeshback, setAgreeToKeshback] = useState(false);
 
   const phoneRef = useRef<HTMLInputElement>(null);
 
@@ -457,34 +460,51 @@ const ConfirmPage = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
+
+                <div>
+                  <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 sm:mt-6">
+                    <input
+                      type="checkbox"
+                      checked={agreeToPolicy}
+                      onChange={(e) => setAgreeToPolicy(e.target.checked)}
+                      className="w-4 h-4 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
+                    />
+                    <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
+                      <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                        {t("auth.agree_to")}{" "}
+                        <a
+                          href={APP_ROUTES.CONFIDENTIAL}
+                          rel="noopener noreferrer"
+                          className="text-[#F06F1E] font-semibold underline"
+                        >
+                          {t("auth.privacy_policy")}
+                        </a>
+                      </p>
+                      <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                        {t("auth.and")}
+                      </p>
+                      <a
+                        href={APP_ROUTES.OFFER}
+                        rel="noopener noreferrer"
+                        className="text-[#F06F1E] font-semibold underline text-xs sm:text-sm"
+                      >
+                        {t("auth.offerta")}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-4">
                   <input
                     type="checkbox"
-                    checked={agreeToPolicy}
-                    onChange={(e) => setAgreeToPolicy(e.target.checked)}
+                    checked={AgreeToKeshback}
+                    onChange={(e) => setAgreeToKeshback(e.target.checked)}
                     className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 border-[#595959] bg-white text-[#F06F1E] cursor-pointer"
                   />
-                  <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
-                    <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                      {t("auth.agree_to")}{" "}
-                      <a
-                        href={APP_ROUTES.CONFIDENTIAL}
-                        rel="noopener noreferrer"
-                        className="text-[#F06F1E] font-semibold underline"
-                      >
-                        {t("auth.privacy_policy")}
-                      </a>
+                   <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center sm:text-left">
+                   <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
+                      {t("auth.use")}
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                      {t("auth.and")}
-                    </p>
-                    <a
-                      href={APP_ROUTES.OFFER}
-                      rel="noopener noreferrer"
-                      className="text-[#F06F1E] font-semibold underline text-xs sm:text-sm"
-                    >
-                      {t("auth.offerta")}
-                    </a>
+                   </div>
                   </div>
                 </div>
               </div>

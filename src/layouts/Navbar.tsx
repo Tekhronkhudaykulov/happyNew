@@ -37,9 +37,9 @@ const Navbar = () => {
             <button
               type="button"
               onClick={() => setIsOpen((prev) => !prev)}
-              className="flex items-center gap-3 bg-[#FFFFFF38] rounded-[12px] px-4 py-2 cursor-pointer"
+              className="flex items-center gap-3 bg-[#FFFFFF38] rounded-[12px] px-2 py-2 md:px-4 md:py-2 cursor-pointer"
             >
-              <h3 className="text-[16px] text-[#FFFFFF] font-medium">
+              <h3 className="md:text-[16px] text-[14px] text-[#FFFFFF] font-medium">
                 {currentLang.label}
               </h3>
               <ChevronDown
@@ -56,7 +56,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-3 w-full bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden z-50"
+                  className="absolute right-0 mt-3 w-full bg-white rounded-xl shadow-xl ring-1 ring-black/5 overflow-hidden z-1000"
                 >
                   {languages
                     .filter((lang) => lang.code !== currentLang.code)
@@ -67,7 +67,7 @@ const Navbar = () => {
                           /^\/(ru|en)/,
                           ""
                         )}`}
-                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
+                        className="block md:px-4 md:py-2 px-2 py-2 md:text-[16px] text-[14px] text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition"
                         onClick={() => setIsOpen(false)}
                       >
                         {lang.label}
