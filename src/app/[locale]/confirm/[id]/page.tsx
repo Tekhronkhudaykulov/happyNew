@@ -496,8 +496,8 @@ const ConfirmPage = () => {
 
                   {profileData?.data?.balance > 0.00 && (
                     <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-4">
-                      <p className="text-xs sm:text-sm font-medium text-[#1C1C1C]">
-                        {t("auth.use")}
+                      <p className="text-xs sm:text-sm font-medium text-[#1C1C1C] flex gap-1">
+                        {t("auth.use")} {" "} <p className="font-semibold">{profileData?.data?.balance}</p>
                       </p>
                       <div className="flex items-center gap-2 sm:gap-3">
                         <label className="flex items-center gap-1 cursor-pointer">
