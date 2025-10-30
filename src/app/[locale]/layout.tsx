@@ -1,5 +1,6 @@
+// src/app/[locale]/layout.tsx
 import { NextIntlClientProvider } from "next-intl";
-import { notFound } from "next/navigation";
+import { getMessages } from "next-intl/server";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import "@/app/[locale]/globals.css";
 import "@/index.css";
@@ -13,19 +14,24 @@ import { ToastProvider } from "@/providers/ToastProvider";
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
-}: any) {
-  let messages;
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
-  } catch {
-    notFound();
-  }
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const messages = await getMessages();
+
+  console.log("[Layout] Locale:", locale, "Messages loaded");
 
   return (
     <html lang={locale}>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider messages={messages}>
           <ReactQueryProvider>
             <AuthModalProvider>
               <AutoScrollToTop />
