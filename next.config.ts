@@ -1,9 +1,10 @@
-// next.config.js
+// next.config.ts
 import createNextIntlPlugin from "next-intl/plugin";
+import type { NextConfig } from "next";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
@@ -13,15 +14,13 @@ const nextConfig = {
       { protocol: "https", hostname: "admin.marca.uz" },
     ],
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   async redirects() {
     return [
       {
         source: "/",
         destination: "/ru",
         permanent: false,
+        locale: false,
       },
     ];
   },
